@@ -295,21 +295,6 @@ const GrowthPlanSection = () => {
                     </div>
                 </div>
 
-                {/* Primary CTA Section */}
-                <div className="mt-20 text-center space-y-8">
-                    {/* Closing Message */}
-                    <div className="max-w-4xl mx-auto">
-                        <p className="text-2xl md:text-3xl font-bold text-gray-300 leading-relaxed">
-                            Because growth doesn't start with ads.
-                        </p>
-                        <p className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 leading-relaxed mt-2">
-                            It starts with clarity, strategy, and the right system.
-                        </p>
-                    </div>
-
-                    {/* Action Buttons Removed */}
-
-                </div>
             </div>
         </section>
     );
