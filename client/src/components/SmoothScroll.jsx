@@ -7,7 +7,6 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const SmoothScroll = ({ children }) => {
     useEffect(() => {
-        // Create smooth scroller
         const smoother = ScrollSmoother.create({
             wrapper: '#smooth-wrapper',
             content: '#smooth-content',

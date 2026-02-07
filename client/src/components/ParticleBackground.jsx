@@ -8,7 +8,6 @@ const ParticleBackground = () => {
         const ctx = canvas.getContext('2d');
         let animationFrameId;
 
-        // Set canvas size
         const setCanvasSize = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -16,7 +15,6 @@ const ParticleBackground = () => {
         setCanvasSize();
         window.addEventListener('resize', setCanvasSize);
 
-        // Particle configuration
         const particleCount = 60;
         const particles = [];
         const connectionDistance = 150;
@@ -25,8 +23,8 @@ const ParticleBackground = () => {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5; // Velocity X
-                this.vy = (Math.random() - 0.5) * 0.5; // Velocity Y
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
                 this.size = Math.random() * 2 + 1;
             }
 
@@ -34,25 +32,22 @@ const ParticleBackground = () => {
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Bounce off edges
                 if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
                 if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
             }
 
             draw() {
-                ctx.fillStyle = 'rgba(59, 130, 246, 0.5)'; // Blueish
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.5)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        // Initialize particles
         for (let i = 0; i < particleCount; i++) {
             particles.push(new Particle());
         }
 
-        // Animation Loop
         const animate = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -60,7 +55,6 @@ const ParticleBackground = () => {
                 particle.update();
                 particle.draw();
 
-                // Draw connections
                 for (let j = index; j < particles.length; j++) {
                     const other = particles[j];
                     const dx = particle.x - other.x;

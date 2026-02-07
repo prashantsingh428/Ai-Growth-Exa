@@ -5,7 +5,7 @@ const AiBrainVisual = () => {
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return; // Safety check
+        if (!canvas) return;
 
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -29,14 +29,13 @@ const AiBrainVisual = () => {
                 this.vx = (Math.random() - 0.5) * 1.0;
                 this.vy = (Math.random() - 0.5) * 1.0;
                 this.size = Math.random() * 2 + 1;
-                this.color = Math.random() > 0.5 ? '#3b82f6' : '#a855f7'; // Blue or Purple
+                this.color = Math.random() > 0.5 ? '#3b82f6' : '#a855f7';
             }
 
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Bounce off walls
                 if (this.x < 0 || this.x > width) this.vx *= -1;
                 if (this.y < 0 || this.y > height) this.vy *= -1;
             }
@@ -61,7 +60,6 @@ const AiBrainVisual = () => {
 
             ctx.clearRect(0, 0, width, height);
 
-            // Draw connections first (behind nodes)
             ctx.lineWidth = 0.5;
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
@@ -73,7 +71,7 @@ const AiBrainVisual = () => {
 
                     if (dist < connectionDistance) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(148, 163, 184, ${1 - dist / connectionDistance})`; // Gray-400 equivalent
+                        ctx.strokeStyle = `rgba(148, 163, 184, ${1 - dist / connectionDistance})`;
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
                         ctx.stroke();
@@ -81,19 +79,16 @@ const AiBrainVisual = () => {
                 }
             }
 
-            // Draw particles
             particles.forEach(p => {
                 p.update();
                 p.draw();
             });
 
-            // Central "Brain" Pulse Effect
             const time = Date.now() * 0.002;
             const coreX = width / 2;
             const coreY = height / 2;
             const pulseSize = 25 + Math.sin(time) * 5;
 
-            // Outer glow
             const gradient = ctx.createRadialGradient(coreX, coreY, 0, coreX, coreY, pulseSize * 4);
             gradient.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
             gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
@@ -102,14 +97,13 @@ const AiBrainVisual = () => {
             ctx.arc(coreX, coreY, pulseSize * 4, 0, Math.PI * 2);
             ctx.fill();
 
-            // Inner Core
             ctx.beginPath();
             ctx.arc(coreX, coreY, pulseSize, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
             ctx.shadowBlur = 20;
             ctx.shadowColor = '#3b82f6';
             ctx.fill();
-            ctx.shadowBlur = 0; // Reset shadow
+            ctx.shadowBlur = 0;
 
             requestAnimationFrameId = requestAnimationFrame(animate);
         };

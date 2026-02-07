@@ -7,7 +7,6 @@ const CustomCursor = () => {
     const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
-        // Hide default cursor
         document.body.style.cursor = "none";
 
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -15,7 +14,6 @@ const CustomCursor = () => {
         const onMouseMove = (e) => {
             const { clientX, clientY } = e;
 
-            // Move the small dot instantly
             gsap.to(cursorRef.current, {
                 x: clientX,
                 y: clientY,
@@ -25,7 +23,7 @@ const CustomCursor = () => {
             gsap.to(followerRef.current, {
                 x: clientX,
                 y: clientY,
-                duration: 0.6, // Adjust for more/less lag
+                duration: 0.6,
                 ease: "power2.out"
             });
         };
@@ -52,7 +50,6 @@ const CustomCursor = () => {
             }
         };
 
-        // We need to attach mouseover to window to catch bubbling events from elements
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("mouseover", onMouseEnter);
 
@@ -73,7 +70,7 @@ const CustomCursor = () => {
             });
             gsap.to(cursorRef.current, {
                 scale: 0.5,
-                duration: 0.3
+                duration: 0.2
             });
 
         } else {
@@ -92,13 +89,12 @@ const CustomCursor = () => {
 
     return (
         <>
-            { }
             <div
                 ref={cursorRef}
                 className="fixed top-0 left-0 w-3 h-3 bg-blue-500 rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 mix-blend-difference"
             />
 
-            { }
+
             <div
                 ref={followerRef}
                 className="fixed top-0 left-0 w-10 h-10 border-2 border-blue-500 rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ease-out"

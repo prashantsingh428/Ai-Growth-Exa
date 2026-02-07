@@ -38,21 +38,21 @@ const Footer = () => {
     };
 
     const socialLinks = [
-        { name: "LinkedIn", url: "https://www.linkedin.com/company/ai-growthexa/about/?viewAsMember=true" },
-        { name: "Instagram", url: "https://www.instagram.com/aigrowthexa/" },
-        { name: "Facebook", url: "https://www.facebook.com/profile.php?id=61586954705320" },
-        { name: "YouTube", url: "https://www.youtube.com/@AIGrowthExa" },
-        { name: "X (Twitter)", url: "https://x.com/aigrowthexa" },
+        { name: "LinkedIn", url: "https:
+        { name: "Instagram", url: "https:
+        { name: "Facebook", url: "https:
+        { name: "YouTube", url: "https:
+        { name: "X (Twitter)", url: "https:
     ];
 
     return (
         <footer ref={footerRef} className="bg-gray-900 text-gray-300 py-16 px-6 sm:px-12 lg:px-24 border-t border-gray-800 relative overflow-hidden">
-            {/* Decorative Elements */}
+            {}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50"></div>
 
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
-                {/* Column 1: Structure */}
+                {}
                 <div className="footer-column flex flex-col space-y-4">
                     <h3 className="text-xl font-bold text-white mb-2 relative inline-block">
                         Explore
@@ -74,7 +74,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Column 2: Social Media */}
+                {}
                 <div className="footer-column flex flex-col space-y-4">
                     <h3 className="text-xl font-bold text-white mb-2 relative inline-block">
                         Social Media
@@ -98,7 +98,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Column 3: Legal */}
+                {}
                 <div className="footer-column flex flex-col space-y-4">
                     <h3 className="text-xl font-bold text-white mb-2 relative inline-block">
                         Legal
@@ -120,7 +120,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Column 4: Connect With Us (Lead Capture) */}
+                {}
                 <div className="footer-column flex flex-col space-y-4">
                     <h3 className="text-xl font-bold text-white mb-2 relative inline-block">
                         Connect With Us

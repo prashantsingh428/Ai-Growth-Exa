@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import aiInfinityComplete from '../assets/ai-infinity-complete.png';
-import FloatingParticles from '../components/FloatingParticles';
+import ParticleBackground from '../components/ParticleBackground';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +13,6 @@ const BoldStatementSection = () => {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Text animation
             gsap.fromTo(textRef.current,
                 { x: -100, opacity: 0 },
                 {
@@ -29,7 +28,6 @@ const BoldStatementSection = () => {
                 }
             );
 
-            // Image animation
             gsap.fromTo(imageRef.current,
                 { x: 100, opacity: 0, scale: 0.9 },
                 {
@@ -51,36 +49,38 @@ const BoldStatementSection = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-950">
-            {/* Background effects */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-gray-950 to-green-950/20"></div>
-            <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[128px]"></div>
-            <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-green-600/10 rounded-full blur-[128px]"></div>
+        <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030712]">
+            {/* Background Glow - Rich and Vibrant like Hero */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
+                <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] bg-blue-600/70 rounded-full blur-[150px]"></div>
+                <div className="absolute bottom-10 right-[20%] w-[500px] h-[500px] bg-purple-600/70 rounded-full blur-[150px]"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-pink-600/50 rounded-full blur-[150px]"></div>
+            </div>
 
-            {/* Neuron Particle Effect */}
-            <FloatingParticles />
+            {/* Particle Background - Matching HeroSection */}
+            <ParticleBackground />
 
             <div className="container mx-auto px-6 max-w-7xl relative z-10 py-20">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     {/* Text Content - Left Side */}
                     <div ref={textRef} className="space-y-8">
                         <div>
-                            <p className="text-green-400 text-sm font-semibold tracking-widest uppercase mb-4">
+                            <p className="text-blue-400 text-sm font-semibold tracking-widest uppercase mb-4">
                                 AI-Powered Marketing Infrastructure
                             </p>
-                            <h2 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-6">
+                            <h2 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-6">
                                 <span className="text-white">Scale Smarter.</span>
                                 <br />
-                                <span className="text-green-400">Grow Faster.</span>
+                                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Grow Faster.</span>
                                 <br />
                                 <span className="text-white">With AI.</span>
                             </h2>
-                            <p className="text-xl text-gray-300 leading-relaxed max-w-xl">
+                            <p className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-xl">
                                 We help brands automate, optimize, and scale marketing using AI systems.
                             </p>
                         </div>
 
-                        <button className="inline-flex items-center px-8 py-4 bg-green-500 hover:bg-green-400 text-gray-900 font-bold text-lg rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/50">
+                        <button className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-500/20">
                             Book a Free Strategy Call
                         </button>
                     </div>
@@ -91,25 +91,25 @@ const BoldStatementSection = () => {
                             <img
                                 src={aiInfinityComplete}
                                 alt="AI Continuous Growth with Analytics Dashboard"
-                                className="w-full h-auto"
+                                className="w-full h-auto rounded-2xl shadow-2xl"
                             />
 
-                            {/* Glow effect behind image */}
-                            <div className="absolute -inset-8 bg-gradient-to-r from-blue-600/40 to-green-600/40 blur-3xl -z-10"></div>
+                            {/* Glow effect behind image - Intense and Vibrant */}
+                            <div className="absolute -inset-8 bg-gradient-to-r from-blue-600/50 to-purple-600/50 dark:from-blue-500/70 dark:to-purple-500/70 blur-3xl -z-10"></div>
                         </div>
 
-                        {/* Growth Stats Below */}
-                        <div className="mt-8 grid grid-cols-3 gap-6 text-center bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-blue-500/20">
+                        {/* Growth Stats Below - Dark Theme */}
+                        <div className="mt-8 grid grid-cols-3 gap-6 text-center bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 shadow-xl">
                             <div>
                                 <p className="text-4xl font-bold text-blue-400">300%</p>
                                 <p className="text-sm text-gray-400 mt-2">ROI Increase</p>
                             </div>
                             <div>
-                                <p className="text-4xl font-bold text-green-400">50%</p>
+                                <p className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">50%</p>
                                 <p className="text-sm text-gray-400 mt-2">Cost Reduction</p>
                             </div>
                             <div>
-                                <p className="text-4xl font-bold text-cyan-400">24/7</p>
+                                <p className="text-4xl font-bold text-blue-400">24/7</p>
                                 <p className="text-sm text-gray-400 mt-2">Automation</p>
                             </div>
                         </div>

@@ -6,20 +6,17 @@ const NeuralCursor = () => {
     const canvasRef = useRef(null);
     const mouse = useRef({ x: 0, y: 0 });
     const delayedMouse = useRef({ x: 0, y: 0 });
-    const currentColor = useRef('rgba(59, 130, 246'); // Default blue
+    const currentColor = useRef('rgba(59, 130, 246');
 
     useEffect(() => {
-        // Track mouse position
         const manageMouseMove = (e) => {
             mouse.current = { x: e.clientX, y: e.clientY };
 
-            // Detect element and get text color
             const element = document.elementFromPoint(e.clientX, e.clientY);
             if (element) {
                 const computedStyle = getComputedStyle(element);
                 const color = computedStyle.color;
 
-                // Convert rgb(r, g, b) to rgba(r, g, b format (without closing paren and alpha)
                 if (color && color.startsWith('rgb')) {
                     currentColor.current = color.replace('rgb(', 'rgba(').replace(')', '');
                 }
@@ -28,7 +25,6 @@ const NeuralCursor = () => {
 
         window.addEventListener("mousemove", manageMouseMove);
 
-        // Canvas Setup for the neural trail
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         let animationFrameId;
@@ -40,7 +36,6 @@ const NeuralCursor = () => {
         setCanvasSize();
         window.addEventListener('resize', setCanvasSize);
 
-        // Particles for the tail
         const maxParticles = 15;
         const particles = [];
 
@@ -49,9 +44,9 @@ const NeuralCursor = () => {
                 this.x = x || delayedMouse.current.x;
                 this.y = y || delayedMouse.current.y;
                 this.size = Math.random() * 1.5 + 0.8;
-                this.life = 1; // 1 = full life, 0 = dead
+                this.life = 1;
                 this.decay = Math.random() * 0.03 + 0.02;
-                this.color = color || 'rgba(59, 130, 246'; // Use provided color or default to blue
+                this.color = color || 'rgba(59, 130, 246';
             }
 
             update() {
@@ -70,31 +65,24 @@ const NeuralCursor = () => {
         }
 
         const animate = () => {
-            // Smooth follower logic (Lerp)
             const { x, y } = mouse.current;
             delayedMouse.current.x += (x - delayedMouse.current.x) * 0.15;
             delayedMouse.current.y += (y - delayedMouse.current.y) * 0.15;
 
-            // Move the main cursor dot
             gsap.set(cursorRef.current, { x: mouse.current.x, y: mouse.current.y });
 
-            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Add new particle at follower position
             if (Math.random() > 0.6) {
                 particles.push(new Particle(delayedMouse.current.x, delayedMouse.current.y, currentColor.current));
             }
 
-            // Draw follower connecting line
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(147, 51, 234, 0.5)'; // Purple line
+            ctx.strokeStyle = 'rgba(147, 51, 234, 0.5)';
             ctx.lineWidth = 1;
             ctx.moveTo(mouse.current.x, mouse.current.y);
             ctx.lineTo(delayedMouse.current.x, delayedMouse.current.y);
             ctx.stroke();
 
-            // Perform particle updates
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
@@ -132,12 +120,10 @@ const NeuralCursor = () => {
 
     return (
         <>
-            {/* The Main Dot */}
             <div
                 ref={cursorRef}
-                className="fixed top-0 left-0 w-3 h-3 bg-blue-500 rounded-full z-[9999] pointer-events-none -translate-x-1/2 -translate-y-1/2 mix-blend-screen shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+                className="fixed top-0 left-0 w-3 h-3 bg-blue-500 rounded-full z-[9999] pointer-events-none -translate-x-1/2 -translate-y-1/2 mix-blend-normal dark:mix-blend-screen shadow-[0_0_10px_rgba(59,130,246,0.8)]"
             />
-            {/* The Canvas Trail */}
             <canvas
                 ref={canvasRef}
                 className="fixed top-0 left-0 w-full h-full pointer-events-none z-[9998]"
