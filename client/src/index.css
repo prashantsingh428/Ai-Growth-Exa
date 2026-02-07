@@ -1,0 +1,6 @@
+/* Custom dash animation for SVG paths */
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
