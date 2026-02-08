@@ -13,6 +13,7 @@ const FloatingParticles = ({ theme = 'auto' }) => {
             const parent = canvas.parentElement;
             if (parent) {
                 canvas.width = parent.offsetWidth;
+                canvas.height = parent.offsetHeight;
             }
         };
 

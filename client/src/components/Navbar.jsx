@@ -28,7 +28,7 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', path: '/' },
-        { name: 'About', path: '/about' },
+        { name: 'About', path: '/#about-section' },
         { name: 'Services', path: '/services' },
         { name: 'Blog', path: '/blog' },
         { name: 'Careers', path: '/careers' },
@@ -91,7 +91,7 @@ const Navbar = () => {
                     <div ref={addToRefs}>
                         <Link
                             to="/contact"
-                            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-semibold transition-all transform hover:scale-105 shadow-lg shadow-blue-500/30 whitespace-nowrap"
+                            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-full text-sm font-semibold transition-all transform hover:scale-105 shadow-lg shadow-blue-500/30 whitespace-nowrap"
                         >
                             Get Started
                         </Link>

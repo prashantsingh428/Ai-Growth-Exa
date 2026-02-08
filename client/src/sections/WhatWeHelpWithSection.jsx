@@ -186,10 +186,10 @@ const WhatWeHelpWithSection = () => {
                 <div className="text-center">
                     <button
                         ref={buttonRef}
-                        className="group relative inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-gray-200 hover:border-blue-600 text-gray-900 font-bold text-lg rounded-full transition-all duration-300 hover:shadow-xl hover:shadow-blue-200 hover:-translate-y-1"
+                        className="group relative inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-blue-600/30 hover:border-blue-600 text-blue-600 font-bold text-lg rounded-full transition-all duration-300 hover:shadow-xl hover:shadow-blue-200 hover:-translate-y-1"
                     >
                         <span>🔘 View All Services</span>
-                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
                     </button>

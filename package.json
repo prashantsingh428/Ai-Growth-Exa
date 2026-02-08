@@ -2,7 +2,7 @@
   "name": "ai-growth-exa",
   "version": "1.0.0",
   "description": "MERN Stack Project for Ai Growth Exa",
-  "main": "server/server.js",
+  "main": "server/src/server.js",
   "scripts": {
     "start": "cd server && npm start",
     "server": "cd server && npm run dev",
