@@ -66,7 +66,7 @@ const PrimaryCtaSection = () => {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center mb-12 md:mb-16 px-4">
-                    <button className="group relative w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-500/20 overflow-hidden">
+                    <button className="group relative w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-500/20 overflow-hidden">
                         <span className="relative z-10 flex items-center gap-3">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -77,7 +77,7 @@ const PrimaryCtaSection = () => {
                         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                     </button>
 
-                    <button className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-transparent border-2 border-purple-500 hover:bg-purple-500/10 text-purple-400 hover:text-purple-300 rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-lg shadow-purple-500/20 flex items-center justify-center gap-3">
+                    <button className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-transparent border-2 border-indigo-500 hover:bg-indigo-500/10 text-indigo-400 hover:text-indigo-300 rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-3">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                         </svg>
@@ -91,7 +91,7 @@ const PrimaryCtaSection = () => {
                         Get clarity on your growth roadmap in a <span className="text-blue-400 font-semibold">free 30-minute strategy session</span>
                     </p>
 
-                    <button className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-500 hover:via-purple-500 hover:to-pink-500 text-white rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-xl shadow-purple-500/30">
+                    <button className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-xl shadow-indigo-500/30">
                         Get My Personalized Growth Plan
                     </button>
 
@@ -104,8 +104,8 @@ const PrimaryCtaSection = () => {
                         <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 };
 

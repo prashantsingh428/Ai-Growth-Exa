@@ -10,6 +10,10 @@ import WhatWeHelpWithSection from '../sections/WhatWeHelpWithSection';
 import OurClientsSection from '../sections/OurClientsSection';
 import WhyAiGrowthExaSection from '../sections/WhyAiGrowthExaSection';
 import StatsSection from '../sections/StatsSection';
+import TestimonialsSection from '../sections/TestimonialsSection'; // New Import
+import AboutHeroSection from '../sections/AboutHeroSection';
+import FaqSection from '../sections/FaqSection';
+import FinalCtaSection from '../sections/FinalCtaSection';
 
 const Home = () => {
     return (
@@ -25,6 +29,12 @@ const Home = () => {
             <OurClientsSection />
             <WhyAiGrowthExaSection />
             <StatsSection />
+            <TestimonialsSection />
+            <div id="about-section">
+                <AboutHeroSection />
+            </div>
+            <FaqSection />
+            <FinalCtaSection />
         </>
     );
 };
