@@ -1,32 +1,57 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const SmoothScroll = ({ children }) => {
-    // ScrollSmoother is DISABLED to prevent DOM manipulation conflicts with React.
-    // The ScrollSmoother plugin manipulates the DOM structure, which causes
-    // "NotFoundError: Failed to execute 'removeChild'" errors when React
-    // tries to unmount components during navigation or re-renders.
-    //
-    // Native browser scrolling is smooth enough for most use cases.
-    // If smooth scrolling is required in the future, consider:
-    // 1. CSS scroll-behavior: smooth;
-    // 2. Lenis scroll library (better React compatibility)
-    // 3. Locomotive Scroll
+    const location = useLocation();
+    const previousPath = useRef(location.pathname);
+
+    // This useLayoutEffect runs synchronously when the location changes
+    // BEFORE React starts rendering the new route
+    useLayoutEffect(() => {
+        // Only run cleanup when the path actually changes (not on initial mount)
+        if (previousPath.current !== location.pathname) {
+            // First, revert all ScrollTriggers to restore original DOM structure
+            // This is crucial for pinned elements that GSAP has moved
+            ScrollTrigger.getAll().forEach(trigger => {
+                // Revert the ScrollTrigger's DOM changes first
+                if (trigger.pin) {
+                    trigger.kill(true);
+                } else {
+                    trigger.kill();
+                }
+            });
+
+            // Kill all active tweens
+            gsap.killTweensOf("*");
+
+            // Give GSAP a moment to finish its DOM restoration
+            ScrollTrigger.clearScrollMemory();
+
+            // Scroll to top for the new page
+            window.scrollTo(0, 0);
+        }
+
+        previousPath.current = location.pathname;
+    }, [location.pathname]);
 
     useEffect(() => {
-        // Just refresh ScrollTrigger on mount to ensure proper positioning
-        ScrollTrigger.refresh();
+        // Small delay to ensure DOM is ready before refreshing ScrollTrigger
+        const timeoutId = setTimeout(() => {
+            ScrollTrigger.refresh(true);
+        }, 100);
 
         return () => {
-            // Clean up any ScrollTriggers when unmounting
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            clearTimeout(timeoutId);
+            // Additional cleanup on full unmount
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
+            gsap.killTweensOf("*");
         };
-    }, []);
+    }, [location.pathname]);
 
-    // Render children directly without any wrapper
     return <>{children}</>;
 };
 

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
 
-import Threads from "./Threads"
 import AnimatedBeams from "../components/AnimatedBeams"
 import TextScramble from "../components/TextScramble"
 
@@ -48,12 +47,13 @@ const HeroSection = () => {
         {/* Diagonal depth layer */}
         <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(99,102,241,0.06),transparent_40%,rgba(168,85,247,0.05))]" />
 
-        {/* Threads animation */}
-        <Threads
-          amplitude={0.9}
-          distance={0.45}
-          enableMouseInteraction={false}
-        />
+        {/* Animated gradient lines (CSS-based replacement for Threads) */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent top-[20%] animate-pulse" />
+          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent top-[40%] animate-pulse" style={{ animationDelay: '0.5s' }} />
+          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent top-[60%] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent top-[80%] animate-pulse" style={{ animationDelay: '1.5s' }} />
+        </div>
       </div>
 
       {/* ================= AMBIENT GLOWS ================= */}

@@ -12,11 +12,13 @@ const StatCard = ({ number, suffix = '', label, delay }) => {
         const card = cardRef.current;
         const countElement = countRef.current;
 
+        if (!card || !countElement) return;
+
         // Initial state
         gsap.set(card, { y: 50, opacity: 0 });
 
         // ScrollTrigger Animation
-        ScrollTrigger.create({
+        const trigger = ScrollTrigger.create({
             trigger: card,
             start: "top 85%",
             onEnter: () => {
@@ -45,6 +47,12 @@ const StatCard = ({ number, suffix = '', label, delay }) => {
             once: true
         });
 
+        // Cleanup on unmount
+        return () => {
+            trigger.kill();
+            gsap.killTweensOf(card);
+            gsap.killTweensOf(countElement);
+        };
     }, [number, delay]);
 
     return (
@@ -114,7 +122,7 @@ const StatsSection = () => {
                     ease: "none",
                     scrollTrigger: {
                         trigger: scroller,
-                        pin: true,
+                        // pin: true, // DISABLED: Causes NotFoundError with React unmounting
                         scrub: 1,
                         start: "center center", // Start when section is centered
                         end: () => `+=${totalWidth * 3}`, // Tripling the distance slows down the scroll

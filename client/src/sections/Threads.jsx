@@ -127,13 +127,19 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
+    let isMounted = true;
+    let glCanvas = null;
 
     const renderer = new Renderer({ alpha: true });
     const gl = renderer.gl;
+    glCanvas = gl.canvas;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    container.appendChild(gl.canvas);
+
+    if (isMounted && container) {
+      container.appendChild(glCanvas);
+    }
 
     const geometry = new Triangle(gl);
     const program = new Program(gl, {
@@ -142,7 +148,7 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
       uniforms: {
         iTime: { value: 0 },
         iResolution: {
-          value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
+          value: new Color(glCanvas.width, glCanvas.height, glCanvas.width / glCanvas.height)
         },
         uColor: { value: new Color(...color) },
         uAmplitude: { value: amplitude },
@@ -154,6 +160,7 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
     const mesh = new Mesh(gl, { geometry, program });
 
     function resize() {
+      if (!isMounted || !container) return;
       const { clientWidth, clientHeight } = container;
       renderer.setSize(clientWidth, clientHeight);
       program.uniforms.iResolution.value.r = clientWidth;
@@ -167,6 +174,7 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
     let targetMouse = [0.5, 0.5];
 
     function handleMouseMove(e) {
+      if (!isMounted) return;
       const rect = container.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
       const y = 1.0 - (e.clientY - rect.top) / rect.height;
@@ -181,6 +189,8 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
     }
 
     function update(t) {
+      if (!isMounted) return;
+
       if (enableMouseInteraction) {
         const smoothing = 0.05;
         currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0]);
@@ -199,26 +209,20 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
     animationFrameId.current = requestAnimationFrame(update);
 
     return () => {
-      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+      isMounted = false;
+
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      }
+
       window.removeEventListener('resize', resize);
 
-      if (enableMouseInteraction) {
+      if (enableMouseInteraction && container) {
         container.removeEventListener('mousemove', handleMouseMove);
         container.removeEventListener('mouseleave', handleMouseLeave);
       }
 
-      // CRITICAL FIX: Check if canvas exists and container is still in DOM before removing
-      // React may have already removed the container, causing "NotFoundError: removeChild"
-      try {
-        if (gl.canvas && gl.canvas.parentNode === container) {
-          container.removeChild(gl.canvas);
-        }
-      } catch (e) {
-        // Silently handle if canvas was already removed by React
-        console.debug('Canvas cleanup:', e.message);
-      }
-
-      // Clean up WebGL context
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [color, amplitude, distance, enableMouseInteraction]);

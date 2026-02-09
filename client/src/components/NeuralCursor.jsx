@@ -69,7 +69,9 @@ const NeuralCursor = () => {
             delayedMouse.current.x += (x - delayedMouse.current.x) * 0.15;
             delayedMouse.current.y += (y - delayedMouse.current.y) * 0.15;
 
-            gsap.set(cursorRef.current, { x: mouse.current.x, y: mouse.current.y });
+            if (cursorRef.current) {
+                gsap.set(cursorRef.current, { x: mouse.current.x, y: mouse.current.y });
+            }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
