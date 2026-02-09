@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, memo } from 'react';
+import { useTheme as useAppTheme } from '../context/ThemeContext';
 import {
     Box,
     Container,
@@ -16,14 +17,15 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    Divider,
     Stack,
-    useTheme,
+    useTheme as useMuiTheme,
     useMediaQuery,
     alpha,
     Fade,
-    Zoom,
-    Grow
+    Grow,
+    createTheme,
+    ThemeProvider,
+    CssBaseline
 } from '@mui/material';
 import {
     ExpandMore as ExpandMoreIcon,
@@ -49,30 +51,360 @@ import {
     KeyboardArrowRight as KeyboardArrowRightIcon
 } from '@mui/icons-material';
 import { keyframes } from '@emotion/react';
+import InView from '../components/InView';
 
 // Minimal animations
 const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
-const gradientFlow = keyframes`
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-`;
+const ServiceCard = memo(({ service, index, theme }) => (
+    <InView threshold={0.1} triggerOnce={true} placeholderHeight="300px">
+        <Grow in={true} timeout={500}>
+            <Card sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: 4,
+                border: '1px solid',
+                borderColor: alpha(theme.palette.divider, 0.1),
+                background: alpha(theme.palette.background.paper, 0.4),
+                backdropFilter: 'blur(20px)',
+                transition: 'all 0.4s ease',
+                position: 'relative',
+                overflow: 'visible',
+                '&:hover': {
+                    transform: 'translateY(-8px)',
+                    borderColor: theme.palette.primary.main,
+                    boxShadow: `0 12px 30px -10px ${alpha(theme.palette.primary.main, 0.15)}`,
+                    '& .icon-box': {
+                        transform: 'scale(1.1) rotate(5deg)',
+                        background: theme.palette.primary.main,
+                        color: 'white',
+                        boxShadow: `0 8px 20px -6px ${alpha(theme.palette.primary.main, 0.4)}`
+                    }
+                }
+            }}>
+                <CardContent sx={{ flexGrow: 1, p: 4 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
+                        <Box className="icon-box" sx={{
+                            width: 64,
+                            height: 64,
+                            borderRadius: 3,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: alpha(theme.palette.primary.main, 0.08),
+                            color: theme.palette.primary.main,
+                            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                        }}>
+                            {React.cloneElement(service.icon, { sx: { fontSize: 32 } })}
+                        </Box>
+                        <Chip
+                            label="Premium"
+                            size="small"
+                            sx={{
+                                height: 24,
+                                background: alpha(theme.palette.primary.main, 0.05),
+                                color: theme.palette.primary.main,
+                                fontWeight: 700,
+                                fontSize: '0.7rem',
+                                borderRadius: 1
+                            }}
+                        />
+                    </Box>
 
-const ServicesPage = () => {
-    const theme = useTheme();
+                    <Typography variant="h5" sx={{
+                        fontWeight: 800,
+                        mb: 2,
+                        fontSize: '1.4rem',
+                        background: theme.palette.mode === 'dark'
+                            ? 'linear-gradient(to right, #fff, #ccc)'
+                            : 'linear-gradient(to right, #1a1a1a, #4a4a4a)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent'
+                    }}>
+                        {service.title}
+                    </Typography>
+
+                    <Typography variant="body2" sx={{
+                        mb: 3,
+                        color: 'text.secondary',
+                        lineHeight: 1.7,
+                        minHeight: '4.8em',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                    }}>
+                        {service.overview}
+                    </Typography>
+
+                    <Box sx={{
+                        pt: 3,
+                        borderTop: '1px dashed',
+                        borderColor: alpha(theme.palette.divider, 0.1)
+                    }}>
+                        {service.features.slice(0, 3).map((feature, idx) => (
+                            <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                                <Box sx={{
+                                    width: 6,
+                                    height: 6,
+                                    borderRadius: '50%',
+                                    background: theme.palette.primary.main,
+                                    mr: 2,
+                                    opacity: 0.7
+                                }} />
+                                <Typography variant="caption" sx={{
+                                    color: 'text.primary',
+                                    fontWeight: 600,
+                                    fontSize: '0.85rem'
+                                }}>
+                                    {feature}
+                                </Typography>
+                            </Box>
+                        ))}
+                    </Box>
+                </CardContent>
+
+                <CardActions sx={{ p: 4, pt: 0, mt: 'auto' }}>
+                    <Button
+                        endIcon={<KeyboardArrowRightIcon />}
+                        href={`#service-${service.id}`}
+                        sx={{
+                            color: 'text.primary',
+                            fontWeight: 700,
+                            p: 0,
+                            '&:hover': {
+                                background: 'transparent',
+                                gap: 2,
+                                color: theme.palette.primary.main
+                            },
+                            gap: 1,
+                            transition: 'all 0.3s ease'
+                        }}
+                    >
+                        Explore Details
+                    </Button>
+                </CardActions>
+            </Card>
+        </Grow>
+    </InView>
+));
+
+const ServiceDetail = memo(({ service, expanded, onChange, theme }) => (
+    <InView threshold={0.1} triggerOnce={true} placeholderHeight="80px">
+        <Accordion
+            id={`service-${service.id}`}
+            expanded={expanded}
+            onChange={onChange}
+            transitionProps={{ unmountOnExit: true }}
+            sx={{
+                mb: 3,
+                borderRadius: '24px !important',
+                overflow: 'hidden',
+                background: theme.palette.background.paper,
+                boxShadow: expanded
+                    ? `0 20px 40px -4px ${alpha(theme.palette.common.black, 0.1)}`
+                    : 'none',
+                border: '1px solid',
+                borderColor: expanded ? theme.palette.primary.main : alpha(theme.palette.divider, 0.1),
+                '&:before': { display: 'none' },
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+        >
+            <AccordionSummary
+                expandIcon={<Box sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    border: '1px solid',
+                    borderColor: alpha(theme.palette.divider, 0.1),
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: expanded ? 'white' : 'text.secondary',
+                    background: expanded ? theme.palette.primary.main : 'transparent',
+                    transition: 'all 0.3s ease'
+                }}>
+                    <ExpandMoreIcon />
+                </Box>}
+                sx={{
+                    px: 4,
+                    py: 2,
+                    '& .MuiAccordionSummary-content': { alignItems: 'center' },
+                    '&:hover': { background: alpha(theme.palette.background.default, 0.5) }
+                }}
+            >
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 3 }}>
+                    <Box sx={{
+                        width: 50,
+                        height: 50,
+                        borderRadius: '14px',
+                        background: alpha(theme.palette.primary.main, 0.08),
+                        color: theme.palette.primary.main,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                        {React.cloneElement(service.icon, { sx: { fontSize: 24 } })}
+                    </Box>
+
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 800, fontSize: '1.2rem' }}>
+                            {service.title}
+                        </Typography>
+                        {!expanded && (
+                            <Typography variant="body2" sx={{
+                                color: 'text.secondary',
+                                mt: 0.5,
+                                display: { xs: 'none', sm: 'block' },
+                                opacity: 0.8
+                            }}>
+                                {service.tagline}
+                            </Typography>
+                        )}
+                    </Box>
+                </Box>
+            </AccordionSummary>
+
+            <AccordionDetails sx={{ p: 0 }}>
+                <Box sx={{
+                    p: 6,
+                    background: alpha(theme.palette.background.default, 0.3),
+                    borderTop: '1px solid',
+                    borderColor: alpha(theme.palette.divider, 0.05)
+                }}>
+                    <Grid container spacing={8}>
+                        <Grid item xs={12} md={5}>
+                            <Typography variant="overline" sx={{
+                                color: theme.palette.primary.main,
+                                fontWeight: 800,
+                                letterSpacing: 2,
+                                display: 'block',
+                                mb: 2
+                            }}>
+                                OVERVIEW
+                            </Typography>
+                            <Typography variant="h4" sx={{
+                                mb: 3,
+                                fontWeight: 800,
+                                lineHeight: 1.2
+                            }}>
+                                {service.tagline}
+                            </Typography>
+                            <Typography variant="body1" sx={{
+                                color: 'text.secondary',
+                                lineHeight: 1.8,
+                                mb: 5,
+                                fontSize: '1.1rem'
+                            }}>
+                                {service.overview}
+                            </Typography>
+
+                            <Button
+                                variant="contained"
+                                size="large"
+                                endIcon={<RocketLaunchIcon />}
+                                sx={{
+                                    borderRadius: '50px',
+                                    background: theme.palette.primary.main,
+                                    fontWeight: 700,
+                                    px: 5,
+                                    py: 1.8,
+                                    color: 'white',
+                                    boxShadow: `0 8px 20px -4px ${alpha(theme.palette.primary.main, 0.4)}`,
+                                    '&:hover': {
+                                        background: theme.palette.primary.dark,
+                                        transform: 'translateY(-2px)',
+                                        boxShadow: `0 12px 24px -4px ${alpha(theme.palette.primary.main, 0.5)}`,
+                                    }
+                                }}
+                            >
+                                Start with {service.title}
+                            </Button>
+                        </Grid>
+
+                        <Grid item xs={12} md={7}>
+                            <Grid container spacing={6}>
+                                <Grid item xs={12} sm={6}>
+                                    <Box sx={{ mb: 4 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                            <Box sx={{ p: 0.8, borderRadius: 1, background: alpha(theme.palette.primary.main, 0.1), color: theme.palette.primary.main }}>
+                                                <AutoAwesomeIcon sx={{ fontSize: 18 }} />
+                                            </Box>
+                                            Key Features
+                                        </Typography>
+                                        <Stack spacing={2}>
+                                            {service.features.map((feature, idx) => (
+                                                <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                                                    <CheckCircleIcon sx={{ fontSize: 20, color: theme.palette.primary.main, mr: 1.5, opacity: 0.8 }} />
+                                                    <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                                                        {feature}
+                                                    </Typography>
+                                                </Box>
+                                            ))}
+                                        </Stack>
+                                    </Box>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <Box sx={{ mb: 4 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                            <Box sx={{ p: 0.8, borderRadius: 1, background: alpha(theme.palette.warning.main, 0.1), color: theme.palette.warning.main }}>
+                                                <TrendingUpIcon sx={{ fontSize: 18 }} />
+                                            </Box>
+                                            Benefits
+                                        </Typography>
+                                        {service.benefits && (
+                                            <Stack spacing={2}>
+                                                {service.benefits.slice(0, 5).map((benefit, idx) => (
+                                                    <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                                                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', background: theme.palette.warning.main, mt: 1, mr: 2, flexShrink: 0 }} />
+                                                        <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                                                            {benefit}
+                                                        </Typography>
+                                                    </Box>
+                                                ))}
+                                            </Stack>
+                                        )}
+                                    </Box>
+                                </Grid>
+                            </Grid>
+
+                            {service.platforms && (
+                                <Box sx={{ mt: 2, p: 3, borderRadius: 3, background: alpha(theme.palette.background.paper, 0.5), border: '1px solid', borderColor: alpha(theme.palette.divider, 0.1) }}>
+                                    <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 2, color: 'text.secondary', letterSpacing: 1 }}>
+                                        TECHNOLOGIES
+                                    </Typography>
+                                    <Stack direction="row" flexWrap="wrap" gap={1}>
+                                        {service.platforms.map((platform, idx) => (
+                                            <Chip
+                                                key={idx}
+                                                label={platform}
+                                                size="small"
+                                                variant="outlined"
+                                                sx={{
+                                                    borderColor: alpha(theme.palette.divider, 0.2),
+                                                    fontWeight: 600,
+                                                    background: 'transparent'
+                                                }}
+                                            />
+                                        ))}
+                                    </Stack>
+                                </Box>
+                            )}
+                        </Grid>
+                    </Grid>
+                </Box>
+            </AccordionDetails>
+        </Accordion>
+    </InView>
+));
+
+const ServicesContent = () => {
+    const theme = useMuiTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [expandedService, setExpandedService] = useState(null);
     const [loaded, setLoaded] = useState(false);
@@ -87,7 +419,7 @@ const ServicesPage = () => {
             title: "AI Marketing Solutions (LLM Growth)",
             icon: <AutoAwesomeIcon />,
             tagline: "Smart Growth Starts With Intelligent AI Systems",
-            color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+
             overview: "Traditional marketing relies on guesswork. We rely on intelligence.",
             features: [
                 "Predict Customer Behavior",
@@ -116,7 +448,7 @@ const ServicesPage = () => {
             title: "Performance Marketing",
             icon: <RocketLaunchIcon />,
             tagline: "AI-Powered Advertising That Delivers Real ROI",
-            color: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+
             overview: "Smarter Ads. Faster Growth. Better Results.",
             platforms: ["Google Ads", "Meta Ads (Facebook & Instagram)", "LinkedIn Ads", "YouTube Ads"],
             features: [
@@ -131,7 +463,7 @@ const ServicesPage = () => {
             title: "SEO & Growth Strategy",
             icon: <TrendingUpIcon />,
             tagline: "AI-Driven SEO That Fuels Long-Term Growth",
-            color: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+
             overview: "Build Visibility. Drive Traffic. Scale Growth.",
             features: [
                 "AI-Powered Keyword Research",
@@ -145,7 +477,7 @@ const ServicesPage = () => {
             title: "Podcast & Social Media Marketing",
             icon: <CampaignIcon />,
             tagline: "Build Authority. Earn Attention. Create Trust at Scale.",
-            color: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+
             overview: "Attention Is Currency — We Help You Earn It",
             features: [
                 "Podcast Strategy & Positioning",
@@ -159,7 +491,7 @@ const ServicesPage = () => {
             title: "GMB with AI Model",
             icon: <StoreIcon />,
             tagline: "Dominate Local Search with AI-Powered Visibility",
-            color: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+
             overview: "Local Businesses Need Visibility Where Buyers Search",
             features: [
                 "Complete GMB Optimization",
@@ -173,7 +505,7 @@ const ServicesPage = () => {
             title: "Funnel & Automation Systems",
             icon: <BoltIcon />,
             tagline: "Turn Traffic Into Revenue — Automatically",
-            color: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
+
             overview: "Traffic Without a Funnel Is Wasted Money",
             features: [
                 "High-Converting Lead Funnels",
@@ -187,7 +519,7 @@ const ServicesPage = () => {
             title: "Branding, Creative & Design",
             icon: <StarIcon />,
             tagline: "Design That Builds Recall. Creativity That Drives Growth.",
-            color: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+
             overview: "Growth Needs a Strong Brand Foundation",
             features: [
                 "Brand Positioning & Messaging",
@@ -201,7 +533,7 @@ const ServicesPage = () => {
             title: "Web, App & UX/UI Development",
             icon: <SmartphoneIcon />,
             tagline: "Your Digital Salesperson — Built to Convert",
-            color: "linear-gradient(135deg, #5ee7df 0%, #b490ca 100%)",
+
             overview: "Your Website or App Is Your Digital Salesperson",
             features: [
                 "High-Conversion Websites",
@@ -215,7 +547,7 @@ const ServicesPage = () => {
             title: "Content Creation & Writing",
             icon: <EmailIcon />,
             tagline: "Words Sell. Stories Convert. Strategy Scales.",
-            color: "linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)",
+
             overview: "Content Is the Voice of Your Brand",
             features: [
                 "Website Copy & Landing Pages",
@@ -229,7 +561,7 @@ const ServicesPage = () => {
             title: "Sales-Aligned Marketing Systems",
             icon: <GroupsIcon />,
             tagline: "Where Marketing Meets Sales — and Revenue Follows",
-            color: "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)",
+
             overview: "Marketing Without Sales Alignment Fails",
             features: [
                 "Email Marketing Systems",
@@ -243,7 +575,7 @@ const ServicesPage = () => {
             title: "Social Media Marketing",
             icon: <CampaignIcon />,
             tagline: "Community-Led. Conversion-Focused. Trust-Driven.",
-            color: "linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%)",
+
             overview: "Attention Is Currency — and We Help You Earn It",
             features: [
                 "Community-Focused Content Creation",
@@ -257,7 +589,7 @@ const ServicesPage = () => {
             title: "Email Marketing",
             icon: <EmailIcon />,
             tagline: "Turn Inboxes Into Conversations — and Conversations Into Revenue",
-            color: "linear-gradient(135deg, #A8E6CF 0%, #DCEDC1 100%)",
+
             overview: "Email Is Still One of the Highest-ROI Channels",
             features: [
                 "Email Strategy & Planning",
@@ -271,7 +603,7 @@ const ServicesPage = () => {
             title: "E-commerce Marketing",
             icon: <ShoppingCartIcon />,
             tagline: "Turn Browsers Into Buyers — and Buyers Into Repeat Customers",
-            color: "linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%)",
+
             overview: "E-commerce Growth Is Not About Traffic — It's About Systems",
             features: [
                 "Performance-Driven Campaigns",
@@ -285,7 +617,7 @@ const ServicesPage = () => {
             title: "WhatsApp Bulk Marketing",
             icon: <ChatIcon />,
             tagline: "Direct. Personal. High-Conversion Messaging at Scale.",
-            color: "linear-gradient(135deg, #43CBFF 0%, #9708CC 100%)",
+
             overview: "WhatsApp Is Where Conversations Convert",
             features: [
                 "Bulk WhatsApp Campaigns",
@@ -299,7 +631,7 @@ const ServicesPage = () => {
             title: "Brand Collaboration",
             icon: <HandshakeIcon />,
             tagline: "Grow Faster by Growing Together",
-            color: "linear-gradient(135deg, #FFD89B 0%, #19547B 100%)",
+
             overview: "Growth Multiplies When the Right Brands Align",
             features: [
                 "Strategic Brand Partnerships",
@@ -313,7 +645,7 @@ const ServicesPage = () => {
             title: "Influencer Marketing",
             icon: <PersonIcon />,
             tagline: "Leverage Trust. Amplify Reach. Drive Real Conversions.",
-            color: "linear-gradient(135deg, #FDEB71 0%, #F8D800 100%)",
+            color: "#eab308", // Yellow
             overview: "Influence Works When Trust Leads the Message",
             features: [
                 "Influencer Discovery & Vetting",
@@ -327,7 +659,7 @@ const ServicesPage = () => {
             title: "App Marketing",
             icon: <AppShortcutIcon />,
             tagline: "Drive Installs. Activate Users. Scale Retention.",
-            color: "linear-gradient(135deg, #96E6A1 0%, #D4FC79 100%)",
+            color: "#84cc16", // Lime
             overview: "An App Without Users Is Just Code",
             features: [
                 "App User Acquisition",
@@ -341,7 +673,7 @@ const ServicesPage = () => {
             title: "Go-To-Market Strategies",
             icon: <FlagIcon />,
             tagline: "Launch Smarter. Enter Faster. Scale Confidently.",
-            color: "linear-gradient(135deg, #FF7E5F 0%, #FEB47B 100%)",
+            color: "#f97316", // Orange
             overview: "A Great Product Fails Without the Right Market Strategy",
             features: [
                 "Market & Customer Research",
@@ -355,7 +687,7 @@ const ServicesPage = () => {
             title: "Site Optimization",
             icon: <TuneIcon />,
             tagline: "Turn Your Website Into a High-Performance Growth Engine",
-            color: "linear-gradient(135deg, #74EBD5 0%, #9FACE6 100%)",
+            color: "#2dd4bf", // Teal
             overview: "A Slow, Confusing Website Kills Growth",
             features: [
                 "Website Speed Optimization",
@@ -369,7 +701,7 @@ const ServicesPage = () => {
             title: "Product Branding",
             icon: <CategoryIcon />,
             tagline: "Turn Your Product Into a Recognizable, Trust-Built Brand",
-            color: "linear-gradient(135deg, #D8B5FF 0%, #1EAE98 100%)",
+            color: "#a855f7", // Purple
             overview: "Great Products Don't Sell Themselves — Brands Do",
             features: [
                 "Product Positioning & Strategy",
@@ -384,249 +716,10 @@ const ServicesPage = () => {
         setExpandedService(expandedService === serviceId ? null : serviceId);
     };
 
-    const ServiceCard = ({ service, index }) => (
-        <Grow in={loaded} timeout={index * 100}>
-            <Card sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                borderRadius: 2,
-                border: '1px solid',
-                borderColor: alpha(theme.palette.primary.main, 0.1),
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: theme.shadows[8],
-                    borderColor: alpha(theme.palette.primary.main, 0.3),
-                }
-            }}>
-                <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                    <Box sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        mb: 2
-                    }}>
-                        <Box sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: 48,
-                            height: 48,
-                            borderRadius: '12px',
-                            background: service.color,
-                            mr: 2,
-                            color: 'white'
-                        }}>
-                            {service.icon}
-                        </Box>
-                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                            {service.title}
-                        </Typography>
-                    </Box>
-
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
-                        {service.tagline}
-                    </Typography>
-
-                    <Typography variant="body2" sx={{ mb: 2 }}>
-                        {service.overview}
-                    </Typography>
-
-                    <List dense sx={{ mt: 2 }}>
-                        {service.features.slice(0, 3).map((feature, idx) => (
-                            <ListItem key={idx} sx={{ px: 0, py: 0.5 }}>
-                                <ListItemIcon sx={{ minWidth: 32 }}>
-                                    <KeyboardArrowRightIcon sx={{ color: 'primary.main', fontSize: 16 }} />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={feature}
-                                    primaryTypographyProps={{ variant: 'body2' }}
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-                </CardContent>
-                <CardActions sx={{ p: 2, pt: 0 }}>
-                    <Button
-                        size="small"
-                        onClick={() => handleServiceExpand(service.id)}
-                        sx={{ fontWeight: 600 }}
-                    >
-                        Learn More
-                    </Button>
-                </CardActions>
-            </Card>
-        </Grow>
-    );
-
-    const ServiceDetail = ({ service }) => (
-        <Accordion
-            expanded={expandedService === service.id}
-            onChange={() => handleServiceExpand(service.id)}
-            sx={{
-                background: 'transparent',
-                mb: 2,
-                '&:before': { display: 'none' },
-                borderRadius: '8px !important',
-                overflow: 'hidden',
-                border: '1px solid',
-                borderColor: alpha(theme.palette.divider, 0.1),
-            }}
-        >
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                sx={{
-                    background: alpha(theme.palette.background.paper, 0.8),
-                    py: 2,
-                    '&.Mui-expanded': {
-                        minHeight: '64px',
-                    }
-                }}
-            >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        borderRadius: '10px',
-                        background: service.color,
-                        color: 'white'
-                    }}>
-                        {service.icon}
-                    </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                        {service.title}
-                    </Typography>
-                </Box>
-            </AccordionSummary>
-            <AccordionDetails sx={{
-                background: alpha(theme.palette.background.default, 0.5),
-                pt: 3
-            }}>
-                <Box sx={{ mb: 4 }}>
-                    <Typography variant="h5" sx={{
-                        mb: 2,
-                        fontWeight: 700,
-                        background: service.color,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text'
-                    }}>
-                        {service.tagline}
-                    </Typography>
-
-                    <Typography variant="body1" sx={{ mb: 3, color: 'text.secondary' }}>
-                        {service.overview}
-                    </Typography>
-                </Box>
-
-                <Grid container spacing={4}>
-                    <Grid item xs={12} md={6}>
-                        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                            What We Offer
-                        </Typography>
-                        <List>
-                            {service.features.map((feature, idx) => (
-                                <ListItem key={idx} sx={{ px: 0 }}>
-                                    <ListItemIcon sx={{ minWidth: 36 }}>
-                                        <CheckCircleIcon sx={{ color: 'success.main' }} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={feature} />
-                                </ListItem>
-                            ))}
-                        </List>
-
-                        {service.platforms && (
-                            <Box sx={{ mt: 3 }}>
-                                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                                    Platforms We Specialize In
-                                </Typography>
-                                <Stack direction="row" spacing={1} flexWrap="wrap">
-                                    {service.platforms.map((platform, idx) => (
-                                        <Chip
-                                            key={idx}
-                                            label={platform}
-                                            size="small"
-                                            sx={{ mb: 1, mr: 1 }}
-                                        />
-                                    ))}
-                                </Stack>
-                            </Box>
-                        )}
-                    </Grid>
-
-                    <Grid item xs={12} md={6}>
-                        {service.benefits && (
-                            <>
-                                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                                    Benefits You Get
-                                </Typography>
-                                <List>
-                                    {service.benefits.map((benefit, idx) => (
-                                        <ListItem key={idx} sx={{ px: 0 }}>
-                                            <ListItemIcon sx={{ minWidth: 36 }}>
-                                                <StarIcon sx={{ color: 'warning.main' }} />
-                                            </ListItemIcon>
-                                            <ListItemText primary={benefit} />
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </>
-                        )}
-
-                        {service.idealFor && (
-                            <Box sx={{ mt: 3 }}>
-                                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                                    Who This Service Is Best For
-                                </Typography>
-                                <Stack direction="row" spacing={1} flexWrap="wrap">
-                                    {service.idealFor.map((item, idx) => (
-                                        <Chip
-                                            key={idx}
-                                            label={item}
-                                            variant="outlined"
-                                            size="small"
-                                            sx={{ mb: 1, mr: 1 }}
-                                        />
-                                    ))}
-                                </Stack>
-                            </Box>
-                        )}
-                    </Grid>
-                </Grid>
-
-                <Box sx={{ mt: 4, textAlign: 'center' }}>
-                    <Button
-                        variant="contained"
-                        size="large"
-                        sx={{
-                            px: 4,
-                            py: 1.5,
-                            borderRadius: 2,
-                            background: service.color,
-                            fontWeight: 700,
-                            '&:hover': {
-                                transform: 'translateY(-2px)',
-                                boxShadow: theme.shadows[6]
-                            }
-                        }}
-                    >
-                        Start with {service.title.split(' ')[0]}
-                    </Button>
-                </Box>
-            </AccordionDetails>
-        </Accordion>
-    );
-
     return (
         <Box sx={{
             minHeight: '100vh',
-            background: `linear-gradient(135deg, 
-                ${alpha(theme.palette.background.default, 1)} 0%, 
-                ${alpha(theme.palette.background.paper, 0.8)} 100%
-            )`,
+            background: theme.palette.mode === 'dark' ? '#111827' : '#ffffff',
             position: 'relative',
             overflow: 'hidden',
             '&::before': {
@@ -636,13 +729,13 @@ const ServicesPage = () => {
                 left: 0,
                 right: 0,
                 height: '400px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: theme.palette.primary.main,
                 opacity: 0.05,
                 transform: 'skewY(-6deg)',
                 transformOrigin: 'top left'
             }
         }}>
-            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, py: 4 }}>
                 {/* Hero Section */}
                 <Box sx={{ py: 8, textAlign: 'center' }}>
                     <Fade in={loaded} timeout={500}>
@@ -652,10 +745,8 @@ const ServicesPage = () => {
                                 fontWeight: 900,
                                 mb: 3,
                                 fontSize: { xs: '2.5rem', md: '3.5rem' },
-                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                backgroundClip: 'text',
+                                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                                color: theme.palette.text.primary,
                                 animation: `${fadeInUp} 0.8s ease-out`
                             }}
                         >
@@ -705,10 +796,8 @@ const ServicesPage = () => {
                         sx={{
                             mb: 6,
                             fontWeight: 800,
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
+                            fontWeight: 800,
+                            color: theme.palette.text.primary
                         }}
                     >
                         Our Core Philosophy
@@ -756,7 +845,9 @@ const ServicesPage = () => {
                                             display: 'inline-flex',
                                             p: 2,
                                             borderRadius: '50%',
-                                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                            p: 2,
+                                            borderRadius: '50%',
+                                            background: theme.palette.primary.main,
                                             color: 'white',
                                             mb: 2
                                         }}>
@@ -783,10 +874,8 @@ const ServicesPage = () => {
                         sx={{
                             mb: 6,
                             fontWeight: 800,
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
+                            fontWeight: 800,
+                            color: theme.palette.text.primary
                         }}
                     >
                         Our Services
@@ -798,71 +887,57 @@ const ServicesPage = () => {
                         sx={{
                             mb: 6,
                             color: 'text.secondary',
-                            maxWidth: 900,
+                            maxWidth: 800,
                             mx: 'auto'
                         }}
                     >
-                        Whether your goal is leads, sales, brand authority, or scaling, we design the system around your business — not templates.
+                        Explore our comprehensive suite of growth solutions.
                     </Typography>
 
-                    <Grid container spacing={3}>
+                    <Grid container spacing={4}>
                         {services.map((service, index) => (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={service.id}>
-                                <ServiceCard service={service} index={index} />
+                            <Grid item xs={12} sm={6} md={4} key={service.id}>
+                                <ServiceCard service={service} index={index} theme={theme} />
                             </Grid>
                         ))}
                     </Grid>
                 </Box>
 
-                {/* Detailed Service Breakdown */}
+                {/* Service Details Accordions */}
                 <Box sx={{ py: 6 }}>
                     <Typography
-                        variant="h3"
+                        variant="h4"
                         align="center"
                         sx={{
-                            mb: 6,
-                            fontWeight: 800,
-                            background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
+                            mb: 4,
+                            fontWeight: 700
                         }}
                     >
-                        Detailed Service Breakdown
+                        Service Details
                     </Typography>
-
                     {services.map((service) => (
-                        <ServiceDetail key={service.id} service={service} />
+                        <ServiceDetail
+                            key={service.id}
+                            service={service}
+                            expanded={expandedService === service.id}
+                            onChange={() => handleServiceExpand(service.id)}
+                            theme={theme}
+                        />
                     ))}
                 </Box>
 
-                {/* CTA Section */}
-                <Box sx={{ py: 8, textAlign: 'center' }}>
-                    <Fade in={loaded} timeout={500}>
-                        <Typography
-                            variant="h3"
-                            sx={{
-                                mb: 4,
-                                fontWeight: 800,
-                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                backgroundClip: 'text'
-                            }}
-                        >
-                            Ready to Scale Your Business?
-                        </Typography>
-                    </Fade>
-
-                    <Fade in={loaded} timeout={800}>
+                { }
+                <Box sx={{ py: 10, textAlign: 'center' }}>
+                    <Fade in={loaded} timeout={1200}>
                         <Button
                             variant="contained"
                             size="large"
+                            href="/contact"
                             sx={{
                                 px: 6,
                                 py: 2,
                                 borderRadius: 2,
-                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                background: theme.palette.primary.main,
                                 fontSize: '1.1rem',
                                 fontWeight: 700,
                                 '&:hover': {
@@ -877,6 +952,46 @@ const ServicesPage = () => {
                 </Box>
             </Container>
         </Box>
+    );
+};
+
+const ServicesPage = () => {
+    const { theme: appTheme } = useAppTheme();
+
+    const muiTheme = useMemo(() => createTheme({
+        palette: {
+            mode: appTheme || 'light',
+            primary: {
+                main: '#667eea',
+            },
+            background: {
+                default: appTheme === 'dark' ? '#111827' : '#ffffff',
+                paper: appTheme === 'dark' ? '#1f2937' : '#ffffff',
+            },
+            text: {
+                primary: appTheme === 'dark' ? '#ffffff' : '#111827',
+                secondary: appTheme === 'dark' ? '#9ca3af' : '#4b5563',
+            },
+        },
+        typography: {
+            fontFamily: '"Geist Sans", "Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+        },
+        components: {
+            MuiButton: {
+                styleOverrides: {
+                    root: {
+                        textTransform: 'none',
+                    }
+                }
+            }
+        }
+    }), [appTheme]);
+
+    return (
+        <ThemeProvider theme={muiTheme}>
+            <CssBaseline />
+            <ServicesContent />
+        </ThemeProvider>
     );
 };
 

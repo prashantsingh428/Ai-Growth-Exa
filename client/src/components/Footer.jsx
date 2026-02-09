@@ -59,15 +59,24 @@ const Footer = () => {
                         <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-blue-500"></span>
                     </h3>
                     <ul className="space-y-2">
-                        {["About Us", "Our Services", "Blog", "Careers", "About the Founder", "Industries We Serve", "Case Studies", "Contact Us"].map((item) => (
-                            <li key={item}>
+                        {[
+                            { name: "About Us", path: "/about" },
+                            { name: "Our Services", path: "/services" },
+                            { name: "Blog", path: "/blog" },
+                            { name: "Careers", path: "/careers" },
+                            { name: "About the Founder", path: "/about" }, // Linking to about for now
+                            { name: "Industries We Serve", path: "/services" },
+                            { name: "Case Studies", path: "/blog" },
+                            { name: "Contact Us", path: "/contact" }
+                        ].map((item) => (
+                            <li key={item.name}>
                                 <a
-                                    href="#"
+                                    href={item.path}
                                     className="block transition-colors duration-300 text-gray-400"
                                     onMouseEnter={handleLinkHover}
                                     onMouseLeave={handleLinkLeave}
                                 >
-                                    {item}
+                                    {item.name}
                                 </a>
                             </li>
                         ))}

@@ -6,6 +6,8 @@ import ScrollToTop from '../components/ScrollToTop';
 const Home = lazy(() => import('../pages/Home'));
 const Blog = lazy(() => import('../pages/Blog'));
 const Career = lazy(() => import('../pages/Career'));
+const Services = lazy(() => import('../pages/Services'));
+const About = lazy(() => import('../pages/About')); // New Import
 
 const NotFound = () => <div className="p-20 text-center">404 - Page Not Found</div>;
 
@@ -22,6 +24,8 @@ const AppRoutes = () => {
             <Suspense fallback={<PageLoader />}>
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/about" element={<About />} /> {/* New Route */}
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/careers" element={<Career />} />
                     <Route path="*" element={<NotFound />} />

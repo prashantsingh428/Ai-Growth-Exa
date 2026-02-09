@@ -41,7 +41,7 @@ const MarqueeRow = ({ items, direction = 'left', speed = 40 }) => {
     );
 };
 
-const OurClientsSection = () => {
+const OurClientsSection = ({ hideHeader = false }) => {
     const rowItems = [...clientImages, ...clientImages, ...clientImages];
 
     const [isVisible, setIsVisible] = useState(false);
@@ -121,15 +121,17 @@ const OurClientsSection = () => {
             </div>
 
             {/* Header Section */}
-            <div className="text-center mb-8 relative z-20 px-4">
-                <h2 className={`text-5xl md:text-7xl font-light text-white mb-8 tracking-wide ${isVisible ? 'fade-in-down-big' : 'opacity-0'}`}>
-                    Our <span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500">Clients</span>
-                </h2>
-                <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent mx-auto rounded-full mb-10 opacity-60"></div>
-                <p className="text-gray-300 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-light tracking-wide">
-                    Trusted by innovative companies and organizations across various industries.
-                </p>
-            </div>
+            {!hideHeader && (
+                <div className="text-center mb-8 relative z-20 px-4">
+                    <h2 className={`text-5xl md:text-7xl font-light text-white mb-8 tracking-wide ${isVisible ? 'fade-in-down-big' : 'opacity-0'}`}>
+                        Our <span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500">Clients</span>
+                    </h2>
+                    <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent mx-auto rounded-full mb-10 opacity-60"></div>
+                    <p className="text-gray-300 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-light tracking-wide">
+                        Trusted by innovative companies and organizations across various industries.
+                    </p>
+                </div>
+            )}
 
             {/* Logo Marquee */}
             <div className="relative w-full overflow-hidden space-y-12 pb-10">
