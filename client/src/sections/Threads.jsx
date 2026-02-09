@@ -206,7 +206,19 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
         container.removeEventListener('mousemove', handleMouseMove);
         container.removeEventListener('mouseleave', handleMouseLeave);
       }
-      if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
+
+      // CRITICAL FIX: Check if canvas exists and container is still in DOM before removing
+      // React may have already removed the container, causing "NotFoundError: removeChild"
+      try {
+        if (gl.canvas && gl.canvas.parentNode === container) {
+          container.removeChild(gl.canvas);
+        }
+      } catch (e) {
+        // Silently handle if canvas was already removed by React
+        console.debug('Canvas cleanup:', e.message);
+      }
+
+      // Clean up WebGL context
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [color, amplitude, distance, enableMouseInteraction]);

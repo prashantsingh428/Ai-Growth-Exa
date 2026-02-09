@@ -12,6 +12,9 @@ const HeroSection = () => {
   const introRef = useRef(null)
 
   useEffect(() => {
+    // Ensure all refs are available before animating
+    if (!titleRef.current || !textRef.current || !buttonsRef.current) return;
+
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } })
 
     tl.fromTo(

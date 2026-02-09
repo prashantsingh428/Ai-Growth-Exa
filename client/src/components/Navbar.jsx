@@ -8,6 +8,9 @@ const Navbar = () => {
     const linksRef = useRef([]);
 
     useEffect(() => {
+        // Ensure refs are available before animating
+        if (!navRef.current || !logoRef.current || linksRef.current.length === 0) return;
+
         const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
         tl.fromTo(navRef.current,

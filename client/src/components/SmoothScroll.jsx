@@ -1,32 +1,33 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+gsap.registerPlugin(ScrollTrigger);
 
 const SmoothScroll = ({ children }) => {
+    // ScrollSmoother is DISABLED to prevent DOM manipulation conflicts with React.
+    // The ScrollSmoother plugin manipulates the DOM structure, which causes
+    // "NotFoundError: Failed to execute 'removeChild'" errors when React
+    // tries to unmount components during navigation or re-renders.
+    //
+    // Native browser scrolling is smooth enough for most use cases.
+    // If smooth scrolling is required in the future, consider:
+    // 1. CSS scroll-behavior: smooth;
+    // 2. Lenis scroll library (better React compatibility)
+    // 3. Locomotive Scroll
+
     useEffect(() => {
-        const smoother = ScrollSmoother.create({
-            wrapper: '#smooth-wrapper',
-            content: '#smooth-content',
-            smooth: 1.5,
-            effects: true,
-            smoothTouch: 0.1,
-        });
+        // Just refresh ScrollTrigger on mount to ensure proper positioning
+        ScrollTrigger.refresh();
 
         return () => {
-            smoother.kill();
+            // Clean up any ScrollTriggers when unmounting
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
     }, []);
 
-    return (
-        <div id="smooth-wrapper">
-            <div id="smooth-content">
-                {children}
-            </div>
-        </div>
-    );
+    // Render children directly without any wrapper
+    return <>{children}</>;
 };
 
 export default SmoothScroll;

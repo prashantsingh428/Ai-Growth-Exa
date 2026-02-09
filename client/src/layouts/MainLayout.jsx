@@ -8,8 +8,6 @@ const MainLayout = ({ children }) => {
         <div className="min-h-screen bg-white light:bg-white dark:bg-gray-950 text-gray-900 light:text-gray-900 dark:text-white flex flex-col font-sans transition-colors duration-500">
             <Navbar />
 
-            {}      <div className="h-20"></div>
-
             <SmoothScroll>
                 <main className="flex-grow">
                     {children}

@@ -12,12 +12,16 @@
     "dependencies": {
         "@react-three/drei": "^9.122.0",
         "@react-three/fiber": "^8.18.0",
+        "axios": "^1.13.5",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "framer-motion": "^12.33.0",
         "gsap": "^3.14.2",
+        "lucide-react": "^0.563.0",
         "ogl": "^1.0.11",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-icons": "^5.5.0",
         "react-router-dom": "^6.22.3",
         "tailwind-merge": "^3.4.0",
         "tailwindcss-animate": "^1.0.7"

@@ -19,7 +19,7 @@ const AnimatedBeams = () => {
             <div className="absolute w-[600px] h-[1px] border-t border-dashed border-cyan-500/20 top-[35%] left-[10%] rotate-[20deg]"></div>
             <div className="absolute w-[500px] h-[1px] border-t border-dashed border-teal-500/20 bottom-[40%] right-[5%] -rotate-[30deg]"></div>
 
-            <style jsx>{`
+            <style>{`
                 @keyframes beam-1 {
                     0%, 100% { opacity: 0.6; transform: translateY(0) rotate(30deg); }
                     50% { opacity: 0.9; transform: translateY(-10px) rotate(30deg); }
