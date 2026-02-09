@@ -74,22 +74,32 @@ const WhyAiGrowthExaSection = () => {
         {
             icon: '',
             title: 'AI-First Approach',
-            description: 'Decisions powered by data, not assumptions.'
+            description: 'Decisions powered by data, not assumptions. We leverage machine learning and predictive analytics to optimize every campaign.'
         },
         {
-            icon: '🚀',
+            icon: '',
             title: '1600+ Projects Delivered',
-            description: 'Across multiple industries and markets.'
+            description: 'Across multiple industries and markets. From startups to Fortune 500 companies, we\'ve driven measurable growth.'
         },
         {
-            icon: '💡',
+            icon: '',
             title: 'Deep Industry Expertise',
-            description: 'We understand how different businesses grow.'
+            description: 'We understand how different businesses grow. Our team brings decades of combined experience in tech, SaaS, e-commerce, and B2B.'
         },
         {
-            icon: '📈',
+            icon: '',
             title: 'ROI-Focused Systems',
-            description: 'Every strategy is tied to revenue impact.'
+            description: 'Every strategy is tied to revenue impact. We build sustainable systems that scale with your business goals.'
+        },
+        {
+            icon: '',
+            title: 'End-to-End Automation',
+            description: 'From lead capture to conversion, we automate your entire growth funnel so you can focus on what matters most.'
+        },
+        {
+            icon: '',
+            title: 'Transparent Reporting',
+            description: 'Real-time dashboards and weekly insights. You\'ll always know exactly where your marketing dollars are going and what they\'re returning.'
         }
     ];
 
@@ -159,7 +169,7 @@ const WhyAiGrowthExaSection = () => {
                 </div>
 
                 {/* Feature Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                     {features.map((feature, index) => (
                         <FeatureCard
                             key={index}

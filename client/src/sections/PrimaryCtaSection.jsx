@@ -31,7 +31,7 @@ const PrimaryCtaSection = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030712] py-20">
+        <section ref={sectionRef} className="relative py-16 flex items-center justify-center overflow-hidden bg-[#030712]">
             {/* Dark Background Glow Effects */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/20 rounded-full blur-[150px]"></div>
@@ -44,14 +44,14 @@ const PrimaryCtaSection = () => {
 
             <div ref={contentRef} className="container mx-auto px-4 sm:px-6 max-w-5xl relative z-10 text-center">
                 {/* Motivation Line */}
-                <div className="inline-block px-4 py-2 bg-blue-900/30 rounded-full border border-blue-500/30 mb-6 md:mb-8">
+                <div className="inline-block px-4 py-2 bg-blue-900/30 rounded-full border border-blue-500/30 mb-4">
                     <span className="text-blue-400 text-xs md:text-sm font-semibold tracking-widest uppercase">
                         WHERE STRATEGY MEETS EXECUTION
                     </span>
                 </div>
 
                 {/* Main Heading */}
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-4 md:mb-6 px-2">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight mb-3 px-2">
                     <span className="text-white">Ready to </span>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Transform</span>
                     <br />
@@ -59,14 +59,14 @@ const PrimaryCtaSection = () => {
                 </h2>
 
                 {/* Description */}
-                <p className="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed max-w-3xl mx-auto mb-10 md:mb-12 px-2">
+                <p className="text-base sm:text-lg text-gray-400 leading-snug max-w-3xl mx-auto mb-8 px-2">
                     Because growth doesn't start with ads.<br />
                     It starts with <span className="text-white font-semibold">clarity, strategy, and the right system.</span>
                 </p>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center mb-12 md:mb-16 px-4">
-                    <button className="group relative w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-500/20 overflow-hidden">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center mb-8 px-4">
+                    <button className="group relative w-full sm:w-auto px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold text-base transition-all transform hover:scale-105 shadow-xl shadow-blue-500/20 overflow-hidden">
                         <span className="relative z-10 flex items-center gap-3">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -77,7 +77,7 @@ const PrimaryCtaSection = () => {
                         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                     </button>
 
-                    <button className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-transparent border-2 border-indigo-500 hover:bg-indigo-500/10 text-indigo-400 hover:text-indigo-300 rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-3">
+                    <button className="w-full sm:w-auto px-8 py-3 sm:py-4 bg-transparent border-2 border-indigo-500 hover:bg-indigo-500/10 text-indigo-400 hover:text-indigo-300 rounded-full font-bold text-base transition-all transform hover:scale-105 shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-3">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                         </svg>
@@ -86,17 +86,17 @@ const PrimaryCtaSection = () => {
                 </div>
 
                 {/* Bottom CTA Message Box */}
-                <div className="max-w-2xl mx-auto p-8 bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-2xl">
-                    <p className="text-gray-300 text-lg mb-6 leading-relaxed">
+                <div className="max-w-2xl mx-auto p-6 bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-2xl">
+                    <p className="text-gray-300 text-base mb-4 leading-snug">
                         Get clarity on your growth roadmap in a <span className="text-blue-400 font-semibold">free 30-minute strategy session</span>
                     </p>
 
-                    <button className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white rounded-full font-bold text-base sm:text-lg transition-all transform hover:scale-105 shadow-xl shadow-indigo-500/30">
+                    <button className="w-full sm:w-auto px-8 sm:px-10 py-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white rounded-full font-bold text-base transition-all transform hover:scale-105 shadow-xl shadow-indigo-500/30">
                         Get My Personalized Growth Plan
                     </button>
 
                     {/* Decorative dots */}
-                    <div className="flex justify-center gap-2 mt-8">
+                    <div className="flex justify-center gap-2 mt-6">
                         <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                         <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
                         <div className="w-2 h-2 bg-pink-400 rounded-full"></div>

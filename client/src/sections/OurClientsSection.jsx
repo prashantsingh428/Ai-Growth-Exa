@@ -4,7 +4,7 @@ const imagesGlob = import.meta.glob('../assets/images/*.{png,jpeg,svg,jpg}', { e
 const clientImages = Object.values(imagesGlob);
 
 const ClientLogo = ({ src }) => (
-    <div className="mx-2 w-[150px] md:w-[200px] flex items-center justify-center transition-all duration-500 hover:scale-110 group">
+    <div className="mx-1 w-[150px] md:w-[200px] flex items-center justify-center transition-all duration-500 hover:scale-110 group">
         <div className="relative w-full h-[100px] md:h-[120px] p-4 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-blue-400 flex items-center justify-center">
             <img
                 src={src}

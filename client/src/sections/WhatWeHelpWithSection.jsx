@@ -61,17 +61,17 @@ const ServiceCard = ({ title, description, icon }) => {
     return (
         <div
             ref={cardRef}
-            className="service-card w-full h-[320px] perspective-1000 cursor-pointer"
+            className="service-card w-full h-[240px] perspective-1000 cursor-pointer"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
             <div className="card-inner relative w-full h-full transition-all duration-500 transform-style-3d">
                 {/* Front Face */}
-                <div className="absolute inset-0 w-full h-full backface-hidden bg-white border border-gray-100 rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center text-center z-20">
-                    <div className="text-5xl mb-6 p-4 bg-blue-50 rounded-2xl text-blue-600 shadow-sm">
+                <div className="absolute inset-0 w-full h-full backface-hidden bg-white border border-gray-100 rounded-2xl shadow-lg p-5 flex flex-col items-center justify-center text-center z-20">
+                    <div className="text-4xl mb-3 p-3 bg-blue-50 rounded-xl text-blue-900 shadow-sm">
                         {icon}
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900">
+                    <h3 className="text-xl font-bold text-gray-900">
                         {title}
                     </h3>
                     <div className="absolute bottom-6 text-sm text-blue-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
@@ -80,9 +80,9 @@ const ServiceCard = ({ title, description, icon }) => {
                 </div>
 
                 {/* Back Face */}
-                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-blue-600 rounded-2xl shadow-xl p-8 flex flex-col items-center justify-center text-center text-white border border-blue-500">
-                    <h3 className="text-xl font-bold mb-4 text-white">{title}</h3>
-                    <p className="text-base leading-relaxed mb-6 text-blue-50">
+                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-blue-600 rounded-2xl shadow-xl p-5 flex flex-col items-center justify-center text-center text-white border border-blue-500">
+                    <h3 className="text-lg font-bold mb-2 text-white">{title}</h3>
+                    <p className="text-sm leading-snug mb-3 text-blue-50">
                         {description}
                     </p>
                     <button className="px-6 py-2 bg-white text-blue-600 font-bold rounded-full text-sm hover:scale-105 transition-transform shadow-lg">
@@ -156,7 +156,7 @@ const WhatWeHelpWithSection = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative z-20 py-24 bg-white overflow-hidden">
+        <section ref={sectionRef} className="relative z-20 py-16 bg-white overflow-hidden">
             {/* Animated Background Mesh & Particles */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <FloatingParticles theme="light" />
@@ -166,17 +166,17 @@ const WhatWeHelpWithSection = () => {
 
             <div className="container mx-auto px-6 max-w-7xl relative z-10">
                 {/* Header */}
-                <div ref={headerRef} className="text-center max-w-4xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+                <div ref={headerRef} className="text-center max-w-4xl mx-auto mb-10">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
                         What We Help You <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Grow With</span>
                     </h2>
-                    <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
+                    <p className="text-lg md:text-xl text-gray-600 leading-snug">
                         We combine <span className="text-blue-600 font-semibold">AI intelligence</span> + <span className="text-blue-600 font-semibold">marketing execution</span> + <span className="text-blue-600 font-semibold">automation</span> to build scalable growth engines.
                     </p>
                 </div>
 
                 {/* Services Grid */}
-                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                     {services.map((service, index) => (
                         <ServiceCard key={index} {...service} />
                     ))}

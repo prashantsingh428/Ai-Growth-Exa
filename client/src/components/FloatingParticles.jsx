@@ -38,7 +38,7 @@ const FloatingParticles = ({ theme = 'auto' }) => {
                 this.size = Math.random() * 4 + 1;
                 this.speedX = Math.random() * 1.5 - 0.75;
                 this.speedY = Math.random() * 1.5 - 0.75;
-                this.baseOpacity = Math.random() * 0.5 + 0.2;
+                this.baseOpacity = Math.random() * 0.2 + 0.05;
                 this.opacity = this.baseOpacity;
                 this.pulseSpeed = Math.random() * 0.02 + 0.01;
                 this.pulseDir = 1;
@@ -97,7 +97,7 @@ const FloatingParticles = ({ theme = 'auto' }) => {
                 : theme === 'light';
 
             const connectionColor = isLight ? 'rgba(59, 130, 246, ' : 'rgba(59, 130, 246, ';
-            const opacityMultiplier = isLight ? 0.3 : 0.3;
+            const opacityMultiplier = isLight ? 0.15 : 0.15;
 
             particles.forEach((p1, i) => {
                 particles.slice(i + 1).forEach(p2 => {
@@ -132,7 +132,7 @@ const FloatingParticles = ({ theme = 'auto' }) => {
     return (
         <canvas
             ref={canvasRef}
-            className="absolute inset-0 w-full h-full pointer-events-none opacity-80 dark:opacity-40"
+            className="absolute inset-0 w-full h-full pointer-events-none opacity-10 dark:opacity-5"
         />
     );
 };

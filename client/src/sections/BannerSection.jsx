@@ -67,7 +67,7 @@ const BannerSection = () => {
                 {/* Left Side: Content */}
                 <div ref={textRef} className="space-y-6">
                     <div>
-                        <h3 className="text-3xl md:text-5xl font-handwriting text-green-400 mb-2 transform -rotate-2 inline-block">
+                        <h3 className="text-3xl md:text-5xl font-handwriting text-blue-400 mb-2 transform -rotate-2 inline-block">
                             Digital
                         </h3>
                         <h2 className="text-5xl md:text-7xl font-extrabold text-white leading-tight uppercase tracking-tighter">
@@ -76,7 +76,7 @@ const BannerSection = () => {
                         </h2>
                     </div>
 
-                    <div className="border-l-4 border-green-500 pl-6 py-2">
+                    <div className="border-l-4 border-blue-500 pl-6 py-2">
                         <h4 className="text-2xl md:text-3xl font-bold text-white mb-2">
                             AI Infrastructure for Marketers
                         </h4>
@@ -86,14 +86,14 @@ const BannerSection = () => {
                     </div>
 
                     <div className="pt-8">
-                        <button className="px-10 py-4 bg-gradient-to-r from-lime-400 to-lime-500 text-gray-900 font-bold text-xl rounded-full shadow-[0_0_20px_rgba(163,230,53,0.4)] hover:shadow-[0_0_35px_rgba(163,230,53,0.6)] hover:scale-105 transition-all duration-300 transform">
+                        <button className="px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-xl rounded-full shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_35px_rgba(99,102,241,0.6)] hover:scale-105 transition-all duration-300 transform">
                             Book a Free Strategy Call
                         </button>
                     </div>
 
                     <div className="flex items-center gap-6 pt-8 text-gray-400 text-sm font-mono border-t border-gray-800 mt-8">
                         <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
                             <span>AIGrowthExa.com</span>
                         </div>
                     </div>

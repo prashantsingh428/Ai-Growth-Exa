@@ -75,35 +75,6 @@ const OurFeaturesSection = () => {
                     }
                 }
             );
-
-            const row1Width = row1Ref.current.scrollWidth - window.innerWidth;
-            const scrollDistance = row1Width * 0.7;
-            gsap.to(row1Ref.current, {
-                x: -row1Width,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top 20%",
-                    end: () => `+=${scrollDistance}`,
-                    scrub: 1,
-                    // pin: true, // DISABLED: Causes NotFoundError with React unmounting
-                    // anticipatePin: 1, // DISABLED: Related to pinning
-                }
-            });
-
-            gsap.fromTo(row2Ref.current,
-                { x: -row1Width * 0.3 },
-                {
-                    x: 0,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: "top 20%",
-                        end: () => `+=${scrollDistance}`,
-                        scrub: 1,
-                    }
-                }
-            );
         }, sectionRef);
 
         return () => ctx.revert();
@@ -136,30 +107,71 @@ const OurFeaturesSection = () => {
             </div>
 
             {/* Horizontal Scroll Gallery */}
-            <div ref={containerRef} className="bg-gradient-to-b from-white via-gray-50 to-white flex flex-col justify-center py-4">
-                {/* Row 1 */}
-                <div ref={row1Ref} className="flex gap-6 px-6 mb-4">
-                    {row1.map((feature, index) => (
-                        <FeatureCard
-                            key={index}
-                            icon={feature.icon}
-                            title={feature.title}
-                            subtitle={feature.subtitle}
-                        />
-                    ))}
+            <div ref={containerRef} className="bg-gradient-to-b from-white via-gray-50 to-white flex flex-col justify-center py-4 overflow-hidden">
+                {/* Row 1 - Slides Right to Left */}
+                <div className="relative mb-4">
+                    <div
+                        ref={row1Ref}
+                        className="flex gap-6 px-6 animate-marquee-left hover:pause-animation"
+                        style={{
+                            animation: 'marquee-left 30s linear infinite'
+                        }}
+                    >
+                        {[...row1, ...row1].map((feature, index) => (
+                            <FeatureCard
+                                key={index}
+                                icon={feature.icon}
+                                title={feature.title}
+                                subtitle={feature.subtitle}
+                            />
+                        ))}
+                    </div>
                 </div>
 
-                {/* Row 2 */}
-                <div ref={row2Ref} className="flex gap-6 px-6">
-                    {row2.map((feature, index) => (
-                        <FeatureCard
-                            key={index}
-                            icon={feature.icon}
-                            title={feature.title}
-                            subtitle={feature.subtitle}
-                        />
-                    ))}
+                {/* Row 2 - Slides Left to Right */}
+                <div className="relative">
+                    <div
+                        ref={row2Ref}
+                        className="flex gap-6 px-6 animate-marquee-right hover:pause-animation"
+                        style={{
+                            animation: 'marquee-right 30s linear infinite'
+                        }}
+                    >
+                        {[...row2, ...row2].map((feature, index) => (
+                            <FeatureCard
+                                key={index}
+                                icon={feature.icon}
+                                title={feature.title}
+                                subtitle={feature.subtitle}
+                            />
+                        ))}
+                    </div>
                 </div>
+
+                {/* CSS Keyframes */}
+                <style jsx>{`
+                    @keyframes marquee-left {
+                        0% {
+                            transform: translateX(0);
+                        }
+                        100% {
+                            transform: translateX(-50%);
+                        }
+                    }
+                    
+                    @keyframes marquee-right {
+                        0% {
+                            transform: translateX(-50%);
+                        }
+                        100% {
+                            transform: translateX(0);
+                        }
+                    }
+                    
+                    .hover\\:pause-animation:hover {
+                        animation-play-state: paused;
+                    }
+                `}</style>
             </div>
         </section>
     );
