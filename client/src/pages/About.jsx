@@ -1,13 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme as useAppTheme } from '../context/ThemeContext';
 import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  Button,
-  useTheme as useMuiTheme,
-  alpha,
+  Box, Container, Typography, Grid, Button, useTheme as useMuiTheme, alpha,
   ThemeProvider,
   CssBaseline,
   createTheme,
@@ -599,12 +593,15 @@ const CtaSection = () => {
             Book a Strategy Call
           </Button>
           <Button variant="outlined" size="large" sx={{
-            px: 5, py: 2, borderRadius: 1, fontSize: '1rem', fontWeight: 600,
+            px: 5, py: 2, borderRadius: 1,
+            fontSize: '1rem', fontWeight: 600,
             color: theme.palette.text.primary,
             borderColor: theme.palette.divider,
-            textTransform: 'none',
+            textTransform:
+              'none',
             '&:hover': { borderColor: theme.palette.text.primary, bgcolor: 'transparent' }
           }} href="/services">
+
             Explore Services
           </Button>
         </Stack>
@@ -618,11 +615,12 @@ const CtaSection = () => {
 const AboutPage = () => {
   const { theme: appTheme } = useAppTheme();
 
-  // Create local theme based on app context
   const muiTheme = React.useMemo(() => createTheme({
     palette: {
-      mode: appTheme || 'light',
-      primary: { main: '#667eea' }, // Clean professional purple/blue
+      mode:
+        appTheme || 'light',
+      primary:
+        { main: '#667eea' },
       background: {
         default: appTheme === 'dark' ? '#0b0f19' : '#ffffff',
         paper: appTheme === 'dark' ? '#111827' : '#f9fafb',
@@ -634,9 +632,11 @@ const AboutPage = () => {
       divider: appTheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
     },
     typography: {
-      fontFamily: '"Inter", "system-ui", sans-serif',
+      fontFamily:
+        '"Inter", "system-ui", sans-serif',
     },
     components: {
+
       MuiButton: { styleOverrides: { root: { textTransform: 'none' } } },
       MuiAccordion: { styleOverrides: { root: { '&.Mui-expanded': { margin: 0 } } } }
     }
@@ -650,8 +650,10 @@ const AboutPage = () => {
         <WhoWeAreSection />
         <BeliefSection />
         <JourneySection />
+
         <ProcessSection />
         <WhyChooseUsSection />
+
         <MissionVisionValuesSection />
         <CustomStatsSection />
         <WhoWeWorkWithSection />
@@ -660,6 +662,7 @@ const AboutPage = () => {
         <FinalThoughtSection />
         <CtaSection />
       </Box>
+
     </ThemeProvider>
   );
 };

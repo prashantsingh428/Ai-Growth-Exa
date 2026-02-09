@@ -1,10 +1,21 @@
 const express = require('express');
 const router = express.Router();
-// Import controller (assuming consistent naming, will be fixed later if needed, 
-// for now just placeholder routes)
+const blogController = require('../controllers/blogController');
+const upload = require('../middleware/uploadMiddleware');
 
-router.get('/', (req, res) => {
-    res.json({ message: 'Resource API working' });
-});
+// Get all blogs
+router.get('/', blogController.getAllBlogs);
+
+// Get single blog by ID
+router.get('/:id', blogController.getBlogById);
+
+// Create new blog (with image upload)
+router.post('/', upload.single('image'), blogController.createBlog);
+
+// Update blog (with image upload)
+router.put('/:id', upload.single('image'), blogController.updateBlog);
+
+// Delete blog
+router.delete('/:id', blogController.deleteBlog);
 
 module.exports = router;

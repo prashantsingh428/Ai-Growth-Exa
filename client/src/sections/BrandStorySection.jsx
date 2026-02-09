@@ -98,39 +98,34 @@ const BrandStorySection = () => {
                     </p>
                 </div>
 
-                {/* Highlight Box */}
                 <div
                     ref={highlightRef}
                     className="relative"
                 >
-                    <div className="relative p-10 md:p-12 bg-blue-50 dark:bg-gray-900 border-2 border-blue-600 dark:border-blue-500 rounded-2xl shadow-xl">
-                        {/* Corner decorations */}
-                        <div className="absolute -top-3 -left-3 w-6 h-6 border-l-2 border-t-2 border-blue-600 dark:border-blue-400"></div>
-                        <div className="absolute -bottom-3 -right-3 w-6 h-6 border-r-2 border-b-2 border-blue-600 dark:border-blue-400"></div>
-
-                        <div className="space-y-6">
+                    <div className="relative p-4 md:p-6 text-center">
+                        <div className="space-y-3">
                             {/* Main statement */}
-                            <h3 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white">
+                            <h3 className="text-3xl md:text-4xl font-extrabold text-center text-black leading-tight">
                                 We don't just design logos.
                             </h3>
 
                             {/* Divider */}
-                            <div className="flex items-center justify-center gap-4">
-                                <div className="h-px w-16 bg-blue-600 dark:bg-blue-400"></div>
-                                <div className="w-2 h-2 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
-                                <div className="h-px w-16 bg-blue-600 dark:bg-blue-400"></div>
+                            <div className="flex items-center justify-center gap-3 opacity-50 py-1">
+                                <div className="h-px w-12 bg-black"></div>
+                                <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
+                                <div className="h-px w-12 bg-black"></div>
                             </div>
 
                             {/* Supporting text */}
-                            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 text-center leading-relaxed">
+                            <p className="text-xl md:text-2xl text-gray-900 text-center leading-snug font-semibold">
                                 We create meaning, consistency, and trust across every digital touchpoint.
                             </p>
 
                             {/* Call to action */}
-                            <div className="pt-4 border-t border-blue-200 dark:border-blue-800">
-                                <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 text-center">
+                            <div className="pt-2">
+                                <p className="text-lg md:text-xl text-gray-900 text-center font-medium max-w-3xl mx-auto leading-snug">
                                     If you're ready to stand out, connect deeply with your audience, and grow with confidence —
-                                    <span className="block mt-2 text-blue-600 dark:text-blue-400 font-bold">
+                                    <span className="block mt-2 text-blue-700 font-black text-2xl">
                                         AI GrowthExa is where your brand begins its next chapter.
                                     </span>
                                 </p>

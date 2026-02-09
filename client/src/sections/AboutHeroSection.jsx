@@ -46,17 +46,17 @@ const AboutHeroSection = () => {
         {
             title: "Startups",
             desc: "Ready to scale from zero to exponential growth.",
-            icon: "🚀"
+            icon: ""
         },
         {
             title: "Growing Brands",
             desc: "Broken through the noise but stuck with inconsistent lead flows.",
-            icon: "📈"
+            icon: ""
         },
         {
             title: "Established Businesses",
             desc: "Tired of wasting budget on legacy marketing that doesn't deliver.",
-            icon: "💼"
+            icon: ""
         }
     ];
 

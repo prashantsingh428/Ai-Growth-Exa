@@ -86,10 +86,29 @@ export default function BlogInsights() {
     const heroRef = useRef(null);
     const isHeroInView = useInView(heroRef, { once: true });
 
+    const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     // Page 
     useEffect(() => {
         const timer = setTimeout(() => setShowContent(true), 1200);
         return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/blogs');
+                const data = await response.json();
+                setBlogs(data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching blogs:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchBlogs();
     }, []);
 
     // Blog categories 
@@ -112,7 +131,7 @@ export default function BlogInsights() {
 
     return (
         <div className="bg-gradient-to-b from-slate-50 to-white text-slate-900 min-h-screen overflow-x-hidden">
-            {}
+            { }
             <section
                 ref={heroRef}
                 className="relative overflow-hidden border-b border-slate-200/50"
@@ -120,7 +139,7 @@ export default function BlogInsights() {
                     background: "linear-gradient(135deg, #f8fafc 0%, #f0f9ff 50%, #eff6ff 100%)"
                 }}
             >
-                {}
+                { }
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
                     <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
@@ -166,7 +185,7 @@ export default function BlogInsights() {
                     >
                         Future-Focused. Decision-Ready. Smart Moves. Real Impact.
                     </motion.p>
-                    {}
+                    { }
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -185,7 +204,7 @@ export default function BlogInsights() {
                         </div>
                     </motion.div>
 
-                    {}
+                    { }
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -212,7 +231,7 @@ export default function BlogInsights() {
                 </div>
             </section>
 
-            {}
+            { }
             <AnimatePresence>
                 {showContent && (
                     <motion.div
@@ -222,7 +241,7 @@ export default function BlogInsights() {
                         exit="hidden"
                         className="relative"
                     >
-                        {}
+                        { }
                         <motion.section
                             variants={itemVariants}
                             className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24"
@@ -244,7 +263,7 @@ export default function BlogInsights() {
                                     </p>
                                 </div>
 
-                                {}
+                                { }
                                 <div className="mt-10 max-w-2xl mx-auto">
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         {[
@@ -500,13 +519,19 @@ export default function BlogInsights() {
                             </div>
 
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {[1, 2, 3, 4, 5, 6].map((_, i) => (
-                                    <EnhancedBlogCard key={i} index={i} />
-                                ))}
+                                {loading ? (
+                                    <div className="col-span-3 text-center py-10">Loading insights...</div>
+                                ) : blogs.length > 0 ? (
+                                    blogs.map((blog, i) => (
+                                        <EnhancedBlogCard key={blog._id} index={i} blog={blog} />
+                                    ))
+                                ) : (
+                                    <div className="col-span-3 text-center py-10">No insights found.</div>
+                                )}
                             </div>
                         </motion.section>
 
-                        {}
+                        { }
                         <motion.section
                             variants={itemVariants}
                             className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24"
@@ -563,10 +588,10 @@ export default function BlogInsights() {
                             </div>
                         </motion.section>
 
-                        {}
+                        { }
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
                             <div className="grid lg:grid-cols-3 gap-8">
-                                {}
+                                { }
                                 <motion.div
                                     initial={{ opacity: 0, y: 40 }}
                                     whileInView={{ opacity: 1, y: 0 }}
@@ -614,7 +639,7 @@ export default function BlogInsights() {
                                     </div>
                                 </motion.div>
 
-                                {}
+                                { }
                                 <motion.div
                                     initial={{ opacity: 0, x: 40 }}
                                     whileInView={{ opacity: 1, x: 0 }}
@@ -666,7 +691,7 @@ export default function BlogInsights() {
                 )}
             </AnimatePresence>
 
-            {}
+            { }
             <style>{`
         @keyframes blob {
           0% {
@@ -700,7 +725,7 @@ export default function BlogInsights() {
 }
 
 
-function EnhancedBlogCard({ index }) {
+function EnhancedBlogCard({ index, blog }) {
     const cardRef = useRef(null);
     const isInView = useInView(cardRef, { once: true, margin: "-100px" });
     const controls = useAnimation();
@@ -711,83 +736,20 @@ function EnhancedBlogCard({ index }) {
         }
     }, [controls, isInView]);
 
-    // Updated blog data with valid Unsplash image URLs
-    const blogData = [
-        {
-            title: "How AI is Redefining Performance Marketing",
-            desc: "Understanding how AI-driven systems are transforming growth strategies worldwide with predictive analytics.",
-            category: "AI Marketing Trends",
-            readTime: "8 min read",
-            author: "Dr. Sarah Chen",
-            date: "Mar 15, 2024",
-            likes: 142,
-            views: "2.4k",
-            tag: "Popular",
-            image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            title: "I Grew Revenue Without Increasing Ad Spend",
-            desc: "Case study: How strategic optimization increased Starbucks Card Clicks without additional budget.",
-            category: "Growth Hacks",
-            readTime: "6 min read",
-            author: "Alex Wong",
-            date: "Mar 12, 2024",
-            likes: 89,
-            views: "1.8k",
-            tag: "Case Study",
-            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            title: "ROI-First: What You Should Really Optimize For",
-            desc: "Deep dive into performance marketing frameworks that prioritize profitability over vanity metrics.",
-            category: "Performance Strategies",
-            readTime: "12 min read",
-            author: "Michael Rodriguez",
-            date: "Mar 10, 2024",
-            likes: 203,
-            views: "3.1k",
-            tag: "Essential",
-            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            title: "LLM-Driven Ads: The Future of Personalization",
-            desc: "How Large Language Models are creating hyper-personalized ad experiences at scale.",
-            category: "AI Marketing Trends",
-            readTime: "10 min read",
-            author: "Priya Sharma",
-            date: "Mar 8, 2024",
-            likes: 167,
-            views: "2.7k",
-            tag: "Trending",
-            image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            title: "The 90-Day Growth System for Startups",
-            desc: "A comprehensive framework for startups to achieve exponential growth in their first quarter.",
-            category: "Growth Hacks",
-            readTime: "15 min read",
-            author: "David Park",
-            date: "Mar 5, 2024",
-            likes: 118,
-            views: "2.1k",
-            tag: "Guide",
-            image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            title: "Automation: Build Once, Scale Forever",
-            desc: "How to create automated systems that work 24/7 to drive consistent growth without manual intervention.",
-            category: "Automation Guides",
-            readTime: "11 min read",
-            author: "Marcus Green",
-            date: "Mar 3, 2024",
-            likes: 94,
-            views: "1.9k",
-            tag: "Tutorial",
-            image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80"
-        }
-    ];
-
-    const data = blogData[index % blogData.length];
+    const data = {
+        title: blog?.title || "Untitled",
+        desc: blog?.content ? blog.content.substring(0, 100) + '...' : 'No description available.',
+        category: "Insights",
+        readTime: "5 min read",
+        author: blog?.author || "Admin",
+        date: blog?.createdAt ? new Date(blog.createdAt).toLocaleDateString() : "Recently",
+        likes: Math.floor(Math.random() * 100),
+        views: "1.2k",
+        tag: "New",
+        image: blog?.image
+            ? (blog.image.startsWith('http') ? blog.image : `http://localhost:5000${blog.image}`)
+            : "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80"
+    };
 
     return (
         <motion.div

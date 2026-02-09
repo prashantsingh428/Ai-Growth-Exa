@@ -105,35 +105,7 @@ const StatsSection = () => {
     const scrollerRef = useRef(null);
     const cardsRef = useRef(null);
 
-    // Horizontal Scroll Animation
-    useEffect(() => {
-        const scroller = scrollerRef.current;
-        const cards = cardsRef.current;
-
-        if (!scroller || !cards) return;
-
-        let ctx = gsap.context(() => {
-            // Calculate total scroll distance
-            const totalWidth = cards.scrollWidth - window.innerWidth + 48; // 48px for padding
-
-            if (totalWidth > 0) {
-                gsap.to(cards, {
-                    x: -totalWidth,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: scroller,
-                        // pin: true, // DISABLED: Causes NotFoundError with React unmounting
-                        scrub: 1,
-                        start: "center center", // Start when section is centered
-                        end: () => `+=${totalWidth * 3}`, // Tripling the distance slows down the scroll
-                        invalidateOnRefresh: true,
-                    }
-                });
-            }
-        }, scroller);
-
-        return () => ctx.revert();
-    }, []);
+    // Removed GSAP horizontal scroll - now using CSS marquee
 
     const [barData, setBarData] = useState([
         { month: 'Jan', value: 85, cost: '$142' },
@@ -351,6 +323,19 @@ const StatsSection = () => {
                 .animate-vertical-scroll {
                     animation: scroll-vertical 40s linear infinite;
                 }
+                
+                @keyframes marquee-stats {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                
+                .animate-marquee-stats {
+                    animation: marquee-stats 30s linear infinite;
+                }
+                
+                .animate-marquee-stats:hover {
+                    animation-play-state: paused;
+                }
             `}</style>
 
             {/* Background decorative elements */}
@@ -364,13 +349,16 @@ const StatsSection = () => {
                 {/* Main Heading */}
                 <div className="text-center mb-12">
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-3">
-                        Real Numbers. <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Real Growth.</span>
+                        <span className="text-white">Real Numbers.</span> <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Real Growth.</span>
                     </h2>
                     <div className="flex justify-center gap-2 mt-4">
+
                         <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
                         <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse delay-75"></div>
                         <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse delay-150"></div>
                     </div>
+
+
                 </div>
 
                 {/* Two Column Layout: Text/Stats (Left) + Graphs (Right) */}
@@ -650,7 +638,7 @@ const StatsSection = () => {
                         <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
                             Our Growth in <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Numbers</span>
                         </h3>
-                        <p className="text-gray-400 text-lg">Scroll to explore our achievements</p>
+                        <p className="text-gray-400 text-lg">Watch our achievements continuously scroll</p>
                     </div>
 
                     <div className="relative w-full">
@@ -658,32 +646,61 @@ const StatsSection = () => {
                         <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-gray-950 to-transparent z-10 pointer-events-none"></div>
                         <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-gray-950 to-transparent z-10 pointer-events-none"></div>
 
-                        <div ref={cardsRef} className="flex gap-6 px-6 w-max">
-                            {detailedStats.map((stat, index) => (
-                                <div
-                                    key={index}
-                                    className="flex-shrink-0 w-[240px] p-6 rounded-xl border border-gray-800 bg-gray-900/40 backdrop-blur-sm"
-                                >
-                                    <div className="text-center relative z-10">
-                                        <div className="mb-4 flex items-center justify-center gap-3">
-                                            <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-blue-400"></div>
-                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                                            <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-blue-400"></div>
-                                        </div>
+                        <div className="flex overflow-hidden">
+                            <div ref={cardsRef} className="flex gap-6 px-6 animate-marquee-stats">
+                                {/* Original set */}
+                                {detailedStats.map((stat, index) => (
+                                    <div
+                                        key={`original-${index}`}
+                                        className="flex-shrink-0 w-[240px] p-6 rounded-xl border border-gray-800 bg-gray-900/40 backdrop-blur-sm"
+                                    >
+                                        <div className="text-center relative z-10">
+                                            <div className="mb-4 flex items-center justify-center gap-3">
+                                                <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-blue-400"></div>
+                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                                <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-blue-400"></div>
+                                            </div>
 
-                                        <div className="text-4xl font-extrabold text-white mb-2 flex justify-center items-baseline">
-                                            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
-                                                {stat.number.toLocaleString()}
-                                            </span>
-                                            <span className="text-blue-500 text-xl font-bold ml-1">{stat.suffix}</span>
-                                        </div>
+                                            <div className="text-4xl font-extrabold text-white mb-2 flex justify-center items-baseline">
+                                                <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
+                                                    {stat.number.toLocaleString()}
+                                                </span>
+                                                <span className="text-blue-500 text-xl font-bold ml-1">{stat.suffix}</span>
+                                            </div>
 
-                                        <p className="text-gray-400 text-sm font-medium tracking-wide uppercase">
-                                            {stat.label}
-                                        </p>
+                                            <p className="text-gray-400 text-sm font-medium tracking-wide uppercase">
+                                                {stat.label}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                                {/* Duplicate set for seamless loop */}
+                                {detailedStats.map((stat, index) => (
+                                    <div
+                                        key={`duplicate-${index}`}
+                                        className="flex-shrink-0 w-[240px] p-6 rounded-xl border border-gray-800 bg-gray-900/40 backdrop-blur-sm"
+                                    >
+                                        <div className="text-center relative z-10">
+                                            <div className="mb-4 flex items-center justify-center gap-3">
+                                                <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-blue-400"></div>
+                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                                <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-blue-400"></div>
+                                            </div>
+
+                                            <div className="text-4xl font-extrabold text-white mb-2 flex justify-center items-baseline">
+                                                <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
+                                                    {stat.number.toLocaleString()}
+                                                </span>
+                                                <span className="text-blue-500 text-xl font-bold ml-1">{stat.suffix}</span>
+                                            </div>
+
+                                            <p className="text-gray-400 text-sm font-medium tracking-wide uppercase">
+                                                {stat.label}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
