@@ -901,8 +901,8 @@ const CareersPage = () => {
 
     // Company stats
     const companyStats = [
-        { number: "150+", label: "Team Members", icon: <FaUsers /> },
-        { number: "40+", label: "Countries", icon: <FaGlobe /> },
+        { number: "70+", label: "Team Members", icon: <FaUsers /> },
+        { number: "500+", label: "Projects Delivered", icon: <FaGlobe /> },
         { number: "98%", label: "Client Satisfaction", icon: <FaStar /> },
         { number: "50+", label: "AI Projects", icon: <FaRobot /> },
     ];
@@ -986,113 +986,46 @@ const CareersPage = () => {
             </div>
 
             {/* Hero Section */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#312e81] text-white py-24 md:py-32 px-6">
+            <div className="relative overflow-hidden bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#312e81] text-white py-32 px-4">
                 <div className="container mx-auto relative z-10">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        {/* Left Column: Text Content */}
-                        <div className="max-w-2xl">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-900/50 border border-blue-700/50 text-blue-200 text-sm font-medium mb-8 backdrop-blur-sm">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                </span>
-                                Hiring Across All Departments
-                            </div>
+                    <div>
+                        <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                            Build the <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300">
+                                Future
+                            </span>
+                            <br />
+                            of <span className="text-white">AI-Driven Growth</span>
+                        </h1>
 
-                            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight">
-                                Build the <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300">
-                                    Future
-                                </span>
-                                <br />
-                                of <span className="text-white">AI-Driven Growth</span>
-                            </h1>
+                        <p className="text-xl md:text-2xl mb-10 max-w-3xl text-blue-100 leading-relaxed font-light">
+                            At AI Growth Exa, we're not just building marketing campaigns — we're architecting careers,
+                            cultivating leaders, and crafting future-ready professionals.
+                        </p>
 
-                            <p className="text-xl md:text-2xl mb-10 text-blue-100 leading-relaxed font-light">
-                                Don't just watch the revolution happen. <span className="text-white font-medium">Drive it.</span>
-                                <br />
-                                We're architecting careers for the builders, dreamers, and leaders of tomorrow.
-                            </p>
+                        <div className="flex flex-col md:flex-row gap-6">
+                            <button
+                                onClick={handleGeneralApplyClick}
+                                className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 shadow-lg shadow-blue-900/50 flex items-center justify-center gap-2"
+                                type="button"
+                            >
+                                <span className="relative z-10">Explore Open Roles</span>
+                                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                            </button>
 
-                            <div className="flex flex-col sm:flex-row gap-5">
-                                <button
-                                    onClick={handleGeneralApplyClick}
-                                    className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-4 px-8 rounded-xl text-lg transition-all duration-300 shadow-lg shadow-blue-900/50 hover:shadow-blue-700/50 hover:-translate-y-0.5 flex items-center justify-center gap-2"
-                                    type="button"
-                                >
-                                    <span className="relative z-10">View Open Positions</span>
-                                    <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                                </button>
-
-                                <button
-                                    className="group relative bg-[#1e293b]/50 border border-blue-700/50 hover:border-blue-500 text-white font-semibold py-4 px-8 rounded-xl text-lg transition-all duration-300 hover:bg-[#334155]/50 flex items-center justify-center gap-2 backdrop-blur-md"
-                                    type="button"
-                                >
-                                    <span className="relative z-10">Life at Exa</span>
-                                    <FaUsers className="text-blue-300 group-hover:text-white transition-colors" />
-                                </button>
-                            </div>
-
-                            <div className="mt-12 flex items-center gap-8 text-sm text-blue-200/80 font-medium">
-                                <div className="flex items-center gap-2">
-                                    <FaGlobe className="text-blue-400" /> Remote-First
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <FaRocket className="text-purple-400" /> Fast-Track Growth
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <FaHeart className="text-pink-400" /> Inclusive Culture
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Right Column: Visual Composition */}
-                        <div className="relative hidden lg:block">
-                            {/* Abstract Background Elements */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
-
-                            <div className="relative z-10 grid grid-cols-2 gap-6">
-                                {/* Card 1 */}
-                                <div className="bg-white/5 border border-white/10 backdrop-blur-xl p-6 rounded-2xl transform translate-y-12 shadow-2xl hover:bg-white/10 transition-colors duration-300">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-4 text-2xl text-white">
-                                        <FaGlobe />
-                                    </div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Global Impact</h3>
-                                    <p className="text-blue-100/80 text-sm">Work with clients from 40+ countries and shape global industries.</p>
-                                </div>
-
-                                {/* Card 2 */}
-                                <div className="bg-white/5 border border-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl hover:bg-white/10 transition-colors duration-300">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-4 text-2xl text-white">
-                                        <FaBrain />
-                                    </div>
-                                    <h3 className="text-xl font-bold text-white mb-2">AI Innovation</h3>
-                                    <p className="text-blue-100/80 text-sm">Access cutting-edge tools and lead the AI revolution.</p>
-                                </div>
-
-                                {/* Card 3 */}
-                                <div className="bg-white/5 border border-white/10 backdrop-blur-xl p-6 rounded-2xl col-span-2 mx-12 shadow-2xl hover:bg-white/10 transition-colors duration-300 flex items-center gap-6">
-                                    <div className="flex -space-x-4">
-                                        {[1, 2, 3, 4].map((i) => (
-                                            <div key={i} className="w-10 h-10 rounded-full border-2 border-[#1e1b4b] bg-gray-300 overflow-hidden">
-                                                <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Team" className="w-full h-full object-cover" />
-                                            </div>
-                                        ))}
-                                        <div className="w-10 h-10 rounded-full border-2 border-[#1e1b4b] bg-blue-600 flex items-center justify-center text-xs font-bold text-white">
-                                            +150
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="text-lg font-bold text-white">Join 150+ Experts</div>
-                                        <div className="text-xs text-blue-200">Designers, Developers, Strategists</div>
-                                    </div>
-                                </div>
-                            </div>
+                            <button
+                                className="group relative bg-[#1e293b] border border-blue-700/50 hover:border-blue-500 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 hover:bg-[#334155] flex items-center justify-center gap-2"
+                                type="button"
+                            >
+                                <span className="relative z-10">Meet Our Team</span>
+                                <FaUsers className="text-blue-300 group-hover:text-white transition-colors" />
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Background Grid Pattern */}
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-soft-light pointer-events-none"></div>
+                {/* Abstract Background Shapes */}
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl"></div>
             </div>
 
             {/* Stats Section */}
@@ -1153,19 +1086,19 @@ const CareersPage = () => {
                                 title: "Learn Faster Than Lightning",
                                 desc: "Accelerated learning with cutting-edge AI tools, weekly masterclasses, and access to premium courses.",
                                 icon: <FaGraduationCap />,
-                                gradient: "from-blue-500 to-cyan-500",
+                                gradient: "from-blue-600 to-purple-600",
                             },
                             {
                                 title: "Tackle High-Impact Growth Challenges",
                                 desc: "Solve real business problems for global clients, driving measurable ROI and transforming industries.",
                                 icon: <FaChartLine />,
-                                gradient: "from-purple-500 to-pink-500",
+                                gradient: "from-blue-600 to-purple-600",
                             },
                             {
                                 title: "Master Future-Ready Skills",
                                 desc: "Build expertise in AI-driven marketing, predictive analytics, and growth strategies.",
                                 icon: <FaRocket />,
-                                gradient: "from-orange-500 to-red-500",
+                                gradient: "from-blue-600 to-purple-600",
                             }
                         ].map((item, index) => (
                             <div
