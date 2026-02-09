@@ -1,0 +1,883 @@
+import React, { useState, useEffect } from 'react';
+import {
+    Box,
+    Container,
+    Typography,
+    Grid,
+    Card,
+    CardContent,
+    CardActions,
+    Button,
+    Chip,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Divider,
+    Stack,
+    useTheme,
+    useMediaQuery,
+    alpha,
+    Fade,
+    Zoom,
+    Grow
+} from '@mui/material';
+import {
+    ExpandMore as ExpandMoreIcon,
+    AutoAwesome as AutoAwesomeIcon,
+    RocketLaunch as RocketLaunchIcon,
+    TrendingUp as TrendingUpIcon,
+    Campaign as CampaignIcon,
+    Store as StoreIcon,
+    Bolt as BoltIcon,
+    Star as StarIcon,
+    Smartphone as SmartphoneIcon,
+    Email as EmailIcon,
+    Groups as GroupsIcon,
+    ShoppingCart as ShoppingCartIcon,
+    Chat as ChatIcon,
+    Handshake as HandshakeIcon,
+    Person as PersonIcon,
+    AppShortcut as AppShortcutIcon,
+    Flag as FlagIcon,
+    Tune as TuneIcon,
+    Category as CategoryIcon,
+    CheckCircle as CheckCircleIcon,
+    KeyboardArrowRight as KeyboardArrowRightIcon
+} from '@mui/icons-material';
+import { keyframes } from '@emotion/react';
+
+// Minimal animations
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const gradientFlow = keyframes`
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+`;
+
+const ServicesPage = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const [expandedService, setExpandedService] = useState(null);
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => setLoaded(true), 100);
+    }, []);
+
+    const services = [
+        {
+            id: 1,
+            title: "AI Marketing Solutions (LLM Growth)",
+            icon: <AutoAwesomeIcon />,
+            tagline: "Smart Growth Starts With Intelligent AI Systems",
+            color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            overview: "Traditional marketing relies on guesswork. We rely on intelligence.",
+            features: [
+                "Predict Customer Behavior",
+                "Intelligent Targeting & Messaging",
+                "Marketing Automation That Thinks",
+                "Funnel Optimization With AI"
+            ],
+            benefits: [
+                "Data-Driven Decisions – No assumptions, only insights",
+                "Higher Conversion Rates – Smarter funnels powered by AI",
+                "Cost Efficiency – Reduce ad waste with predictive targeting",
+                "Scalable Growth – Systems that grow as your business grows",
+                "Real-Time Optimization – Campaigns improve automatically",
+                "Future-Proof Strategy – Built for evolving AI & digital trends"
+            ],
+            idealFor: [
+                "SaaS & Tech Companies",
+                "E-commerce Brands",
+                "Startups & Scaleups",
+                "Agencies looking to upgrade with AI",
+                "Businesses tired of inconsistent marketing results"
+            ]
+        },
+        {
+            id: 2,
+            title: "Performance Marketing",
+            icon: <RocketLaunchIcon />,
+            tagline: "AI-Powered Advertising That Delivers Real ROI",
+            color: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+            overview: "Smarter Ads. Faster Growth. Better Results.",
+            platforms: ["Google Ads", "Meta Ads (Facebook & Instagram)", "LinkedIn Ads", "YouTube Ads"],
+            features: [
+                "Google Ads & Meta Ads",
+                "LinkedIn & YouTube Ads",
+                "AI-Assisted Decision Making",
+                "Full-Funnel Performance Strategy"
+            ]
+        },
+        {
+            id: 3,
+            title: "SEO & Growth Strategy",
+            icon: <TrendingUpIcon />,
+            tagline: "AI-Driven SEO That Fuels Long-Term Growth",
+            color: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+            overview: "Build Visibility. Drive Traffic. Scale Growth.",
+            features: [
+                "AI-Powered Keyword Research",
+                "Technical SEO Optimization",
+                "Content & Topical Authority",
+                "Growth-Focused SEO Execution"
+            ]
+        },
+        {
+            id: 4,
+            title: "Podcast & Social Media Marketing",
+            icon: <CampaignIcon />,
+            tagline: "Build Authority. Earn Attention. Create Trust at Scale.",
+            color: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+            overview: "Attention Is Currency — We Help You Earn It",
+            features: [
+                "Podcast Strategy & Positioning",
+                "Authority-First Content Strategy",
+                "Community Building & Engagement",
+                "Multi-Platform Content Leverage"
+            ]
+        },
+        {
+            id: 5,
+            title: "GMB with AI Model",
+            icon: <StoreIcon />,
+            tagline: "Dominate Local Search with AI-Powered Visibility",
+            color: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+            overview: "Local Businesses Need Visibility Where Buyers Search",
+            features: [
+                "Complete GMB Optimization",
+                "AI-Driven Local Keyword Strategy",
+                "Automated Reviews & Engagement",
+                "Local Ranking Improvement"
+            ]
+        },
+        {
+            id: 6,
+            title: "Funnel & Automation Systems",
+            icon: <BoltIcon />,
+            tagline: "Turn Traffic Into Revenue — Automatically",
+            color: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
+            overview: "Traffic Without a Funnel Is Wasted Money",
+            features: [
+                "High-Converting Lead Funnels",
+                "Sales Automation Workflows",
+                "CRM Integrations & Data Syncing",
+                "AI-Assisted Funnel Optimization"
+            ]
+        },
+        {
+            id: 7,
+            title: "Branding, Creative & Design",
+            icon: <StarIcon />,
+            tagline: "Design That Builds Recall. Creativity That Drives Growth.",
+            color: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+            overview: "Growth Needs a Strong Brand Foundation",
+            features: [
+                "Brand Positioning & Messaging",
+                "Visual Identity Systems",
+                "Logo Design & Brand Guidelines",
+                "Performance-Optimized Assets"
+            ]
+        },
+        {
+            id: 8,
+            title: "Web, App & UX/UI Development",
+            icon: <SmartphoneIcon />,
+            tagline: "Your Digital Salesperson — Built to Convert",
+            color: "linear-gradient(135deg, #5ee7df 0%, #b490ca 100%)",
+            overview: "Your Website or App Is Your Digital Salesperson",
+            features: [
+                "High-Conversion Websites",
+                "Mobile Apps (Android / iOS)",
+                "User-Centric UX/UI Systems",
+                "Conversion-Focused Development"
+            ]
+        },
+        {
+            id: 9,
+            title: "Content Creation & Writing",
+            icon: <EmailIcon />,
+            tagline: "Words Sell. Stories Convert. Strategy Scales.",
+            color: "linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)",
+            overview: "Content Is the Voice of Your Brand",
+            features: [
+                "Website Copy & Landing Pages",
+                "SEO Blogs & Articles",
+                "Brand Storytelling",
+                "Sales-Driven Content"
+            ]
+        },
+        {
+            id: 10,
+            title: "Sales-Aligned Marketing Systems",
+            icon: <GroupsIcon />,
+            tagline: "Where Marketing Meets Sales — and Revenue Follows",
+            color: "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)",
+            overview: "Marketing Without Sales Alignment Fails",
+            features: [
+                "Email Marketing Systems",
+                "WhatsApp Bulk Messaging",
+                "CRM Workflows & Automation",
+                "Lead Qualification Systems"
+            ]
+        },
+        {
+            id: 11,
+            title: "Social Media Marketing",
+            icon: <CampaignIcon />,
+            tagline: "Community-Led. Conversion-Focused. Trust-Driven.",
+            color: "linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%)",
+            overview: "Attention Is Currency — and We Help You Earn It",
+            features: [
+                "Community-Focused Content Creation",
+                "Platform-Specific Strategy",
+                "Engagement & Comment Management",
+                "Brand Voice & Storytelling"
+            ]
+        },
+        {
+            id: 12,
+            title: "Email Marketing",
+            icon: <EmailIcon />,
+            tagline: "Turn Inboxes Into Conversations — and Conversations Into Revenue",
+            color: "linear-gradient(135deg, #A8E6CF 0%, #DCEDC1 100%)",
+            overview: "Email Is Still One of the Highest-ROI Channels",
+            features: [
+                "Email Strategy & Planning",
+                "Automation Workflows",
+                "Sales & Conversion Email Copy",
+                "Analytics & Optimization"
+            ]
+        },
+        {
+            id: 13,
+            title: "E-commerce Marketing",
+            icon: <ShoppingCartIcon />,
+            tagline: "Turn Browsers Into Buyers — and Buyers Into Repeat Customers",
+            color: "linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%)",
+            overview: "E-commerce Growth Is Not About Traffic — It's About Systems",
+            features: [
+                "Performance-Driven Campaigns",
+                "Conversion Rate Optimization",
+                "Retention Systems",
+                "Data & Tracking"
+            ]
+        },
+        {
+            id: 14,
+            title: "WhatsApp Bulk Marketing",
+            icon: <ChatIcon />,
+            tagline: "Direct. Personal. High-Conversion Messaging at Scale.",
+            color: "linear-gradient(135deg, #43CBFF 0%, #9708CC 100%)",
+            overview: "WhatsApp Is Where Conversations Convert",
+            features: [
+                "Bulk WhatsApp Campaigns",
+                "Automation & Flows",
+                "CRM Integration",
+                "Performance Tracking"
+            ]
+        },
+        {
+            id: 15,
+            title: "Brand Collaboration",
+            icon: <HandshakeIcon />,
+            tagline: "Grow Faster by Growing Together",
+            color: "linear-gradient(135deg, #FFD89B 0%, #19547B 100%)",
+            overview: "Growth Multiplies When the Right Brands Align",
+            features: [
+                "Strategic Brand Partnerships",
+                "Campaign & Co-Marketing",
+                "Creator & Influencer Collaborations",
+                "Audience Alignment Analysis"
+            ]
+        },
+        {
+            id: 16,
+            title: "Influencer Marketing",
+            icon: <PersonIcon />,
+            tagline: "Leverage Trust. Amplify Reach. Drive Real Conversions.",
+            color: "linear-gradient(135deg, #FDEB71 0%, #F8D800 100%)",
+            overview: "Influence Works When Trust Leads the Message",
+            features: [
+                "Influencer Discovery & Vetting",
+                "Campaign Strategy & Execution",
+                "Content & UGC Creation",
+                "Tracking & Analytics"
+            ]
+        },
+        {
+            id: 17,
+            title: "App Marketing",
+            icon: <AppShortcutIcon />,
+            tagline: "Drive Installs. Activate Users. Scale Retention.",
+            color: "linear-gradient(135deg, #96E6A1 0%, #D4FC79 100%)",
+            overview: "An App Without Users Is Just Code",
+            features: [
+                "App User Acquisition",
+                "App Store Optimization (ASO)",
+                "Activation & Onboarding",
+                "Retention Systems"
+            ]
+        },
+        {
+            id: 18,
+            title: "Go-To-Market Strategies",
+            icon: <FlagIcon />,
+            tagline: "Launch Smarter. Enter Faster. Scale Confidently.",
+            color: "linear-gradient(135deg, #FF7E5F 0%, #FEB47B 100%)",
+            overview: "A Great Product Fails Without the Right Market Strategy",
+            features: [
+                "Market & Customer Research",
+                "Product Positioning & Messaging",
+                "Pricing & Offer Strategy",
+                "Channel & Launch Strategy"
+            ]
+        },
+        {
+            id: 19,
+            title: "Site Optimization",
+            icon: <TuneIcon />,
+            tagline: "Turn Your Website Into a High-Performance Growth Engine",
+            color: "linear-gradient(135deg, #74EBD5 0%, #9FACE6 100%)",
+            overview: "A Slow, Confusing Website Kills Growth",
+            features: [
+                "Website Speed Optimization",
+                "Technical SEO",
+                "Conversion Rate Optimization",
+                "UX/UI Optimization"
+            ]
+        },
+        {
+            id: 20,
+            title: "Product Branding",
+            icon: <CategoryIcon />,
+            tagline: "Turn Your Product Into a Recognizable, Trust-Built Brand",
+            color: "linear-gradient(135deg, #D8B5FF 0%, #1EAE98 100%)",
+            overview: "Great Products Don't Sell Themselves — Brands Do",
+            features: [
+                "Product Positioning & Strategy",
+                "Visual Identity",
+                "Product Messaging & Storytelling",
+                "Brand Guidelines"
+            ]
+        }
+    ];
+
+    const handleServiceExpand = (serviceId) => {
+        setExpandedService(expandedService === serviceId ? null : serviceId);
+    };
+
+    const ServiceCard = ({ service, index }) => (
+        <Grow in={loaded} timeout={index * 100}>
+            <Card sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: 2,
+                border: '1px solid',
+                borderColor: alpha(theme.palette.primary.main, 0.1),
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: theme.shadows[8],
+                    borderColor: alpha(theme.palette.primary.main, 0.3),
+                }
+            }}>
+                <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        mb: 2
+                    }}>
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: 48,
+                            height: 48,
+                            borderRadius: '12px',
+                            background: service.color,
+                            mr: 2,
+                            color: 'white'
+                        }}>
+                            {service.icon}
+                        </Box>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                            {service.title}
+                        </Typography>
+                    </Box>
+
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
+                        {service.tagline}
+                    </Typography>
+
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                        {service.overview}
+                    </Typography>
+
+                    <List dense sx={{ mt: 2 }}>
+                        {service.features.slice(0, 3).map((feature, idx) => (
+                            <ListItem key={idx} sx={{ px: 0, py: 0.5 }}>
+                                <ListItemIcon sx={{ minWidth: 32 }}>
+                                    <KeyboardArrowRightIcon sx={{ color: 'primary.main', fontSize: 16 }} />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={feature}
+                                    primaryTypographyProps={{ variant: 'body2' }}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                </CardContent>
+                <CardActions sx={{ p: 2, pt: 0 }}>
+                    <Button
+                        size="small"
+                        onClick={() => handleServiceExpand(service.id)}
+                        sx={{ fontWeight: 600 }}
+                    >
+                        Learn More
+                    </Button>
+                </CardActions>
+            </Card>
+        </Grow>
+    );
+
+    const ServiceDetail = ({ service }) => (
+        <Accordion
+            expanded={expandedService === service.id}
+            onChange={() => handleServiceExpand(service.id)}
+            sx={{
+                background: 'transparent',
+                mb: 2,
+                '&:before': { display: 'none' },
+                borderRadius: '8px !important',
+                overflow: 'hidden',
+                border: '1px solid',
+                borderColor: alpha(theme.palette.divider, 0.1),
+            }}
+        >
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{
+                    background: alpha(theme.palette.background.paper, 0.8),
+                    py: 2,
+                    '&.Mui-expanded': {
+                        minHeight: '64px',
+                    }
+                }}
+            >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        borderRadius: '10px',
+                        background: service.color,
+                        color: 'white'
+                    }}>
+                        {service.icon}
+                    </Box>
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                        {service.title}
+                    </Typography>
+                </Box>
+            </AccordionSummary>
+            <AccordionDetails sx={{
+                background: alpha(theme.palette.background.default, 0.5),
+                pt: 3
+            }}>
+                <Box sx={{ mb: 4 }}>
+                    <Typography variant="h5" sx={{
+                        mb: 2,
+                        fontWeight: 700,
+                        background: service.color,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text'
+                    }}>
+                        {service.tagline}
+                    </Typography>
+
+                    <Typography variant="body1" sx={{ mb: 3, color: 'text.secondary' }}>
+                        {service.overview}
+                    </Typography>
+                </Box>
+
+                <Grid container spacing={4}>
+                    <Grid item xs={12} md={6}>
+                        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                            What We Offer
+                        </Typography>
+                        <List>
+                            {service.features.map((feature, idx) => (
+                                <ListItem key={idx} sx={{ px: 0 }}>
+                                    <ListItemIcon sx={{ minWidth: 36 }}>
+                                        <CheckCircleIcon sx={{ color: 'success.main' }} />
+                                    </ListItemIcon>
+                                    <ListItemText primary={feature} />
+                                </ListItem>
+                            ))}
+                        </List>
+
+                        {service.platforms && (
+                            <Box sx={{ mt: 3 }}>
+                                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                                    Platforms We Specialize In
+                                </Typography>
+                                <Stack direction="row" spacing={1} flexWrap="wrap">
+                                    {service.platforms.map((platform, idx) => (
+                                        <Chip
+                                            key={idx}
+                                            label={platform}
+                                            size="small"
+                                            sx={{ mb: 1, mr: 1 }}
+                                        />
+                                    ))}
+                                </Stack>
+                            </Box>
+                        )}
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        {service.benefits && (
+                            <>
+                                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                                    Benefits You Get
+                                </Typography>
+                                <List>
+                                    {service.benefits.map((benefit, idx) => (
+                                        <ListItem key={idx} sx={{ px: 0 }}>
+                                            <ListItemIcon sx={{ minWidth: 36 }}>
+                                                <StarIcon sx={{ color: 'warning.main' }} />
+                                            </ListItemIcon>
+                                            <ListItemText primary={benefit} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </>
+                        )}
+
+                        {service.idealFor && (
+                            <Box sx={{ mt: 3 }}>
+                                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                                    Who This Service Is Best For
+                                </Typography>
+                                <Stack direction="row" spacing={1} flexWrap="wrap">
+                                    {service.idealFor.map((item, idx) => (
+                                        <Chip
+                                            key={idx}
+                                            label={item}
+                                            variant="outlined"
+                                            size="small"
+                                            sx={{ mb: 1, mr: 1 }}
+                                        />
+                                    ))}
+                                </Stack>
+                            </Box>
+                        )}
+                    </Grid>
+                </Grid>
+
+                <Box sx={{ mt: 4, textAlign: 'center' }}>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        sx={{
+                            px: 4,
+                            py: 1.5,
+                            borderRadius: 2,
+                            background: service.color,
+                            fontWeight: 700,
+                            '&:hover': {
+                                transform: 'translateY(-2px)',
+                                boxShadow: theme.shadows[6]
+                            }
+                        }}
+                    >
+                        Start with {service.title.split(' ')[0]}
+                    </Button>
+                </Box>
+            </AccordionDetails>
+        </Accordion>
+    );
+
+    return (
+        <Box sx={{
+            minHeight: '100vh',
+            background: `linear-gradient(135deg, 
+                ${alpha(theme.palette.background.default, 1)} 0%, 
+                ${alpha(theme.palette.background.paper, 0.8)} 100%
+            )`,
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '400px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                opacity: 0.05,
+                transform: 'skewY(-6deg)',
+                transformOrigin: 'top left'
+            }
+        }}>
+            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+                {/* Hero Section */}
+                <Box sx={{ py: 8, textAlign: 'center' }}>
+                    <Fade in={loaded} timeout={500}>
+                        <Typography
+                            variant="h1"
+                            sx={{
+                                fontWeight: 900,
+                                mb: 3,
+                                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                                animation: `${fadeInUp} 0.8s ease-out`
+                            }}
+                        >
+                            AI-Powered Marketing Solutions
+                        </Typography>
+                    </Fade>
+
+                    <Fade in={loaded} timeout={800}>
+                        <Typography
+                            variant="h5"
+                            sx={{
+                                mb: 4,
+                                color: 'text.secondary',
+                                maxWidth: 800,
+                                mx: 'auto',
+                                animation: `${fadeInUp} 0.8s ease-out 0.2s both`
+                            }}
+                        >
+                            Built for Scalable Growth. We don't offer random services. We build complete growth ecosystems.
+                        </Typography>
+                    </Fade>
+
+                    <Fade in={loaded} timeout={1000}>
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                mb: 6,
+                                maxWidth: 900,
+                                mx: 'auto',
+                                fontSize: '1.1rem',
+                                lineHeight: 1.7,
+                                animation: `${fadeInUp} 0.8s ease-out 0.4s both`
+                            }}
+                        >
+                            At AI Growth Exa, we don't offer random services. We build complete growth ecosystems where AI,
+                            performance marketing, automation, and creativity work together. Whether your goal is leads,
+                            sales, brand authority, or scaling, we design the system around your business not templates.
+                        </Typography>
+                    </Fade>
+                </Box>
+
+                {/* Philosophy Section */}
+                <Box sx={{ py: 6, mb: 6 }}>
+                    <Typography
+                        variant="h3"
+                        align="center"
+                        sx={{
+                            mb: 6,
+                            fontWeight: 800,
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text'
+                        }}
+                    >
+                        Our Core Philosophy
+                    </Typography>
+
+                    <Typography
+                        variant="h5"
+                        align="center"
+                        sx={{
+                            mb: 6,
+                            maxWidth: 800,
+                            mx: 'auto',
+                            fontStyle: 'italic',
+                            color: 'text.secondary'
+                        }}
+                    >
+                        "Most agencies focus on activities. We focus on outcomes."
+                    </Typography>
+
+                    <Grid container spacing={4}>
+                        {[
+                            { icon: <AutoAwesomeIcon />, title: "AI-driven", desc: "Leveraging artificial intelligence for smarter decisions" },
+                            { icon: <TrendingUpIcon />, title: "ROI-focused", desc: "Every strategy measured by return on investment" },
+                            { icon: <RocketLaunchIcon />, title: "Designed to scale", desc: "Growth systems that expand with your business" },
+                            { icon: <GroupsIcon />, title: "Integrated journeys", desc: "Seamless customer experiences across all touchpoints" }
+                        ].map((item, index) => (
+                            <Grid item xs={12} sm={6} md={3} key={index}>
+                                <Fade in={loaded} timeout={index * 200 + 300}>
+                                    <Box sx={{
+                                        textAlign: 'center',
+                                        p: 3,
+                                        height: '100%',
+                                        borderRadius: 2,
+                                        border: '1px solid',
+                                        borderColor: alpha(theme.palette.divider, 0.1),
+                                        background: alpha(theme.palette.background.paper, 0.6),
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            transform: 'translateY(-4px)',
+                                            borderColor: alpha(theme.palette.primary.main, 0.2),
+                                            background: alpha(theme.palette.background.paper, 0.9),
+                                        }
+                                    }}>
+                                        <Box sx={{
+                                            display: 'inline-flex',
+                                            p: 2,
+                                            borderRadius: '50%',
+                                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                            color: 'white',
+                                            mb: 2
+                                        }}>
+                                            {item.icon}
+                                        </Box>
+                                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+                                            {item.title}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {item.desc}
+                                        </Typography>
+                                    </Box>
+                                </Fade>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+
+                {/* All Services Grid */}
+                <Box sx={{ py: 6 }}>
+                    <Typography
+                        variant="h3"
+                        align="center"
+                        sx={{
+                            mb: 6,
+                            fontWeight: 800,
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text'
+                        }}
+                    >
+                        Our Services
+                    </Typography>
+
+                    <Typography
+                        variant="h6"
+                        align="center"
+                        sx={{
+                            mb: 6,
+                            color: 'text.secondary',
+                            maxWidth: 900,
+                            mx: 'auto'
+                        }}
+                    >
+                        Whether your goal is leads, sales, brand authority, or scaling, we design the system around your business — not templates.
+                    </Typography>
+
+                    <Grid container spacing={3}>
+                        {services.map((service, index) => (
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={service.id}>
+                                <ServiceCard service={service} index={index} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+
+                {/* Detailed Service Breakdown */}
+                <Box sx={{ py: 6 }}>
+                    <Typography
+                        variant="h3"
+                        align="center"
+                        sx={{
+                            mb: 6,
+                            fontWeight: 800,
+                            background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text'
+                        }}
+                    >
+                        Detailed Service Breakdown
+                    </Typography>
+
+                    {services.map((service) => (
+                        <ServiceDetail key={service.id} service={service} />
+                    ))}
+                </Box>
+
+                {/* CTA Section */}
+                <Box sx={{ py: 8, textAlign: 'center' }}>
+                    <Fade in={loaded} timeout={500}>
+                        <Typography
+                            variant="h3"
+                            sx={{
+                                mb: 4,
+                                fontWeight: 800,
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text'
+                            }}
+                        >
+                            Ready to Scale Your Business?
+                        </Typography>
+                    </Fade>
+
+                    <Fade in={loaded} timeout={800}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            sx={{
+                                px: 6,
+                                py: 2,
+                                borderRadius: 2,
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                fontSize: '1.1rem',
+                                fontWeight: 700,
+                                '&:hover': {
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: theme.shadows[8]
+                                }
+                            }}
+                        >
+                            Start Your Growth Journey
+                        </Button>
+                    </Fade>
+                </Box>
+            </Container>
+        </Box>
+    );
+};
+
+export default ServicesPage;
