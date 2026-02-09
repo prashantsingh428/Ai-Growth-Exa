@@ -13,10 +13,12 @@ const AppRoutes = () => {
         <MainLayout>
             <ScrollToTop />
             <Routes>
+
                 <Route path="/" element={<Home />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/careers" element={<Career />} />
                 <Route path="*" element={<NotFound />} />
+                
             </Routes>
         </MainLayout>
     );

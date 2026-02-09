@@ -135,7 +135,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
 
                 <form onSubmit={handleSubmit} className="p-6">
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        {/* Personal Information */}
+                        {}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <FaUserTie className="text-blue-500" />
@@ -203,7 +203,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                             </div>
                         </div>
 
-                        {/* Professional Information */}
+                        {}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <FaBriefcase className="text-blue-500" />
@@ -289,7 +289,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Resume Upload */}
+                    {}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
                             <FaUpload className="text-blue-500" />
@@ -322,7 +322,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Social Links */}
+                    {}
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -363,7 +363,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Additional Information */}
+                    {}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
                             <FaGraduationCap className="text-blue-500" />
@@ -405,7 +405,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Terms and Submit */}
+                    {}
                     <div className="border-t border-gray-200 pt-6">
                         <div className="flex items-start mb-6">
                             <input
@@ -443,15 +443,15 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
     );
 };
 
-// General Application Modal Component
+
 const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
     const [formData, setFormData] = useState({
-        name: '',
+        name:'',
         email: '',
         phone: '',
         location: '',
-        currentRole: '',
-        expectedSalary: '',
+        currentRole:'',
+        expectedSalary:'',
         experience: 'fresher',
         resume: null,
         resumeName: '',
@@ -578,7 +578,7 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        {/* Personal Information */}
+                        {}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
 
@@ -628,7 +628,7 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                             </div>
                         </div>
 
-                        {/* Professional Information */}
+                        {}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900">Professional Background</h3>
 
@@ -680,7 +680,7 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Resume Upload */}
+                    {}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Resume / CV *</h3>
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">

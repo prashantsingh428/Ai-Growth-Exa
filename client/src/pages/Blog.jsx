@@ -35,7 +35,6 @@ import {
     Settings
 } from "lucide-react";
 
-/* ================= ANIMATION VARIANTS ================= */
 const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -80,7 +79,6 @@ const cardHoverVariants = {
     }
 };
 
-/* ================= PAGE ================= */
 export default function BlogInsights() {
     const [showContent, setShowContent] = useState(false);
     const [activeFilter, setActiveFilter] = useState("all");
@@ -88,13 +86,13 @@ export default function BlogInsights() {
     const heroRef = useRef(null);
     const isHeroInView = useInView(heroRef, { once: true });
 
-    // Page load animation
+    // Page 
     useEffect(() => {
         const timer = setTimeout(() => setShowContent(true), 1200);
         return () => clearTimeout(timer);
     }, []);
 
-    // Blog categories based on your content
+    // Blog categories 
     const categories = [
         { id: "all", label: "All Articles", icon: <BookOpen size={16} />, count: 42 },
         { id: "ai", label: "AI Marketing Trends", icon: <Brain size={16} />, count: 18 },
@@ -114,7 +112,7 @@ export default function BlogInsights() {
 
     return (
         <div className="bg-gradient-to-b from-slate-50 to-white text-slate-900 min-h-screen overflow-x-hidden">
-            {/* ================= HERO ================= */}
+            {}
             <section
                 ref={heroRef}
                 className="relative overflow-hidden border-b border-slate-200/50"
@@ -122,7 +120,7 @@ export default function BlogInsights() {
                     background: "linear-gradient(135deg, #f8fafc 0%, #f0f9ff 50%, #eff6ff 100%)"
                 }}
             >
-                {/* Animated background elements */}
+                {}
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
                     <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
@@ -168,8 +166,7 @@ export default function BlogInsights() {
                     >
                         Future-Focused. Decision-Ready. Smart Moves. Real Impact.
                     </motion.p>
-
-                    {/* Search Bar */}
+                    {}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -188,7 +185,7 @@ export default function BlogInsights() {
                         </div>
                     </motion.div>
 
-                    {/* Stats */}
+                    {}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -215,7 +212,7 @@ export default function BlogInsights() {
                 </div>
             </section>
 
-            {/* ================= CONTENT ================= */}
+            {}
             <AnimatePresence>
                 {showContent && (
                     <motion.div
@@ -225,7 +222,7 @@ export default function BlogInsights() {
                         exit="hidden"
                         className="relative"
                     >
-                        {/* INTRO SECTION */}
+                        {}
                         <motion.section
                             variants={itemVariants}
                             className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24"
@@ -247,7 +244,7 @@ export default function BlogInsights() {
                                     </p>
                                 </div>
 
-                                {/* Breakdown Points */}
+                                {}
                                 <div className="mt-10 max-w-2xl mx-auto">
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         {[
@@ -509,7 +506,7 @@ export default function BlogInsights() {
                             </div>
                         </motion.section>
 
-                        {/* AUTOMATION GUIDES SECTION */}
+                        {}
                         <motion.section
                             variants={itemVariants}
                             className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24"
@@ -566,10 +563,10 @@ export default function BlogInsights() {
                             </div>
                         </motion.section>
 
-                        {/* NEWSLETTER & SIDEBAR CONTENT */}
+                        {}
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
                             <div className="grid lg:grid-cols-3 gap-8">
-                                {/* Main Newsletter CTA */}
+                                {}
                                 <motion.div
                                     initial={{ opacity: 0, y: 40 }}
                                     whileInView={{ opacity: 1, y: 0 }}
@@ -617,7 +614,7 @@ export default function BlogInsights() {
                                     </div>
                                 </motion.div>
 
-                                {/* Sidebar Navigation */}
+                                {}
                                 <motion.div
                                     initial={{ opacity: 0, x: 40 }}
                                     whileInView={{ opacity: 1, x: 0 }}
@@ -669,7 +666,7 @@ export default function BlogInsights() {
                 )}
             </AnimatePresence>
 
-            {/* Custom CSS for animations */}
+            {}
             <style>{`
         @keyframes blob {
           0% {
@@ -702,7 +699,7 @@ export default function BlogInsights() {
     );
 }
 
-/* ================= ENHANCED BLOG CARD ================= */
+
 function EnhancedBlogCard({ index }) {
     const cardRef = useRef(null);
     const isInView = useInView(cardRef, { once: true, margin: "-100px" });

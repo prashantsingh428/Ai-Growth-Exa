@@ -5,7 +5,7 @@ const Loader = ({ onComplete }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Check if we've already shown the loader in this session
+        
         const hasLoaded = sessionStorage.getItem('hasLoaded');
 
         if (hasLoaded) {
@@ -17,12 +17,12 @@ const Loader = ({ onComplete }) => {
             setIsLoading(false);
             sessionStorage.setItem('hasLoaded', 'true');
             if (onComplete) onComplete();
-        }, 3500); // 3.5s total duration
+        }, 3500); 
 
         return () => clearTimeout(timer);
     }, [onComplete]);
 
-    // If already loaded in this session, return nothing immediately to prevent flash
+    
     if (sessionStorage.getItem('hasLoaded')) return null;
 
     return (
