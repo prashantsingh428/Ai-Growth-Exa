@@ -1,32 +1,48 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+gsap.registerPlugin(ScrollTrigger);
 
 const SmoothScroll = ({ children }) => {
+    const location = useLocation();
+    const previousPath = useRef(location.pathname);
+
+    
+    useLayoutEffect(() => {
+        if (previousPath.current !== location.pathname) {
+            ScrollTrigger.getAll().forEach(trigger => {
+                if (trigger.pin) {
+                    trigger.kill(true);
+                } else {
+                    trigger.kill();
+                }
+            });
+
+            gsap.killTweensOf("*");
+
+            ScrollTrigger.clearScrollMemory();
+
+            window.scrollTo(0, 0);
+        }
+
+        previousPath.current = location.pathname;
+    }, [location.pathname]);
+
     useEffect(() => {
-        const smoother = ScrollSmoother.create({
-            wrapper: '#smooth-wrapper',
-            content: '#smooth-content',
-            smooth: 1.5,
-            effects: true,
-            smoothTouch: 0.1,
-        });
+        const timeoutId = setTimeout(() => {
+            ScrollTrigger.refresh(true);
+        }, 100);
 
         return () => {
-            smoother.kill();
+            clearTimeout(timeoutId);
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
+            gsap.killTweensOf("*");
         };
-    }, []);
+    }, [location.pathname]);
 
-    return (
-        <div id="smooth-wrapper">
-            <div id="smooth-content">
-                {children}
-            </div>
-        </div>
-    );
+    return <>{children}</>;
 };
 
 export default SmoothScroll;

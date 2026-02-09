@@ -5,11 +5,15 @@ const FloatingParticles = ({ theme = 'auto' }) => {
 
     useEffect(() => {
         const canvas = canvasRef.current;
+        if (!canvas) return;
+
         const ctx = canvas.getContext('2d');
         let animationFrameId;
         let particles = [];
+        let isMounted = true;
 
         const resizeCanvas = () => {
+            if (!isMounted) return;
             const parent = canvas.parentElement;
             if (parent) {
                 canvas.width = parent.offsetWidth;
@@ -78,6 +82,8 @@ const FloatingParticles = ({ theme = 'auto' }) => {
         createParticles();
 
         const animate = () => {
+            if (!isMounted) return;
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(particle => {
@@ -115,8 +121,11 @@ const FloatingParticles = ({ theme = 'auto' }) => {
         animate();
 
         return () => {
+            isMounted = false;
             resizeObserver.disconnect();
-            cancelAnimationFrame(animationFrameId);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
         };
     }, [theme]);
 

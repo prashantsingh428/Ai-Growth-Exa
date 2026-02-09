@@ -82,6 +82,7 @@ const BoldStatementSection = () => {
 
   /* ================= MOUSE 3D TILT ================= */
   const handleMouseMove = (e) => {
+    if (!imageWrapRef.current) return;
     const bounds = imageWrapRef.current.getBoundingClientRect()
     const x = e.clientX - bounds.left
     const y = e.clientY - bounds.top
@@ -98,6 +99,7 @@ const BoldStatementSection = () => {
   }
 
   const resetTilt = () => {
+    if (!imageWrapRef.current) return;
     gsap.to(imageWrapRef.current, {
       rotateX: 0,
       rotateY: 0,
@@ -105,6 +107,7 @@ const BoldStatementSection = () => {
       ease: "power3.out",
     })
   }
+
 
   return (
     <section

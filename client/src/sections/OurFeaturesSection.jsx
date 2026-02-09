@@ -86,8 +86,8 @@ const OurFeaturesSection = () => {
                     start: "top 20%",
                     end: () => `+=${scrollDistance}`,
                     scrub: 1,
-                    pin: true,
-                    anticipatePin: 1,
+                    // pin: true, // DISABLED: Causes NotFoundError with React unmounting
+                    // anticipatePin: 1, // DISABLED: Related to pinning
                 }
             });
 

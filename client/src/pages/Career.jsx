@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import  axios from 'react'
-import api from "../services/api";
+import api from "../api/api";
 
 import {
     FaSearch,
@@ -92,10 +92,8 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
             data.append("noticePeriod", formData.noticePeriod);
             data.append("coverLetter", formData.coverLetter);
 
-            // FILE — MUST MATCH upload.single("resume")
-            if (formData.resume) {
-                data.append("resume", formData.resume);
-            }
+            //  FILE — MUST MATCH upload.single("resume")
+            data.append("resume", formData.resume);
 
             const res = await api.post("/applications/apply", data, {
                 headers: {
@@ -113,6 +111,8 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
             setFormData(prev => ({ ...prev, isSubmitting: false }));
         }
     };
+    // 4️⃣ IMPORTANT CHECKLIST (agar yaha galti hui to error aayega)
+    // ✅ Backend
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -135,7 +135,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
 
                 <form onSubmit={handleSubmit} className="p-6">
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        {/* Personal Information */}
+                        {}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <FaUserTie className="text-blue-500" />
@@ -203,7 +203,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                             </div>
                         </div>
 
-                        {/* Professional Information */}
+                        {}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <FaBriefcase className="text-blue-500" />
@@ -289,7 +289,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Resume Upload */}
+                    {}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
                             <FaUpload className="text-blue-500" />
@@ -322,7 +322,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Social Links */}
+                    {}
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -363,7 +363,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Additional Information */}
+                    {}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
                             <FaGraduationCap className="text-blue-500" />
@@ -405,7 +405,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Terms and Submit */}
+                    {}
                     <div className="border-t border-gray-200 pt-6">
                         <div className="flex items-start mb-6">
                             <input
@@ -443,28 +443,25 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
     );
 };
 
-// General Application Modal Component
+
 const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
     const [formData, setFormData] = useState({
-        name: '',
+        name:'',
         email: '',
         phone: '',
         location: '',
-        currentRole: '',
-        currentSalary: '',
-        expectedSalary: '',
+        currentRole:'',
+        expectedSalary:'',
         experience: 'fresher',
-        yearsOfExperience: '',
         resume: null,
         resumeName: '',
         linkedin: '',
-        github: '',
         coverLetter: '',
-        noticePeriod: 'immediate',
         interestRole: '',
-        selectedJobId: '',
         isSubmitting: false
     });
+
+    const [selectedJob, setSelectedJob] = useState(null);
 
     const handleInputChange = (e) => {
         const { name, value, type, files } = e.target;
@@ -485,6 +482,7 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
         }
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -497,24 +495,17 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
             data.append("email", formData.email);
             data.append("phone", formData.phone);
             data.append("location", formData.location);
-            data.append("currentRole", formData.currentRole);
             data.append("experience", formData.experience);
-            data.append("yearsOfExperience", formData.yearsOfExperience);
-            data.append("currentSalary", formData.currentSalary);
+            data.append("currentRole", formData.currentRole);
             data.append("expectedSalary", formData.expectedSalary);
             data.append("linkedin", formData.linkedin);
-            data.append("github", formData.github);
-            data.append("noticePeriod", formData.noticePeriod);
             data.append("coverLetter", formData.coverLetter);
             data.append("interestRole", formData.interestRole);
-            data.append("selectedJobId", formData.selectedJobId);
 
-            // FILE — MUST MATCH upload.single("resume")
-            if (formData.resume) {
-                data.append("resume", formData.resume);
-            }
+            //  FILE — MUST MATCH upload.single("resume")
+            data.append("resume", formData.resume);
 
-            const res = await api.post("/applications/apply", data, {
+            const res = await api.post("/careers/apply", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -559,9 +550,19 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                 <select
                                     className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    name="selectedJobId"
-                                    value={formData.selectedJobId}
-                                    onChange={handleInputChange}
+                                    name="interestRole"
+                                    value={formData.interestRole}
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        if (e.target.value !== 'general') {
+                                            const job = jobOpenings.find(j => j.id === parseInt(e.target.value));
+                                            if (job) {
+                                                setSelectedJob(job);
+                                            }
+                                        } else {
+                                            setSelectedJob({ title: "General Application", department: "Various" });
+                                        }
+                                    }}
                                     required
                                 >
                                     <option value="">Select a role</option>
@@ -577,7 +578,7 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        {/* Personal Information */}
+                        {}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
 
@@ -625,24 +626,9 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                                     placeholder="+1 (555) 123-4567"
                                 />
                             </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Current Location *
-                                </label>
-                                <input
-                                    type="text"
-                                    name="location"
-                                    value={formData.location}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    placeholder="City, Country"
-                                />
-                            </div>
                         </div>
 
-                        {/* Professional Information */}
+                        {}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900">Professional Background</h3>
 
@@ -661,28 +647,8 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                                     <option value="junior">Junior (1-3 years)</option>
                                     <option value="mid">Mid-Level (3-5 years)</option>
                                     <option value="senior">Senior (5+ years)</option>
-                                    <option value="lead">Lead (8+ years)</option>
                                 </select>
                             </div>
-
-                            {formData.experience !== 'fresher' && (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Years of Experience *
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="yearsOfExperience"
-                                        value={formData.yearsOfExperience}
-                                        onChange={handleInputChange}
-                                        required={formData.experience !== 'fresher'}
-                                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                        placeholder="3"
-                                        min="0"
-                                        max="50"
-                                    />
-                                </div>
-                            )}
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -700,46 +666,21 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Current Salary (Annual)
+                                    Expected Salary Range
                                 </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaDollarSign className="text-gray-400" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        name="currentSalary"
-                                        value={formData.currentSalary}
-                                        onChange={handleInputChange}
-                                        className="w-full pl-10 px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                        placeholder="e.g., $60,000"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Expected Salary Range *
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaDollarSign className="text-gray-400" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        name="expectedSalary"
-                                        value={formData.expectedSalary}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full pl-10 px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                        placeholder="e.g., $70,000 - $90,000"
-                                    />
-                                </div>
+                                <input
+                                    type="text"
+                                    name="expectedSalary"
+                                    value={formData.expectedSalary}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                                    placeholder="e.g., $70,000 - $90,000"
+                                />
                             </div>
                         </div>
                     </div>
 
-                    {/* Resume Upload */}
+                    {}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Resume / CV *</h3>
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
@@ -769,71 +710,11 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {/* Social Links */}
-                    <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                LinkedIn Profile
-                            </label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <FaLinkedin className="text-blue-500" />
-                                </div>
-                                <input
-                                    type="url"
-                                    name="linkedin"
-                                    value={formData.linkedin}
-                                    onChange={handleInputChange}
-                                    className="w-full pl-10 px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    placeholder="https://linkedin.com/in/username"
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                GitHub Profile
-                            </label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <FaGithub className="text-gray-700" />
-                                </div>
-                                <input
-                                    type="url"
-                                    name="github"
-                                    value={formData.github}
-                                    onChange={handleInputChange}
-                                    className="w-full pl-10 px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    placeholder="https://github.com/username"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Additional Information */}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h3>
 
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Notice Period *
-                            </label>
-                            <select
-                                name="noticePeriod"
-                                value={formData.noticePeriod}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                            >
-                                <option value="immediate">Immediate (0-15 days)</option>
-                                <option value="1month">1 Month</option>
-                                <option value="2months">2 Months</option>
-                                <option value="3months">3 Months</option>
-                                <option value="negotiable">Negotiable</option>
-                            </select>
-                        </div>
-
-                        <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Why do you want to join AI Growth Exa? *
                             </label>
@@ -845,6 +726,20 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                                 rows="4"
                                 className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
                                 placeholder="Share your motivation for joining our team..."
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                LinkedIn Profile (Optional)
+                            </label>
+                            <input
+                                type="url"
+                                name="linkedin"
+                                value={formData.linkedin}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                                placeholder="https://linkedin.com/in/username"
                             />
                         </div>
                     </div>
@@ -869,20 +764,8 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                                 disabled={formData.isSubmitting}
                                 className={`flex-1 bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 ${formData.isSubmitting ? 'opacity-50 cursor-not-allowed' : 'transform hover:scale-105'} flex items-center justify-center gap-2`}
                             >
-                                {formData.isSubmitting ? (
-                                    <>
-                                        <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                                        </svg>
-                                        Submitting...
-                                    </>
-                                ) : (
-                                    <>
-                                        Start Application Journey
-                                        <FaArrowRight />
-                                    </>
-                                )}
+                                {formData.isSubmitting ? 'Submitting...' : 'Start Application Journey'}
+                                {!formData.isSubmitting && <FaArrowRight />}
                             </button>
                             <button
                                 type="button"
@@ -901,6 +784,13 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
 
 // Main Careers Page Component
 const CareersPage = () => {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 300);
+        return () => clearTimeout(timer);
+    }, []);
+
     const [searchTerm, setSearchTerm] = useState('');
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeTab, setActiveTab] = useState('all');
@@ -1047,18 +937,43 @@ const CareersPage = () => {
 
     // Handle general application button click
     const handleGeneralApplyClick = () => {
+        setSelectedJob(null);
         setShowGeneralApplicationModal(true);
     };
 
     // Handle job form submission
-    const handleJobSubmit = () => {
-        // This is handled inside the modal
+    const handleJobSubmit = (formData) => {
+        console.log('Job form submitted:', formData);
+        console.log('Applied for job:', selectedJob?.title);
+
+        // Simulate API call
+        setTimeout(() => {
+            alert('Application submitted successfully! We will get back to you soon.');
+            setShowJobApplicationModal(false);
+        }, 1000);
     };
 
     // Handle general form submission
-    const handleGeneralSubmit = () => {
-        // This is handled inside the modal
+    const handleGeneralSubmit = (formData, selectedJob) => {
+        console.log('General form submitted:', formData);
+        if (selectedJob) {
+            console.log('Selected job:', selectedJob.title);
+        }
+
+        // Simulate API call
+        setTimeout(() => {
+            alert('Application submitted successfully! We will get back to you soon.');
+            setShowGeneralApplicationModal(false);
+        }, 1000);
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-blue-50">
@@ -1190,12 +1105,12 @@ const CareersPage = () => {
                                 onMouseLeave={() => setHoveredCard(null)}
                             >
                                 <div className={`
-                                    relative h-full bg-gradient-to-br ${item.gradient} 
-                                    rounded-2xl p-8 shadow-2xl 
-                                    transform-gpu transition-all duration-500 ease-out
-                                    ${hoveredCard === index ? 'shadow-2xl shadow-purple-500/30' : 'shadow-xl'}
-                                    border border-white/20
-                                `}>
+                  relative h-full bg-gradient-to-br ${item.gradient} 
+                  rounded-2xl p-8 shadow-2xl 
+                  transform-gpu transition-all duration-500 ease-out
+                  ${hoveredCard === index ? 'shadow-2xl shadow-purple-500/30' : 'shadow-xl'}
+                  border border-white/20
+                `}>
                                     <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
 
                                     <div className="relative z-10">
@@ -1438,13 +1353,10 @@ const CareersPage = () => {
             </div>
 
             {/* Modals */}
-            {showJobApplicationModal && selectedJob && (
+            {showJobApplicationModal && (
                 <JobApplicationModal
                     job={selectedJob}
-                    onClose={() => {
-                        setShowJobApplicationModal(false);
-                        setSelectedJob(null);
-                    }}
+                    onClose={() => setShowJobApplicationModal(false)}
                     onSubmit={handleJobSubmit}
                 />
             )}

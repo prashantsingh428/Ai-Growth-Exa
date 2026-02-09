@@ -108,7 +108,6 @@ const FaqItem = ({ question, answer, isOpen, onClick }) => {
     return (
         <div className={`mb-4 rounded-2xl border transition-all duration-500 ${isOpen ? 'bg-white/10 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.1)]' : 'bg-white/5 border-white/5 hover:bg-white/8 hover:border-white/10'}`}>
             <button
-                fullWidth
                 onClick={onClick}
                 className="w-full px-4 sm:px-6 md:px-8 py-5 sm:py-6 md:py-7 flex items-center justify-between text-left group transition-all duration-300"
             >

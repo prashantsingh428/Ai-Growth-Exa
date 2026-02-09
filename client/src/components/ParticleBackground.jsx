@@ -5,10 +5,14 @@ const ParticleBackground = () => {
 
     useEffect(() => {
         const canvas = canvasRef.current;
+        if (!canvas) return;
+
         const ctx = canvas.getContext('2d');
         let animationFrameId;
+        let isMounted = true;
 
         const setCanvasSize = () => {
+            if (!isMounted || !canvas) return;
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         };
@@ -49,6 +53,8 @@ const ParticleBackground = () => {
         }
 
         const animate = () => {
+            if (!isMounted) return;
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach((particle, index) => {
@@ -78,8 +84,11 @@ const ParticleBackground = () => {
         animate();
 
         return () => {
+            isMounted = false;
             window.removeEventListener('resize', setCanvasSize);
-            cancelAnimationFrame(animationFrameId);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
         };
     }, []);
 

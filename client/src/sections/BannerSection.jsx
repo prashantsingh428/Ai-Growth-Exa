@@ -15,8 +15,8 @@ const BannerSection = () => {
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: "center center",
-                pin: true,
-                pinSpacing: false,
+                // pin: true, // DISABLED: Causes NotFoundError with React unmounting
+                // pinSpacing: false, // DISABLED: Related to pinning
                 end: "+=100%"
             });
 

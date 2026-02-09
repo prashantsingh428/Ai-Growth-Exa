@@ -46,15 +46,32 @@ const TestimonialsSection = () => {
 
     useEffect(() => {
         const wrapper = wrapperRef.current;
-        const boxes = cardsRef.current;
+        const boxes = cardsRef.current.filter(Boolean);
 
-        let activeElement;
+        if (!wrapper || boxes.length === 0) return;
 
-        // Helper function to create infinite loop
+        let loop = null;
+        let draggableInstance = null;
+
+        const handleMouseEnter = () => {
+            if (loop) loop.pause();
+        };
+
+        const handleMouseLeave = () => {
+            if (loop && !draggableInstance?.isDragging) {
+                loop.play();
+            }
+        };
+
         function horizontalLoop(items, config) {
             items = gsap.utils.toArray(items);
             config = config || {};
-            let tl = gsap.timeline({ repeat: -1, paused: config.paused, defaults: { ease: "none" }, onReverseComplete: () => tl.totalTime(tl.rawTime() + tl.duration() * 100) }),
+            let tl = gsap.timeline({
+                repeat: -1,
+                paused: config.paused,
+                defaults: { ease: "none" },
+                onReverseComplete: () => tl.totalTime(tl.rawTime() + tl.duration() * 100)
+            }),
                 length = items.length,
                 startX = items[0].offsetLeft,
                 times = [],
@@ -62,10 +79,10 @@ const TestimonialsSection = () => {
                 xPercents = [],
                 curIndex = 0,
                 pixelsPerSecond = (config.speed || 1) * 100,
-                snap = config.snap === false ? v => v : gsap.utils.snap(config.snap || 1), // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's x would be 0, the second 20, the third 40, the fourth 60, the fifth 80, and the sixth 100. x as a Function-based value is really useful here.
+                snap = config.snap === false ? v => v : gsap.utils.snap(config.snap || 1),
                 totalWidth, curX, distanceToStart, distanceToLoop, item, i;
 
-            gsap.set(items, { // convert "x" to "xPercent" to make things responsive, and populate the widths/xPercents Arrays to make lookups faster.
+            gsap.set(items, {
                 xPercent: (i, el) => {
                     let w = widths[i] = parseFloat(gsap.getProperty(el, "width", "px"));
                     xPercents[i] = snap(parseFloat(gsap.getProperty(el, "x", "px")) / w * 100 + gsap.getProperty(el, "xPercent"));
@@ -86,10 +103,10 @@ const TestimonialsSection = () => {
             }
             function toIndex(index, vars) {
                 vars = vars || {};
-                (Math.abs(index - curIndex) > length / 2) && (index += index > curIndex ? -length : length); // always go in the shortest direction
+                (Math.abs(index - curIndex) > length / 2) && (index += index > curIndex ? -length : length);
                 let newIndex = gsap.utils.wrap(0, length, index),
                     time = times[newIndex];
-                if (time > tl.time() !== index > curIndex) { // if we're wrapping the timeline's playhead, make the proper adjustments
+                if (time > tl.time() !== index > curIndex) {
                     vars.modifiers = { time: gsap.utils.wrap(0, tl.duration()) };
                     time += tl.duration() * (index > curIndex ? 1 : -1);
                 }
@@ -102,7 +119,7 @@ const TestimonialsSection = () => {
             tl.current = () => curIndex;
             tl.toIndex = (index, vars) => toIndex(index, vars);
             tl.times = times;
-            tl.progress(1, true).progress(0, true); // pre-render for performance
+            tl.progress(1, true).progress(0, true);
             if (config.reversed) {
                 tl.vars.onReverseComplete();
                 tl.reverse();
@@ -110,10 +127,10 @@ const TestimonialsSection = () => {
             if (config.draggable && typeof (Draggable) === "function") {
                 let proxy = document.createElement("div"),
                     wrap = gsap.utils.wrap(0, 1),
-                    ratio, startProgress, draggable, dragSnap, roundFactor,
-                    align = () => tl.progress(wrap(startProgress + (draggable.startX - draggable.x) * ratio)),
-                    syncIndex = () => tl.closestIndex(true);
-                typeof (Draggable) === "function" ? draggable = Draggable.create(proxy, {
+                    ratio, startProgress,
+                    align = () => tl.progress(wrap(startProgress + (draggableInstance.startX - draggableInstance.x) * ratio));
+
+                draggableInstance = Draggable.create(proxy, {
                     trigger: items[0].parentNode,
                     type: "x",
                     onPress() {
@@ -127,41 +144,51 @@ const TestimonialsSection = () => {
                     onThrowUpdate: align,
                     overshootTolerance: 0,
                     inertia: true,
-                    snap: value => { // note: if the user presses and releases in the middle of a throw, due to the built-in physics of Draggable, it could hit the limit custom defined in "snap", so we need to account for that.
-                        if (Math.abs(startProgress / ratio - this.x) < 10) return this.x + 0.001; // ignore clicks
+                    snap: function (value) {
+                        if (Math.abs(startProgress / ratio - this.x) < 10) return this.x + 0.001;
                         return Math.round(value / totalWidth) * totalWidth;
                     },
                     onRelease() {
-                        if (!this.tween || !this.tween.isActive()) { // if the user just clicks, resume the timeline
+                        if (!this.tween || !this.tween.isActive()) {
                             tl.play();
                         }
                     },
                     onClick() {
                         tl.play();
                     }
-                })[0] : console.warn("Please gsap.registerPlugin(Draggable)");
+                })[0];
             }
             return tl;
         }
 
-        const loop = horizontalLoop(boxes, {
-            paused: false,
-            draggable: true, // make it draggable
-            speed: 0.5, // slower speed
-            repeat: -1,
-            paddingRight: parseFloat(gsap.getProperty(boxes[0], "marginRight", "px"))
-        });
+        try {
+            loop = horizontalLoop(boxes, {
+                paused: false,
+                draggable: true,
+                speed: 0.5,
+                repeat: -1,
+                paddingRight: parseFloat(gsap.getProperty(boxes[0], "marginRight", "px")) || 0
+            });
 
-        // Add Hover Pause
-        wrapper.addEventListener("mouseenter", () => loop.pause());
-        wrapper.addEventListener("mouseleave", () => {
-            if (!Draggable.get(wrapperRef.current)) { // Only resume if not dragging (simple check)
-                loop.play();
-            }
-        });
+            wrapper.addEventListener("mouseenter", handleMouseEnter);
+            wrapper.addEventListener("mouseleave", handleMouseLeave);
+        } catch (error) {
+            console.debug('TestimonialsSection animation setup error:', error.message);
+        }
 
         return () => {
-            loop.kill();
+            wrapper.removeEventListener("mouseenter", handleMouseEnter);
+            wrapper.removeEventListener("mouseleave", handleMouseLeave);
+
+            if (draggableInstance) {
+                draggableInstance.kill();
+            }
+
+            if (loop) {
+                loop.kill();
+            }
+
+            gsap.killTweensOf(boxes);
         };
     }, []);
 
