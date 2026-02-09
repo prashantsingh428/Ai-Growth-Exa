@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -52,6 +52,8 @@ const FinalCtaSection = () => {
     const nodesRef = useRef([]);
     const linesRef = useRef([]);
     const rocketRef = useRef(null);
+    const [isWhatsAppOpen, setIsWhatsAppOpen] = useState(false);
+    const [isStrategyCallOpen, setIsStrategyCallOpen] = useState(false);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -110,6 +112,11 @@ const FinalCtaSection = () => {
 
         return () => ctx.revert();
     }, []);
+
+    const toggleWhatsApp = (e) => {
+        e.preventDefault();
+        setIsWhatsAppOpen(!isWhatsAppOpen);
+    };
 
     return (
         <section ref={sectionRef} className="relative py-24 bg-white overflow-hidden">
@@ -176,22 +183,25 @@ const FinalCtaSection = () => {
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
-                    <button className="px-8 md:px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-base md:text-lg rounded-full transition-all duration-300 shadow-xl shadow-blue-500/20 hover:-translate-y-1 flex items-center justify-center gap-3 whitespace-nowrap">
+                    <button
+                        onClick={() => setIsStrategyCallOpen(true)}
+                        className="px-8 md:px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-base md:text-lg rounded-full transition-all duration-300 shadow-xl shadow-blue-500/20 hover:-translate-y-1 flex items-center justify-center gap-3 whitespace-nowrap"
+                    >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <span>Book Strategy Call</span>
                     </button>
 
-                    <a
-                        href="#"
+                    <button
+                        onClick={toggleWhatsApp}
                         className="flex items-center justify-center gap-3 px-8 md:px-10 py-4 bg-emerald-50 text-emerald-700 font-bold text-base md:text-lg rounded-full hover:bg-emerald-100 transition-colors border border-emerald-200 whitespace-nowrap"
                     >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
                         </svg>
                         <span>WhatsApp</span>
-                    </a>
+                    </button>
 
                     <a
                         href="#"
@@ -204,7 +214,142 @@ const FinalCtaSection = () => {
                     </a>
                 </div>
             </div>
+
+            {/* WhatsApp Popup */}
+            {isWhatsAppOpen && (
+                <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={toggleWhatsApp}>
+                    <div className="bg-white p-6 rounded-2xl relative max-w-sm w-full shadow-2xl animate-in fade-in zoom-in duration-300" onClick={e => e.stopPropagation()}>
+                        <button
+                            onClick={toggleWhatsApp}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <div className="text-center">
+                            <div className="w-full aspect-square bg-gray-100 rounded-xl overflow-hidden mb-4 border border-gray-100">
+                                <img
+                                    src="/whatsapp-qr.png"
+                                    alt="WhatsApp QR Code"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+
+                            <p className="text-gray-900 font-bold mb-1">Add me as a contact on WhatsApp.</p>
+                            <p className="text-sm text-gray-500 mb-4">Scan this code using the WhatsApp camera to get my number</p>
+
+                            <a
+                                href="https://wa.me/qr/IH4OX4BQ2TJ2C1"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold hover:underline bg-emerald-50 px-4 py-2 rounded-lg transition-colors"
+                            >
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                                </svg>
+                                Connect on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* Strategy Call Modal */}
+            <StrategyCallModal isOpen={isStrategyCallOpen} onClose={() => setIsStrategyCallOpen(false)} />
         </section>
+    );
+};
+
+const StrategyCallModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-md" onClick={onClose}>
+            <div className="bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300 flex flex-col md:flex-row" onClick={e => e.stopPropagation()}>
+
+                {/* Left Side: Host Info */}
+                <div className="w-full md:w-1/3 bg-gray-50 p-8 border-r border-gray-100 flex flex-col items-center text-center">
+                    <div className="w-24 h-24 rounded-full bg-blue-100 mb-4 flex items-center justify-center text-blue-600 font-bold text-3xl shadow-inner">
+                        PS
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">Prashant Singh</h3>
+                    <p className="text-sm text-blue-600 font-medium mb-4">Founder, Ai Growth Exa</p>
+
+                    <div className="text-sm text-gray-600 space-y-3 w-full text-left bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                        <p className="font-semibold text-gray-900 mb-2">What we'll cover:</p>
+                        <ul className="space-y-2">
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-500 mt-0.5">✓</span>
+                                <span>Your current bottlenecks</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-500 mt-0.5">✓</span>
+                                <span>AI scaling opportunities</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-500 mt-0.5">✓</span>
+                                <span>Custom growth roadmap</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Right Side: Client Info */}
+                <div className="w-full md:w-2/3 p-8 flex flex-col justify-between">
+                    <div>
+                        <div className="flex justify-between items-start mb-6">
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900">Book Your Strategy Session</h2>
+                                <p className="text-gray-500 mt-1">Let's verify if we're a good match.</p>
+                            </div>
+                            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-lg">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="space-y-4 mb-8">
+                            <div className="bg-blue-50 p-5 rounded-xl border border-blue-100">
+                                <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Who this is for:
+                                </h4>
+                                <ul className="space-y-2 text-blue-800/80 text-sm">
+                                    <li className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                        Founders & Decision Makers looking to scale efficiently.
+                                    </li>
+                                    <li className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                        Brands ready to implement AI-driven automation.
+                                    </li>
+                                    <li className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                        Companies spending $5k+ on marketing looking for better ROI.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a
+                        href="https://calendly.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                    >
+                        <span>Select a Time on Calendly</span>
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
     );
 };
 
