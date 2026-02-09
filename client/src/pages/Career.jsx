@@ -1086,19 +1086,16 @@ const CareersPage = () => {
                                 title: "Learn Faster Than Lightning",
                                 desc: "Accelerated learning with cutting-edge AI tools, weekly masterclasses, and access to premium courses.",
                                 icon: <FaGraduationCap />,
-                                gradient: "from-blue-600 to-purple-600",
                             },
                             {
                                 title: "Tackle High-Impact Growth Challenges",
                                 desc: "Solve real business problems for global clients, driving measurable ROI and transforming industries.",
                                 icon: <FaChartLine />,
-                                gradient: "from-blue-600 to-purple-600",
                             },
                             {
                                 title: "Master Future-Ready Skills",
                                 desc: "Build expertise in AI-driven marketing, predictive analytics, and growth strategies.",
                                 icon: <FaRocket />,
-                                gradient: "from-blue-600 to-purple-600",
                             }
                         ].map((item, index) => (
                             <div
@@ -1108,26 +1105,24 @@ const CareersPage = () => {
                                 onMouseLeave={() => setHoveredCard(null)}
                             >
                                 <div className={`
-                  relative h-full bg-gradient-to-br ${item.gradient} 
-                  rounded-2xl p-8 shadow-2xl 
+                  relative h-full bg-white
+                  rounded-2xl p-8 shadow-xl hover:shadow-2xl
                   transform-gpu transition-all duration-500 ease-out
-                  ${hoveredCard === index ? 'shadow-2xl shadow-purple-500/30' : 'shadow-xl'}
-                  border border-white/20
+                  ${hoveredCard === index ? 'shadow-blue-500/10 -translate-y-2' : ''}
+                  border border-gray-100
                 `}>
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
-
                                     <div className="relative z-10">
-                                        <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-6">
-                                            <div className="text-3xl text-white">{item.icon}</div>
+                                        <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-300">
+                                            <div className="text-3xl text-blue-600 group-hover:text-white transition-colors duration-300">{item.icon}</div>
                                         </div>
 
-                                        <h4 className="text-2xl font-bold text-white mb-4">{item.title}</h4>
-                                        <p className="text-white/90 leading-relaxed">{item.desc}</p>
+                                        <h4 className="text-2xl font-bold text-gray-900 mb-4">{item.title}</h4>
+                                        <p className="text-gray-600 leading-relaxed">{item.desc}</p>
 
-                                        <div className="mt-8 pt-6 border-t border-white/20">
-                                            <div className="flex items-center gap-2 text-white/80">
-                                                <FaChevronRight className="group-hover:translate-x-2 transition-transform" />
-                                                <span className="font-medium">Learn more about this</span>
+                                        <div className="mt-8 pt-6 border-t border-gray-100">
+                                            <div className="flex items-center gap-2 text-blue-600 font-medium group-hover:text-blue-700 transition-colors">
+                                                <span>Learn more about this</span>
+                                                <FaChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                             </div>
                                         </div>
                                     </div>
