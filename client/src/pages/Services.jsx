@@ -102,7 +102,7 @@ const ServiceCard = memo(({ service, index, theme }) => (
                             {React.cloneElement(service.icon, { sx: { fontSize: 32 } })}
                         </Box>
                         <Chip
-                            label="Premium"
+                            label={service.category || "Premium"}
                             size="small"
                             sx={{
                                 height: 24,
@@ -138,7 +138,7 @@ const ServiceCard = memo(({ service, index, theme }) => (
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden'
                     }}>
-                        {service.overview}
+                        {service.shortDesc || service.overview}
                     </Typography>
 
                     <Box sx={{
@@ -300,7 +300,7 @@ const ServiceDetail = memo(({ service, expanded, onChange, theme }) => (
                                 mb: 5,
                                 fontSize: '1.1rem'
                             }}>
-                                {service.overview}
+                                {service.shortDesc || service.overview}
                             </Typography>
 
                             <Button
@@ -397,6 +397,38 @@ const ServiceDetail = memo(({ service, expanded, onChange, theme }) => (
                             )}
                         </Grid>
                     </Grid>
+
+                    {service.faqs && (
+                        <Box sx={{ mt: 8, pt: 6, borderTop: '1px solid', borderColor: alpha(theme.palette.divider, 0.1) }}>
+                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 4, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                <Box sx={{ p: 0.8, borderRadius: 1, background: alpha(theme.palette.secondary.main, 0.1), color: theme.palette.secondary.main }}>
+                                    <ChatIcon sx={{ fontSize: 18 }} />
+                                </Box>
+                                Frequently Asked Questions
+                            </Typography>
+                            <Grid container spacing={4}>
+                                {service.faqs.map((faq, idx) => (
+                                    <Grid item xs={12} md={4} key={idx}>
+                                        <Box sx={{
+                                            p: 3,
+                                            height: '100%',
+                                            borderRadius: 2,
+                                            background: alpha(theme.palette.background.paper, 0.5),
+                                            border: '1px solid',
+                                            borderColor: alpha(theme.palette.divider, 0.1)
+                                        }}>
+                                            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5, lineHeight: 1.4 }}>
+                                                {faq.q}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {faq.a}
+                                            </Typography>
+                                        </Box>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Box>
+                    )}
                 </Box>
             </AccordionDetails>
         </Accordion>
