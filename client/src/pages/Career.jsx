@@ -135,7 +135,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
 
                 <form onSubmit={handleSubmit} className="p-6">
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        {}
+                        { }
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <FaUserTie className="text-blue-500" />
@@ -203,7 +203,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                             </div>
                         </div>
 
-                        {}
+                        { }
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <FaBriefcase className="text-blue-500" />
@@ -289,7 +289,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
                             <FaUpload className="text-blue-500" />
@@ -322,7 +322,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -363,7 +363,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
                             <FaGraduationCap className="text-blue-500" />
@@ -405,7 +405,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="border-t border-gray-200 pt-6">
                         <div className="flex items-start mb-6">
                             <input
@@ -446,12 +446,12 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
 
 const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
     const [formData, setFormData] = useState({
-        name:'',
+        name: '',
         email: '',
         phone: '',
         location: '',
-        currentRole:'',
-        expectedSalary:'',
+        currentRole: '',
+        expectedSalary: '',
         experience: 'fresher',
         resume: null,
         resumeName: '',
@@ -578,7 +578,7 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        {}
+                        { }
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
 
@@ -628,7 +628,7 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                             </div>
                         </div>
 
-                        {}
+                        { }
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900">Professional Background</h3>
 
@@ -680,7 +680,7 @@ const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Resume / CV *</h3>
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
@@ -986,18 +986,18 @@ const CareersPage = () => {
             </div>
 
             {/* Hero Section */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 text-white py-32 px-4">
+            <div className="relative overflow-hidden bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#312e81] text-white py-32 px-4">
                 <div className="container mx-auto relative z-10">
                     <div>
                         <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300">
-                                Build the Future
+                            Build the <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300">
+                                Future
                             </span>
                             <br />
-                            <span className="text-white">of AI-Driven Growth</span>
+                            of <span className="text-white">AI-Driven Growth</span>
                         </h1>
 
-                        <p className="text-xl md:text-2xl mb-10 max-w-3xl text-gray-300 leading-relaxed">
+                        <p className="text-xl md:text-2xl mb-10 max-w-3xl text-blue-100 leading-relaxed font-light">
                             At AI Growth Exa, we're not just building marketing campaigns — we're architecting careers,
                             cultivating leaders, and crafting future-ready professionals.
                         </p>
@@ -1005,24 +1005,27 @@ const CareersPage = () => {
                         <div className="flex flex-col md:flex-row gap-6">
                             <button
                                 onClick={handleGeneralApplyClick}
-                                className="group relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-10 rounded-xl text-lg transition-all duration-300 shadow-2xl shadow-blue-500/30 flex items-center justify-center gap-3"
+                                className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 shadow-lg shadow-blue-900/50 flex items-center justify-center gap-2"
                                 type="button"
                             >
                                 <span className="relative z-10">Explore Open Roles</span>
-                                <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
                             </button>
 
                             <button
-                                className="group relative bg-transparent border-2 border-white/30 hover:border-white text-white font-bold py-4 px-10 rounded-xl text-lg transition-all duration-300 backdrop-blur-sm hover:bg-white/10 flex items-center justify-center gap-3"
+                                className="group relative bg-[#1e293b] border border-blue-700/50 hover:border-blue-500 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 hover:bg-[#334155] flex items-center justify-center gap-2"
                                 type="button"
                             >
                                 <span className="relative z-10">Meet Our Team</span>
-                                <FaUsers className="group-hover:scale-110 transition-transform" />
+                                <FaUsers className="text-blue-300 group-hover:text-white transition-colors" />
                             </button>
                         </div>
                     </div>
                 </div>
+
+                {/* Abstract Background Shapes */}
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl"></div>
             </div>
 
             {/* Stats Section */}
