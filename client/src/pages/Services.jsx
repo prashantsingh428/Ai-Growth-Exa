@@ -48,7 +48,13 @@ import {
     Tune as TuneIcon,
     Category as CategoryIcon,
     CheckCircle as CheckCircleIcon,
-    KeyboardArrowRight as KeyboardArrowRightIcon
+    KeyboardArrowRight as KeyboardArrowRightIcon,
+    Mic as MicIcon,
+    CampaignOutlined as CampaignOutlinedIcon,
+    Brush as BrushIcon,
+    Code as CodeIcon,
+    Draw as DrawIcon,
+    DesignServices as DesignServicesIcon
 } from '@mui/icons-material';
 import { keyframes } from '@emotion/react';
 import InView from '../components/InView';
@@ -451,28 +457,24 @@ const ServicesContent = () => {
             title: "AI Marketing Solutions (LLM Growth)",
             icon: <AutoAwesomeIcon />,
             tagline: "Smart Growth Starts With Intelligent AI Systems",
-
-            overview: "Traditional marketing relies on guesswork. We rely on intelligence.",
+            category: "AI-POWERED MARKETING",
+            shortDesc: "AI & LLM-powered marketing frameworks that analyze behavior, automate decisions, and maximize conversions.",
             features: [
-                "Predict Customer Behavior",
-                "Intelligent Targeting & Messaging",
-                "Marketing Automation That Thinks",
-                "Funnel Optimization With AI"
+                "Predict customer behavior with AI analytics",
+                "Intelligent targeting & messaging",
+                "Marketing automation that thinks",
+                "Funnel optimization with AI"
             ],
             benefits: [
-                "Data-Driven Decisions – No assumptions, only insights",
-                "Higher Conversion Rates – Smarter funnels powered by AI",
-                "Cost Efficiency – Reduce ad waste with predictive targeting",
-                "Scalable Growth – Systems that grow as your business grows",
-                "Real-Time Optimization – Campaigns improve automatically",
-                "Future-Proof Strategy – Built for evolving AI & digital trends"
+                "Data-driven decisions - no assumptions",
+                "Higher conversion rates",
+                "Cost efficiency with predictive targeting",
+                "Scalable growth systems"
             ],
-            idealFor: [
-                "SaaS & Tech Companies",
-                "E-commerce Brands",
-                "Startups & Scaleups",
-                "Agencies looking to upgrade with AI",
-                "Businesses tired of inconsistent marketing results"
+            faqs: [
+                { q: "What are AI marketing solutions?", a: "AI marketing uses ML to analyze data, predict behavior, automate campaigns, and improve performance." },
+                { q: "How do LLMs improve marketing?", a: "LLMs enhance personalization, automate content, and optimize communication across channels." },
+                { q: "Is AI marketing suitable for small businesses?", a: "Yes, it helps small businesses reduce costs and automate workflows efficiently." }
             ]
         },
         {
@@ -480,14 +482,25 @@ const ServicesContent = () => {
             title: "Performance Marketing",
             icon: <RocketLaunchIcon />,
             tagline: "AI-Powered Advertising That Delivers Real ROI",
-
-            overview: "Smarter Ads. Faster Growth. Better Results.",
-            platforms: ["Google Ads", "Meta Ads (Facebook & Instagram)", "LinkedIn Ads", "YouTube Ads"],
+            category: "PAID ADVERTISING",
+            shortDesc: "Measurable growth campaigns across Google, Meta, LinkedIn, and YouTube with AI optimization.",
+            platforms: ["Google Ads", "Meta Ads", "LinkedIn Ads", "YouTube Ads"],
             features: [
-                "Google Ads & Meta Ads",
-                "LinkedIn & YouTube Ads",
-                "AI-Assisted Decision Making",
-                "Full-Funnel Performance Strategy"
+                "Precision AI-powered targeting",
+                "Data-driven campaign optimization",
+                "AI-assisted decision making",
+                "Full-funnel performance strategy"
+            ],
+            benefits: [
+                "Higher ROI on ad spend",
+                "Lower cost per lead & acquisition",
+                "AI-optimized campaign performance",
+                "Clear reporting & transparency"
+            ],
+            faqs: [
+                { q: "What is performance marketing?", a: "Results-driven advertising optimized for measurable outcomes like leads, sales, and ROI." },
+                { q: "How does AI improve paid ads?", a: "AI analyzes data faster, predicts behavior, optimizes bids, and improves targeting." },
+                { q: "How long to see results?", a: "Most campaigns show improvements within 2-4 weeks." }
             ]
         },
         {
@@ -495,251 +508,525 @@ const ServicesContent = () => {
             title: "SEO & Growth Strategy",
             icon: <TrendingUpIcon />,
             tagline: "AI-Driven SEO That Fuels Long-Term Growth",
-
-            overview: "Build Visibility. Drive Traffic. Scale Growth.",
+            category: "SEO & GROWTH",
+            shortDesc: "Build search ecosystems that align visibility with business goals for sustainable traffic and revenue.",
             features: [
-                "AI-Powered Keyword Research",
-                "Technical SEO Optimization",
-                "Content & Topical Authority",
-                "Growth-Focused SEO Execution"
+                "AI-powered keyword & intent research",
+                "Technical SEO optimization",
+                "Content & topical authority strategy",
+                "Growth-focused SEO execution"
+            ],
+            benefits: [
+                "Higher search engine rankings",
+                "Sustainable organic traffic growth",
+                "Improved website authority & trust",
+                "Better conversion rates from SEO"
+            ],
+            faqs: [
+                { q: "What is SEO & growth strategy?", a: "Combines SEO with data-driven planning to increase traffic, leads, and business results." },
+                { q: "How is AI used in SEO?", a: "AI analyzes search behavior, predicts trends, and optimizes content faster." },
+                { q: "How long does SEO take?", a: "Most websites see improvements within 3-6 months with continuous growth." }
             ]
         },
         {
             id: 4,
-            title: "Podcast & Social Media Marketing",
-            icon: <CampaignIcon />,
+            title: "Podcast Marketing",
+            icon: <MicIcon />,
             tagline: "Build Authority. Earn Attention. Create Trust at Scale.",
-
-            overview: "Attention Is Currency — We Help You Earn It",
+            category: "CONTENT MARKETING",
+            shortDesc: "Authority-building audio content and strategy for deep audience connection and influence.",
             features: [
-                "Podcast Strategy & Positioning",
-                "Authority-First Content Strategy",
-                "Community Building & Engagement",
-                "Multi-Platform Content Leverage"
+                "Podcast strategy & positioning",
+                "Authority-building content planning",
+                "Niche audience targeting",
+                "Episode optimization & distribution"
+            ],
+            benefits: [
+                "Stronger brand authority & trust",
+                "Loyal, high-intent audience",
+                "Long-form trust building",
+                "Position as industry expert"
+            ],
+            faqs: [
+                { q: "What is podcast marketing?", a: "Uses audio content to build authority, trust, and long-term audience engagement." },
+                { q: "Effective for B2B brands?", a: "Yes, highly effective for B2B authority building and thought leadership." },
+                { q: "Better than paid ads?", a: "Builds long-term trust while ads deliver short-term results - both work together." }
             ]
         },
         {
             id: 5,
-            title: "GMB with AI Model",
-            icon: <StoreIcon />,
-            tagline: "Dominate Local Search with AI-Powered Visibility",
-
-            overview: "Local Businesses Need Visibility Where Buyers Search",
+            title: "Social Media Marketing",
+            icon: <CampaignOutlinedIcon />,
+            tagline: "Community-Led. Conversion-Focused. Trust-Driven.",
+            category: "SOCIAL MEDIA",
+            shortDesc: "Build real communities and meaningful engagement that convert, not just vanity metrics.",
+            platforms: ["LinkedIn", "Instagram", "Facebook", "X/Twitter"],
             features: [
-                "Complete GMB Optimization",
-                "AI-Driven Local Keyword Strategy",
-                "Automated Reviews & Engagement",
-                "Local Ranking Improvement"
+                "Community-focused content creation",
+                "Platform-specific strategy",
+                "Engagement & comment management",
+                "Brand voice & storytelling"
+            ],
+            benefits: [
+                "Stronger brand voice & identity",
+                "Engaged, loyal communities",
+                "Higher engagement & trust signals",
+                "Conversion-supportive presence"
+            ],
+            faqs: [
+                { q: "What is social media marketing?", a: "Uses content and engagement strategies to build brand awareness and generate leads." },
+                { q: "How does it help business growth?", a: "Builds trust, improves visibility, engages audiences, and supports conversions." },
+                { q: "Better than paid ads?", a: "Builds long-term trust while ads deliver faster visibility - use both." }
             ]
         },
         {
             id: 6,
-            title: "Funnel & Automation Systems",
-            icon: <BoltIcon />,
-            tagline: "Turn Traffic Into Revenue — Automatically",
-
-            overview: "Traffic Without a Funnel Is Wasted Money",
+            title: "GMB with AI Model",
+            icon: <StoreIcon />,
+            tagline: "Dominate Local Search with AI-Powered Visibility",
+            category: "LOCAL SEO",
+            shortDesc: "AI-powered Google Business Profile optimization for local rankings, calls, and visits.",
             features: [
-                "High-Converting Lead Funnels",
-                "Sales Automation Workflows",
-                "CRM Integrations & Data Syncing",
-                "AI-Assisted Funnel Optimization"
+                "Complete GMB optimization",
+                "AI-driven local keyword strategy",
+                "Automated reviews & engagement",
+                "Local ranking improvement"
+            ],
+            benefits: [
+                "Higher Google Maps rankings",
+                "More phone calls & walk-in customers",
+                "Automated review management",
+                "Hands-free local growth system"
+            ],
+            faqs: [
+                { q: "What is GMB optimization?", a: "Improves your Google Business Profile to increase visibility in local search results." },
+                { q: "How does AI help local SEO?", a: "AI automates reviews, engagement, keyword optimization for better local rankings." },
+                { q: "Can GMB increase calls?", a: "Yes, fully optimized GMB directly increases phone calls and walk-in traffic." }
             ]
         },
         {
             id: 7,
-            title: "Branding, Creative & Design",
-            icon: <StarIcon />,
-            tagline: "Design That Builds Recall. Creativity That Drives Growth.",
-
-            overview: "Growth Needs a Strong Brand Foundation",
+            title: "Funnel & Automation",
+            icon: <BoltIcon />,
+            tagline: "Turn Traffic Into Revenue — Automatically",
+            category: "AUTOMATION",
+            shortDesc: "Capture leads, nurture prospects, and convert customers without manual effort.",
             features: [
-                "Brand Positioning & Messaging",
-                "Visual Identity Systems",
-                "Logo Design & Brand Guidelines",
-                "Performance-Optimized Assets"
+                "High-converting lead funnels",
+                "Sales automation workflows",
+                "CRM integrations & data syncing",
+                "AI-assisted funnel optimization"
+            ],
+            benefits: [
+                "Higher conversion rates",
+                "Reduced manual work & errors",
+                "Faster lead response times",
+                "Scalable automation systems"
+            ],
+            faqs: [
+                { q: "What is a funnel & automation system?", a: "Captures leads, nurtures prospects, automates sales follow-ups to increase conversions." },
+                { q: "Why important for growth?", a: "Guides users through buying journey, increasing trust and purchase likelihood." },
+                { q: "Suitable for small businesses?", a: "Yes, helps small businesses compete efficiently by automating processes." }
             ]
         },
         {
             id: 8,
-            title: "Web, App & UX/UI Development",
-            icon: <SmartphoneIcon />,
-            tagline: "Your Digital Salesperson — Built to Convert",
-
-            overview: "Your Website or App Is Your Digital Salesperson",
+            title: "Branding & Creative",
+            icon: <StarIcon />,
+            tagline: "Design That Builds Recall. Creativity That Drives Growth.",
+            category: "BRANDING",
+            shortDesc: "Cohesive brand systems that stand out, stay memorable, and convert consistently.",
             features: [
-                "High-Conversion Websites",
-                "Mobile Apps (Android / iOS)",
-                "User-Centric UX/UI Systems",
-                "Conversion-Focused Development"
+                "Brand positioning & messaging",
+                "Visual identity systems",
+                "Logo design & brand guidelines",
+                "Performance-optimized assets"
+            ],
+            benefits: [
+                "Stronger brand recognition & recall",
+                "Higher engagement & conversion rates",
+                "Professional, scalable brand identity",
+                "Consistent brand experience"
+            ],
+            faqs: [
+                { q: "What is branding?", a: "Defines how a business looks, feels, and communicates with its audience." },
+                { q: "Why important for growth?", a: "Builds trust, improves recall, increases conversions across all channels." },
+                { q: "Do you redesign existing brands?", a: "Yes, we offer brand refresh services while maintaining brand equity." }
             ]
         },
         {
             id: 9,
-            title: "Content Creation & Writing",
-            icon: <EmailIcon />,
-            tagline: "Words Sell. Stories Convert. Strategy Scales.",
-
-            overview: "Content Is the Voice of Your Brand",
+            title: "Logo Design",
+            icon: <BrushIcon />,
+            tagline: "Strategic Logos That Build Brand Recognition",
+            category: "DESIGN",
+            shortDesc: "Scalable, modern logo systems designed for recall and recognition across platforms.",
             features: [
-                "Website Copy & Landing Pages",
-                "SEO Blogs & Articles",
-                "Brand Storytelling",
-                "Sales-Driven Content"
+                "Strategic logo concepts",
+                "Scalable logo systems",
+                "Brand recall-focused design",
+                "Multiple format delivery"
+            ],
+            benefits: [
+                "Instant brand recognition",
+                "Professional first impression",
+                "Versatile across all media",
+                "Timeless, scalable design"
+            ],
+            faqs: [
+                { q: "Do you design logos from scratch?", a: "Yes, original strategic designs tailored to your brand positioning." },
+                { q: "How long does logo design take?", a: "Typically 2-3 weeks including research, concepts, and revisions." },
+                { q: "Do you provide brand guidelines?", a: "Yes, complete guidelines for consistent usage across platforms." }
             ]
         },
         {
             id: 10,
-            title: "Sales-Aligned Marketing Systems",
-            icon: <GroupsIcon />,
-            tagline: "Where Marketing Meets Sales — and Revenue Follows",
-
-            overview: "Marketing Without Sales Alignment Fails",
+            title: "Website Development",
+            icon: <CodeIcon />,
+            tagline: "Your Digital Salesperson — Built to Convert",
+            category: "DEVELOPMENT",
+            shortDesc: "High-performance websites optimized for speed, SEO, and conversion-focused UX.",
             features: [
-                "Email Marketing Systems",
-                "WhatsApp Bulk Messaging",
-                "CRM Workflows & Automation",
-                "Lead Qualification Systems"
+                "Business & corporate websites",
+                "Landing pages & sales pages",
+                "SEO-friendly architecture",
+                "Speed-optimized responsive builds"
+            ],
+            benefits: [
+                "Higher conversion rates",
+                "Faster load times & better performance",
+                "Mobile-first responsive design",
+                "Scalable & secure development"
+            ],
+            faqs: [
+                { q: "What is conversion-focused web development?", a: "Designs websites to guide users toward specific actions like leads or purchases." },
+                { q: "Are websites SEO-friendly?", a: "Yes, built with clean code, fast load times, and SEO-friendly structure." },
+                { q: "How long does development take?", a: "Websites typically take 3-6 weeks depending on complexity." }
             ]
         },
         {
             id: 11,
-            title: "Social Media Marketing",
-            icon: <CampaignIcon />,
-            tagline: "Community-Led. Conversion-Focused. Trust-Driven.",
-
-            overview: "Attention Is Currency — and We Help You Earn It",
+            title: "Mobile Applications",
+            icon: <SmartphoneIcon />,
+            tagline: "Drive Installs. Activate Users. Scale Retention.",
+            category: "APP DEVELOPMENT",
+            shortDesc: "Android & iOS apps with user-centric design and performance-driven functionality.",
             features: [
-                "Community-Focused Content Creation",
-                "Platform-Specific Strategy",
-                "Engagement & Comment Management",
-                "Brand Voice & Storytelling"
+                "User-centric mobile app design",
+                "Scalable app development",
+                "Clean, intuitive interfaces",
+                "Performance-driven functionality"
+            ],
+            benefits: [
+                "Higher user engagement",
+                "Improved retention rates",
+                "Better app store visibility",
+                "Scalable app architecture"
+            ],
+            faqs: [
+                { q: "Do you build both Android and iOS?", a: "Yes, we develop for both platforms." },
+                { q: "How long for app development?", a: "Depends on features, typically 2-4 months." },
+                { q: "Do you provide ongoing support?", a: "Yes, we offer maintenance and optimization support." }
             ]
         },
         {
             id: 12,
-            title: "Email Marketing",
-            icon: <EmailIcon />,
-            tagline: "Turn Inboxes Into Conversations — and Conversations Into Revenue",
-
-            overview: "Email Is Still One of the Highest-ROI Channels",
+            title: "Content Creation & Writing",
+            icon: <DrawIcon />,
+            tagline: "Words Sell. Stories Convert. Strategy Scales.",
+            category: "CONTENT",
+            shortDesc: "Human-written, SEO-optimized content that influences decisions and drives action.",
             features: [
-                "Email Strategy & Planning",
-                "Automation Workflows",
-                "Sales & Conversion Email Copy",
-                "Analytics & Optimization"
+                "Website copy & landing pages",
+                "SEO blogs & articles",
+                "Brand storytelling",
+                "Sales-driven content"
+            ],
+            benefits: [
+                "Clear, persuasive messaging",
+                "Higher engagement & conversions",
+                "SEO-optimized, rank-ready",
+                "Consistent brand voice"
+            ],
+            faqs: [
+                { q: "Is content human-written or AI?", a: "All content is human-written, AI used only for research & optimization." },
+                { q: "How does content help SEO?", a: "Improves rankings by matching user intent, keywords, and value." },
+                { q: "Can content increase conversions?", a: "Yes, builds trust, removes objections, guides users toward action." }
             ]
         },
         {
             id: 13,
-            title: "E-commerce Marketing",
-            icon: <ShoppingCartIcon />,
-            tagline: "Turn Browsers Into Buyers — and Buyers Into Repeat Customers",
-
-            overview: "E-commerce Growth Is Not About Traffic — It's About Systems",
+            title: "Marketing with Sales Alignment",
+            icon: <GroupsIcon />,
+            tagline: "Where Marketing Meets Sales — and Revenue Follows",
+            category: "SALES ENABLEMENT",
+            shortDesc: "Connect marketing efforts directly with sales processes to increase conversions.",
             features: [
-                "Performance-Driven Campaigns",
-                "Conversion Rate Optimization",
-                "Retention Systems",
-                "Data & Tracking"
+                "Email marketing systems",
+                "WhatsApp bulk messaging",
+                "CRM workflows & automation",
+                "Lead qualification systems"
+            ],
+            benefits: [
+                "Higher lead-to-sale conversion",
+                "Better marketing ROI",
+                "Faster sales response times",
+                "Automated follow-ups"
+            ],
+            faqs: [
+                { q: "What is sales-aligned marketing?", a: "Connects marketing directly with sales processes to increase conversions." },
+                { q: "Why important?", a: "Prevents lead loss, improves follow-ups, ensures marketing generates sales." },
+                { q: "Suitable for small businesses?", a: "Yes, automation helps small teams scale without increasing manpower." }
             ]
         },
         {
             id: 14,
-            title: "WhatsApp Bulk Marketing",
-            icon: <ChatIcon />,
-            tagline: "Direct. Personal. High-Conversion Messaging at Scale.",
-
-            overview: "WhatsApp Is Where Conversations Convert",
+            title: "Email Marketing",
+            icon: <EmailIcon />,
+            tagline: "Turn Inboxes Into Conversations — and Conversations Into Revenue",
+            category: "EMAIL MARKETING",
+            shortDesc: "Relationship-first email systems that nurture leads and drive repeat revenue automatically.",
             features: [
-                "Bulk WhatsApp Campaigns",
-                "Automation & Flows",
-                "CRM Integration",
-                "Performance Tracking"
+                "Email strategy & planning",
+                "Automation workflows",
+                "Sales & conversion email copy",
+                "Analytics & optimization"
+            ],
+            benefits: [
+                "Higher open & click-through rates",
+                "Better lead nurturing & conversions",
+                "Automated consistent communication",
+                "Increased repeat sales"
+            ],
+            faqs: [
+                { q: "Is email marketing still effective?", a: "Yes, consistently delivers highest ROI among digital channels." },
+                { q: "Can email be automated?", a: "Yes, allows timely, personalized emails without manual effort." },
+                { q: "How long to see results?", a: "Most campaigns show engagement improvements within 2-4 weeks." }
             ]
         },
         {
             id: 15,
-            title: "Brand Collaboration",
-            icon: <HandshakeIcon />,
-            tagline: "Grow Faster by Growing Together",
-
-            overview: "Growth Multiplies When the Right Brands Align",
+            title: "E-commerce Marketing",
+            icon: <ShoppingCartIcon />,
+            tagline: "Turn Browsers Into Buyers — and Buyers Into Repeat Customers",
+            category: "E-COMMERCE",
+            shortDesc: "Performance marketing, CRO, and retention systems for scalable online store growth.",
             features: [
-                "Strategic Brand Partnerships",
-                "Campaign & Co-Marketing",
-                "Creator & Influencer Collaborations",
-                "Audience Alignment Analysis"
+                "Performance-driven campaigns",
+                "Conversion rate optimization",
+                "Retention & repeat purchase systems",
+                "Data & tracking"
+            ],
+            benefits: [
+                "Higher conversion rates",
+                "Lower cost per purchase",
+                "Increased average order value",
+                "Better customer retention"
+            ],
+            faqs: [
+                { q: "What is e-commerce marketing?", a: "Digital strategies to attract shoppers, convert buyers, increase repeat purchases." },
+                { q: "Do you manage e-commerce ads?", a: "Yes, manage and optimize performance-driven e-commerce campaigns." },
+                { q: "Suitable for small brands?", a: "Yes, strategic optimization helps small brands compete efficiently." }
             ]
         },
         {
             id: 16,
-            title: "Influencer Marketing",
-            icon: <PersonIcon />,
-            tagline: "Leverage Trust. Amplify Reach. Drive Real Conversions.",
-            color: "#eab308", // Yellow
-            overview: "Influence Works When Trust Leads the Message",
+            title: "WhatsApp Bulk Messaging",
+            icon: <ChatIcon />,
+            tagline: "Direct. Personal. High-Conversion Messaging at Scale.",
+            category: "MESSAGING",
+            shortDesc: "Permission-based WhatsApp automation for instant, personalized customer communication.",
             features: [
-                "Influencer Discovery & Vetting",
-                "Campaign Strategy & Execution",
-                "Content & UGC Creation",
-                "Tracking & Analytics"
+                "Bulk WhatsApp campaigns",
+                "Automation & flows",
+                "CRM integration",
+                "Performance tracking"
+            ],
+            benefits: [
+                "90%+ message open rates",
+                "Faster lead response & conversions",
+                "Automated scalable communication",
+                "Higher engagement than email/SMS"
+            ],
+            faqs: [
+                { q: "What is bulk WhatsApp marketing?", a: "Uses WhatsApp Business APIs to send messages to multiple users for promotions." },
+                { q: "Is it legal?", a: "Yes, when done with user consent and WhatsApp policy compliance." },
+                { q: "How effective?", a: "Significantly higher open and response rates than email and SMS." }
             ]
         },
         {
             id: 17,
-            title: "App Marketing",
-            icon: <AppShortcutIcon />,
-            tagline: "Drive Installs. Activate Users. Scale Retention.",
-            color: "#84cc16", // Lime
-            overview: "An App Without Users Is Just Code",
+            title: "Brand Collaborations",
+            icon: <HandshakeIcon />,
+            tagline: "Grow Faster by Growing Together",
+            category: "PARTNERSHIPS",
+            shortDesc: "Strategic partnerships with aligned brands for expanded reach and credibility.",
             features: [
-                "App User Acquisition",
-                "App Store Optimization (ASO)",
-                "Activation & Onboarding",
-                "Retention Systems"
+                "Strategic brand partnerships",
+                "Campaign & co-marketing execution",
+                "Creator & influencer collaborations",
+                "Audience alignment analysis"
+            ],
+            benefits: [
+                "Access to new relevant audiences",
+                "Higher trust & brand credibility",
+                "Shared marketing cost efficiency",
+                "Stronger brand positioning"
+            ],
+            faqs: [
+                { q: "What is brand collaboration?", a: "Strategy where brands work together to reach new audiences and create value." },
+                { q: "Better than paid ads?", a: "Builds long-term credibility while ads provide short-term visibility - both work." },
+                { q: "Suitable for small brands?", a: "Yes, helps small brands grow faster without large ad budgets." }
             ]
         },
         {
             id: 18,
-            title: "Go-To-Market Strategies",
-            icon: <FlagIcon />,
-            tagline: "Launch Smarter. Enter Faster. Scale Confidently.",
-            color: "#f97316", // Orange
-            overview: "A Great Product Fails Without the Right Market Strategy",
+            title: "Influencer Marketing",
+            icon: <PersonIcon />,
+            tagline: "Leverage Trust. Amplify Reach. Drive Real Conversions.",
+            category: "INFLUENCER MARKETING",
+            shortDesc: "Authentic creator partnerships that build trust and drive measurable outcomes.",
             features: [
-                "Market & Customer Research",
-                "Product Positioning & Messaging",
-                "Pricing & Offer Strategy",
-                "Channel & Launch Strategy"
+                "Influencer discovery & vetting",
+                "Campaign strategy & execution",
+                "Content & UGC creation",
+                "Tracking & analytics"
+            ],
+            benefits: [
+                "Access to trust-built audiences",
+                "Higher engagement than traditional ads",
+                "Authentic brand storytelling",
+                "Reusable influencer content"
+            ],
+            faqs: [
+                { q: "What is influencer marketing?", a: "Collaborate with creators to promote products through trusted, authentic content." },
+                { q: "Work with micro-influencers?", a: "Yes, they often deliver higher engagement and niche influence." },
+                { q: "Suitable for small brands?", a: "Yes, strategic partnerships help small brands grow with limited budgets." }
             ]
         },
         {
             id: 19,
-            title: "Site Optimization",
-            icon: <TuneIcon />,
-            tagline: "Turn Your Website Into a High-Performance Growth Engine",
-            color: "#2dd4bf", // Teal
-            overview: "A Slow, Confusing Website Kills Growth",
+            title: "UX/UI Design",
+            icon: <DesignServicesIcon />,
+            tagline: "User-Centric Design That Converts",
+            category: "DESIGN",
+            shortDesc: "Conversion-focused user experiences that reduce friction and guide actions.",
             features: [
-                "Website Speed Optimization",
-                "Technical SEO",
-                "Conversion Rate Optimization",
-                "UX/UI Optimization"
+                "User journey & behavior mapping",
+                "Wireframes & design systems",
+                "Conversion-focused UI patterns",
+                "Accessibility & usability optimization"
+            ],
+            benefits: [
+                "Improved user experience & retention",
+                "Higher conversion rates",
+                "Reduced bounce rates",
+                "Better customer satisfaction"
+            ],
+            faqs: [
+                { q: "Why is UX/UI important for growth?", a: "Improves usability, reduces bounce rates, increases conversions." },
+                { q: "Do you redesign existing products?", a: "Yes, specialize in optimizing existing products for better performance." },
+                { q: "Provide design systems?", a: "Yes, deliver complete design systems for consistency." }
             ]
         },
         {
             id: 20,
+            title: "Application Marketing",
+            icon: <AppShortcutIcon />,
+            tagline: "Drive Installs. Activate Users. Scale Retention.",
+            category: "APP MARKETING",
+            shortDesc: "ASO, user acquisition, and retention systems for sustainable app growth.",
+            features: [
+                "App user acquisition",
+                "App store optimization (ASO)",
+                "Activation & onboarding optimization",
+                "Retention systems"
+            ],
+            benefits: [
+                "More quality app installs",
+                "Lower cost per install (CPI)",
+                "Higher activation & retention rates",
+                "Improved app store visibility"
+            ],
+            faqs: [
+                { q: "What is app marketing?", a: "Promotes mobile apps to increase installs, engagement, and user retention." },
+                { q: "What is ASO?", a: "App Store Optimization improves app visibility in stores for organic downloads." },
+                { q: "Reduce app uninstall rates?", a: "Yes, optimize onboarding and engagement to improve retention." }
+            ]
+        },
+        {
+            id: 21,
+            title: "Go-To-Market Strategies",
+            icon: <FlagIcon />,
+            tagline: "Launch Smarter. Enter Faster. Scale Confidently.",
+            category: "STRATEGY",
+            shortDesc: "Structured market entry plans aligning product, audience, and channels for success.",
+            features: [
+                "Market & customer research",
+                "Product positioning & messaging",
+                "Pricing & offer strategy",
+                "Channel & launch strategy"
+            ],
+            benefits: [
+                "Faster market entry & adoption",
+                "Clear product positioning",
+                "Lower customer acquisition risk",
+                "Aligned marketing & sales"
+            ],
+            faqs: [
+                { q: "What is a GTM strategy?", a: "Defines how a product is positioned, priced, launched, and sold to target audience." },
+                { q: "Only for startups?", a: "No, useful for startups, scaleups, and businesses entering new markets." },
+                { q: "How long to build?", a: "Most GTM strategies developed within 3-6 weeks depending on complexity." }
+            ]
+        },
+        {
+            id: 22,
+            title: "Site Optimization",
+            icon: <TuneIcon />,
+            tagline: "Turn Your Website Into a High-Performance Growth Engine",
+            category: "OPTIMIZATION",
+            shortDesc: "Speed, SEO, and conversion optimization for better performance and user experience.",
+            features: [
+                "Website speed optimization",
+                "Technical SEO",
+                "Conversion rate optimization",
+                "UX/UI optimization"
+            ],
+            benefits: [
+                "Faster website load times",
+                "Higher conversion rates",
+                "Improved SEO rankings",
+                "Better user experience"
+            ],
+            faqs: [
+                { q: "What is site optimization?", a: "Improves website speed, SEO, UX, and conversion performance." },
+                { q: "Different from SEO?", a: "SEO focuses on visibility, optimization focuses on performance & conversions." },
+                { q: "Suitable for small businesses?", a: "Yes, helps get more value without increasing ad spend." }
+            ]
+        },
+        {
+            id: 23,
             title: "Product Branding",
             icon: <CategoryIcon />,
             tagline: "Turn Your Product Into a Recognizable, Trust-Built Brand",
-            color: "#a855f7", // Purple
-            overview: "Great Products Don't Sell Themselves — Brands Do",
+            category: "BRANDING",
+            shortDesc: "Market-ready product identities with clear positioning and emotional connection.",
             features: [
-                "Product Positioning & Strategy",
-                "Visual Identity",
-                "Product Messaging & Storytelling",
-                "Brand Guidelines"
+                "Product positioning & strategy",
+                "Visual identity",
+                "Product messaging & storytelling",
+                "Brand guidelines"
+            ],
+            benefits: [
+                "Clear product positioning",
+                "Stronger brand recall & recognition",
+                "Higher customer trust & adoption",
+                "Better marketing performance"
+            ],
+            faqs: [
+                { q: "What is product branding?", a: "Creates distinct identity for a product through positioning, design, messaging." },
+                { q: "Rebrand existing products?", a: "Yes, help refresh and reposition existing products for better performance." },
+                { q: "Suitable for digital products?", a: "Yes, specialize in both physical and digital products." }
             ]
         }
     ];
