@@ -69,34 +69,34 @@ const GrowthPlanSection = () => {
     };
 
     return (
-        <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 transition-colors duration-500">
+        <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden py-10 transition-colors duration-500">
             {/* Background effects - Softened for Light Theme */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-50/10 via-transparent to-purple-50/10"></div>
             <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-blue-400/5 rounded-full blur-[128px]"></div>
             <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-purple-400/5 rounded-full blur-[128px]"></div>
 
             <div className="container mx-auto px-6 max-w-7xl relative z-10">
-                <div className="grid lg:grid-cols-2 gap-12 items-start">
+                <div className="grid lg:grid-cols-2 gap-8 items-start">
                     {/* Left Side - Heading & Tagline */}
-                    <div ref={leftRef} className="space-y-6">
-                        <div className="inline-block px-4 py-2 bg-blue-50 rounded-full border border-blue-100 mb-4">
-                            <span className="text-blue-600 text-sm font-semibold uppercase">PERSONALIZED GROWTH PLAN</span>
+                    <div ref={leftRef} className="space-y-4">
+                        <div className="inline-block px-4 py-1.5 bg-blue-50 rounded-full border border-blue-100 mb-2">
+                            <span className="text-blue-600 text-xs font-semibold uppercase">PERSONALIZED GROWTH PLAN</span>
                         </div>
 
-                        <h2 className="text-5xl md:text-6xl font-black text-gray-900 leading-tight">
+                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
                             Every brand is different.
                         </h2>
 
-                        <p className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 leading-tight">
+                        <p className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 leading-tight">
                             Your growth plan should be too.
                         </p>
 
-                        <p className="text-xl text-gray-600 leading-relaxed max-w-xl pt-4">
+                        <p className="text-base text-gray-600 leading-relaxed max-w-xl pt-2">
                             Share your goals and challenges with us. We'll create a personalized AI-powered marketing plan
                             tailored to your brand's unique needs and objectives.
                         </p>
 
-                        <div className="space-y-4 pt-6">
+                        <div className="space-y-2 pt-3">
                             <div className="flex items-start gap-3">
                                 <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mt-1">
                                     <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
@@ -126,11 +126,11 @@ const GrowthPlanSection = () => {
 
                     {/* Right Side - Lead Form */}
                     <div ref={formRef}>
-                        <form onSubmit={handleSubmit} className="bg-white backdrop-blur-sm rounded-2xl p-8 border border-gray-100 shadow-2xl">
-                            <div className="space-y-5">
+                        <form onSubmit={handleSubmit} className="bg-white backdrop-blur-sm rounded-xl p-6 border border-gray-100 shadow-xl">
+                            <div className="space-y-3">
                                 {/* Full Name */}
                                 <div>
-                                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label htmlFor="name" className="block text-xs font-bold text-gray-700 mb-1">
                                         Full Name *
                                     </label>
                                     <input
@@ -140,14 +140,14 @@ const GrowthPlanSection = () => {
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
                                         placeholder="John Doe"
                                     />
                                 </div>
 
                                 {/* Phone Number */}
                                 <div>
-                                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label htmlFor="phone" className="block text-xs font-bold text-gray-700 mb-1">
                                         Phone Number *
                                     </label>
                                     <input
@@ -157,14 +157,14 @@ const GrowthPlanSection = () => {
                                         value={formData.phone}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
                                         placeholder="+1 (555) 000-0000"
                                     />
                                 </div>
 
                                 {/* Email Address */}
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label htmlFor="email" className="block text-xs font-bold text-gray-700 mb-1">
                                         Email Address *
                                     </label>
                                     <input
@@ -174,14 +174,14 @@ const GrowthPlanSection = () => {
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
                                         placeholder="john@company.com"
                                     />
                                 </div>
 
                                 {/* Company Name */}
                                 <div>
-                                    <label htmlFor="company" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label htmlFor="company" className="block text-xs font-bold text-gray-700 mb-1">
                                         Company Name
                                     </label>
                                     <input
@@ -190,14 +190,14 @@ const GrowthPlanSection = () => {
                                         name="company"
                                         value={formData.company}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
                                         placeholder="Your Company Inc."
                                     />
                                 </div>
 
                                 {/* Industry */}
                                 <div>
-                                    <label htmlFor="industry" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label htmlFor="industry" className="block text-xs font-bold text-gray-700 mb-1">
                                         Industry
                                     </label>
                                     <select
@@ -205,7 +205,7 @@ const GrowthPlanSection = () => {
                                         name="industry"
                                         value={formData.industry}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
                                     >
                                         <option value="">Select your industry</option>
                                         <option value="ecommerce">E-commerce</option>
@@ -222,7 +222,7 @@ const GrowthPlanSection = () => {
 
                                 {/* Services You're Looking For */}
                                 <div>
-                                    <label htmlFor="services" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label htmlFor="services" className="block text-xs font-bold text-gray-700 mb-1">
                                         Services You're Looking For
                                     </label>
                                     <select
@@ -230,7 +230,7 @@ const GrowthPlanSection = () => {
                                         name="services"
                                         value={formData.services}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
                                     >
                                         <option value="">Select service</option>
                                         <option value="brand-identity">Brand Identity & Design</option>
@@ -245,7 +245,7 @@ const GrowthPlanSection = () => {
 
                                 {/* Monthly Marketing Budget */}
                                 <div>
-                                    <label htmlFor="budget" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label htmlFor="budget" className="block text-xs font-bold text-gray-700 mb-1">
                                         Monthly Marketing Budget
                                     </label>
                                     <select
@@ -253,7 +253,7 @@ const GrowthPlanSection = () => {
                                         name="budget"
                                         value={formData.budget}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
                                     >
                                         <option value="">Select your budget range</option>
                                         <option value="<5k">Less than $5,000</option>
@@ -266,7 +266,7 @@ const GrowthPlanSection = () => {
 
                                 {/* Query / Message */}
                                 <div>
-                                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label htmlFor="message" className="block text-xs font-bold text-gray-700 mb-1">
                                         Query / Message
                                     </label>
                                     <textarea
@@ -274,8 +274,8 @@ const GrowthPlanSection = () => {
                                         name="message"
                                         value={formData.message}
                                         onChange={handleChange}
-                                        rows="4"
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none font-medium"
+                                        rows="3"
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none font-medium text-sm"
                                         placeholder="What are your biggest marketing challenges?"
                                     />
                                 </div>
@@ -283,7 +283,7 @@ const GrowthPlanSection = () => {
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
-                                    className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-lg rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/30"
+                                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-base rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/30"
                                 >
                                     Get My Personalized Growth Plan
                                 </button>
