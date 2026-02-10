@@ -1,10 +1,13 @@
-const express = require('express');
-const router = express.Router();
-// Import controller (assuming consistent naming, will be fixed later if needed, 
-// for now just placeholder routes)
+const express = require("express");
+const {
+    createLead
+} = require("../controllers/leadController");
 
-router.get('/', (req, res) => {
-    res.json({ message: 'Resource API working' });
-});
+const router = express.Router();
+
+// create lead
+router.post("/leadcreate", createLead);
+
+
 
 module.exports = router;
