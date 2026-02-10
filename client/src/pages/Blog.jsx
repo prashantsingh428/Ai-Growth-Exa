@@ -134,16 +134,13 @@ export default function BlogInsights() {
             { }
             <section
                 ref={heroRef}
-                className="relative overflow-hidden border-b border-slate-200/50"
-                style={{
-                    background: "linear-gradient(135deg, #f8fafc 0%, #f0f9ff 50%, #eff6ff 100%)"
-                }}
+                className="relative overflow-hidden bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#312e81] text-white border-b border-white/20"
             >
                 { }
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-                    <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-                    <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-cyan-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+                    <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob"></div>
+                    <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+                    <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
                 </div>
 
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-36 text-center">
@@ -151,10 +148,10 @@ export default function BlogInsights() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
                         transition={{ duration: 0.7, type: "spring" }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200/50 mb-6"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6"
                     >
-                        <Sparkles size={14} className="text-blue-500" />
-                        <span className="text-sm font-medium text-slate-700">Latest Insights</span>
+                        <Sparkles size={14} className="text-blue-300" />
+                        <span className="text-sm font-medium text-blue-100">Latest Insights</span>
                     </motion.div>
 
                     <motion.h1
@@ -163,7 +160,7 @@ export default function BlogInsights() {
                         transition={{ duration: 0.8, type: "spring" }}
                         className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4"
                     >
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300">
                             BLOG / INSIGHTS
                         </span>
                     </motion.h1>
@@ -172,7 +169,7 @@ export default function BlogInsights() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        className="text-2xl md:text-3xl text-slate-700 font-semibold mb-8"
+                        className="text-2xl md:text-3xl text-blue-100 font-semibold mb-8"
                     >
                         Where Growth, AI & Strategy Come Together
                     </motion.h2>
@@ -181,7 +178,7 @@ export default function BlogInsights() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
-                        className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed mb-10"
+                        className="text-xl text-blue-200 max-w-4xl mx-auto leading-relaxed mb-10"
                     >
                         Future-Focused. Decision-Ready. Smart Moves. Real Impact.
                     </motion.p>
@@ -193,13 +190,13 @@ export default function BlogInsights() {
                         className="max-w-2xl mx-auto relative mb-12"
                     >
                         <div className="relative">
-                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
+                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                             <input
                                 type="text"
                                 placeholder="Search insights, trends, strategies..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-12 pr-4 py-4 bg-white/80 backdrop-blur-sm border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-white/90 backdrop-blur-sm border border-transparent rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg text-gray-900 placeholder-gray-500"
                             />
                         </div>
                     </motion.div>
@@ -212,19 +209,19 @@ export default function BlogInsights() {
                         className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto"
                     >
                         {[
-                            { label: "Marketing Revenue", value: "$42M+", icon: <DollarSign size={20} />, color: "text-emerald-600" },
-                            { label: "Net Promoter Score", value: "89 NPS", icon: <Users size={20} />, color: "text-blue-600" },
-                            { label: "Articles", value: "420+", icon: <FileText size={20} />, color: "text-purple-600" },
-                            { label: "Success Rate", value: "94%", icon: <CheckCircle size={20} />, color: "text-amber-600" },
+                            { label: "Marketing Revenue", value: "$42M+", icon: <DollarSign size={20} />, color: "text-emerald-400" },
+                            { label: "Net Promoter Score", value: "89 NPS", icon: <Users size={20} />, color: "text-blue-400" },
+                            { label: "Articles", value: "420+", icon: <FileText size={20} />, color: "text-purple-400" },
+                            { label: "Success Rate", value: "94%", icon: <CheckCircle size={20} />, color: "text-amber-400" },
                         ].map((stat, index) => (
-                            <div key={index} className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-2xl border border-slate-200/50">
+                            <div key={index} className="text-center p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/15 transition-colors">
                                 <div className="flex justify-center mb-2">
-                                    <div className={`p-2 rounded-full ${stat.color.replace('text', 'bg')}/10`}>
-                                        {stat.icon}
+                                    <div className={`p-2 rounded-full bg-white/10`}>
+                                        <div className={stat.color}>{stat.icon}</div>
                                     </div>
                                 </div>
-                                <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
-                                <div className="text-sm text-slate-500 mt-1">{stat.label}</div>
+                                <div className={`text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-purple-200`}>{stat.value}</div>
+                                <div className="text-sm text-blue-200 mt-1">{stat.label}</div>
                             </div>
                         ))}
                     </motion.div>
@@ -264,23 +261,23 @@ export default function BlogInsights() {
                                 </div>
 
                                 { }
-                                <div className="mt-10 max-w-2xl mx-auto">
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="mt-16 max-w-6xl mx-auto">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                         {[
                                             {
                                                 title: "What's working right now",
                                                 desc: "Data-backed strategies currently delivering results",
-                                                icon: <CheckCircle className="text-emerald-500" size={24} />
+                                                icon: <CheckCircle className="text-emerald-500" size={32} />
                                             },
                                             {
                                                 title: "What's about to change next",
                                                 desc: "Future trends and emerging opportunities",
-                                                icon: <TrendingUp className="text-blue-500" size={24} />
+                                                icon: <TrendingUp className="text-blue-500" size={32} />
                                             },
                                             {
                                                 title: "What brands must do to stay ahead",
                                                 desc: "Actionable steps for competitive advantage",
-                                                icon: <Rocket className="text-purple-500" size={24} />
+                                                icon: <Rocket className="text-purple-500" size={32} />
                                             }
                                         ].map((item, index) => (
                                             <motion.div

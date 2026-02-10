@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import aiInfinityComplete from "../assets/ai-infinity-complete.png"
 import ParticleBackground from "../components/ParticleBackground"
+import PlansModal from "../components/Modals/PlansModal"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -11,6 +12,7 @@ const BoldStatementSection = () => {
   const textRef = useRef(null)
   const imageWrapRef = useRef(null)
   const imageRef = useRef(null)
+  const [isPlansModalOpen, setIsPlansModalOpen] = useState(false)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -145,7 +147,10 @@ const BoldStatementSection = () => {
               We help brands automate, optimize, and scale marketing using AI-driven systems.
             </p>
 
-            <button className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-500/30">
+            <button
+              onClick={() => setIsPlansModalOpen(true)}
+              className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-500/30"
+            >
               Book a Free Strategy Call
             </button>
           </div>
@@ -191,6 +196,7 @@ const BoldStatementSection = () => {
 
         </div>
       </div>
+      <PlansModal isOpen={isPlansModalOpen} onClose={() => setIsPlansModalOpen(false)} />
     </section>
   )
 }
