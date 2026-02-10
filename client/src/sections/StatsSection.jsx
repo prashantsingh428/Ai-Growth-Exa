@@ -108,24 +108,24 @@ const StatsSection = () => {
     // Removed GSAP horizontal scroll - now using CSS marquee
 
     const [barData, setBarData] = useState([
-        { month: 'Jan', value: 85, cost: '$142' },
-        { month: 'Feb', value: 72, cost: '$128' },
-        { month: 'Mar', value: 68, cost: '$115' },
-        { month: 'Apr', value: 75, cost: '$98' },
-        { month: 'May', value: 62, cost: '$87' },
-        { month: 'Jun', value: 58, cost: '$76' },
-        { month: 'Jul', value: 52, cost: '$64' },
-        { month: 'Aug', value: 48, cost: '$52' },
-        { month: 'Sep', value: 45, cost: '$48' },
-        { month: 'Oct', value: 42, cost: '$45' },
-        { month: 'Nov', value: 38, cost: '$40' },
-        { month: 'Dec', value: 35, cost: '$35' }
+        { month: 'Jan', value: 35, cost: '$35' },
+        { month: 'Feb', value: 42, cost: '$42' },
+        { month: 'Mar', value: 50, cost: '$55' },
+        { month: 'Apr', value: 58, cost: '$68' },
+        { month: 'May', value: 65, cost: '$82' },
+        { month: 'Jun', value: 72, cost: '$95' },
+        { month: 'Jul', value: 80, cost: '$108' },
+        { month: 'Aug', value: 88, cost: '$118' },
+        { month: 'Sep', value: 95, cost: '$125' },
+        { month: 'Oct', value: 102, cost: '$132' },
+        { month: 'Nov', value: 110, cost: '$138' },
+        { month: 'Dec', value: 115, cost: '$145' }
     ]);
 
     const [metrics, setMetrics] = useState({
-        avgCPL: 89,
-        totalLeads: 12450,
-        conversionRate: 4.2
+        netProfit: 145,
+        totalLeads: 12528,
+        conversionRate: 4.1
     });
 
     // Year and Currency selection state
@@ -179,13 +179,13 @@ const StatsSection = () => {
         const interval = setInterval(() => {
             setBarData(prev => prev.map(item => ({
                 ...item,
-                value: Math.max(30, Math.min(100, item.value + (Math.random() - 0.5) * 3))
+                value: Math.max(30, Math.min(120, item.value + (Math.random() * 2 - 0.5)))
             })));
 
             setMetrics(prev => ({
-                avgCPL: Math.max(50, Math.min(120, prev.avgCPL + (Math.random() - 0.5) * 2)),
+                netProfit: Math.max(50, Math.min(180, prev.netProfit + (Math.random() * 1.5 - 0.3))),
                 totalLeads: prev.totalLeads + Math.floor(Math.random() * 10),
-                conversionRate: Math.max(2, Math.min(6, prev.conversionRate + (Math.random() - 0.5) * 0.1))
+                conversionRate: Math.max(2, Math.min(8, prev.conversionRate + (Math.random() - 0.4) * 0.1))
             }));
         }, 3000);
 
@@ -427,14 +427,14 @@ const StatsSection = () => {
                                 <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Overview</h4>
                             </div>
 
-                            <h3 className="text-base font-bold text-white mb-1">Cost Per Lead (CPL)</h3>
-                            <p className="text-xs text-gray-400 mb-3">Real-time optimization data</p>
+                            <h3 className="text-base font-bold text-white mb-1">Net Profit Growth</h3>
+                            <p className="text-xs text-gray-400 mb-3">Monthly Revenue vs. Net Profit</p>
 
                             {/* Live Metrics */}
                             <div className="grid grid-cols-3 gap-2 mb-3 p-2.5 bg-gray-900/50 rounded-lg border border-gray-700/50">
                                 <div className="text-center">
-                                    <p className="text-xs text-gray-500 mb-0.5">Avg CPL</p>
-                                    <p className="text-base font-bold text-cyan-400">${Math.round(metrics.avgCPL)}</p>
+                                    <p className="text-xs text-gray-500 mb-0.5">Net Profit</p>
+                                    <p className="text-base font-bold text-cyan-400">${Math.round(metrics.netProfit)}k</p>
                                 </div>
                                 <div className="text-center">
                                     <p className="text-xs text-gray-500 mb-0.5">Total Leads</p>
@@ -448,7 +448,7 @@ const StatsSection = () => {
 
 
                             {/* Fresh X and Y Graph */}
-                            <div className="bg-gray-800/40 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 h-[380px] w-full">
+                            <div className="bg-gray-800/40 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 h-[340px] w-full">
                                 {/* Month Range, Year and Currency Selection */}
                                 <div className="flex flex-wrap justify-end gap-2 mb-4">
                                     {/* Start Month Selector */}
@@ -481,7 +481,7 @@ const StatsSection = () => {
 
                                     {/* Cost Difference Indicator */}
                                     {costDiff && (
-                                        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border ${!costDiff.isIncrease
+                                        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border ${costDiff.isIncrease
                                             ? 'bg-green-500/10 border-green-500/30 text-green-400'
                                             : 'bg-red-500/10 border-red-500/30 text-red-400'
                                             }`}>
@@ -530,7 +530,7 @@ const StatsSection = () => {
                                         </div>
 
                                         {/* Y-axis values */}
-                                        <div className="flex flex-col justify-between h-40 text-[10px] text-gray-400">
+                                        <div className="flex flex-col justify-between h-52 text-[10px] text-gray-400">
                                             <span>{selectedCurrency}150</span>
                                             <span>{selectedCurrency}120</span>
                                             <span>{selectedCurrency}90</span>
@@ -543,7 +543,7 @@ const StatsSection = () => {
                                     {/* Graph Area */}
                                     <div className="flex-1">
                                         {/* Grid and axes */}
-                                        <div className="relative h-40 border-l-2 border-b-2 border-cyan-500/50">
+                                        <div className="relative h-52 border-l-2 border-b-2 border-cyan-500/50">
                                             {/* Gridlines */}
                                             <div className="absolute inset-0">
                                                 {[0, 25, 50, 75, 100].map((line) => (
@@ -613,7 +613,7 @@ const StatsSection = () => {
                             <div className="flex items-center justify-center gap-6 mt-3 text-xs">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-gradient-to-t from-cyan-500 to-cyan-400 rounded"></div>
-                                    <span className="text-gray-400">Cost Per Lead</span>
+                                    <span className="text-gray-400">Net Profit</span>
                                 </div>
                             </div>
 

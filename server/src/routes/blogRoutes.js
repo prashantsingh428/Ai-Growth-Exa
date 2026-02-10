@@ -2,7 +2,7 @@
 
 
 const express = require("express");
-const uploadBlog = require("../middlewares/uploadBloog");
+const uploadBlog = require("../middlewares/uploadBlog");
 const {
     createBlog,
     getAllBlogs,
@@ -20,5 +20,4 @@ router.put("/:id", uploadBlog.single("image"), updateBlog);
 router.delete("/:id", deleteBlog);
 
 module.exports = router;
-
 
