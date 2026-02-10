@@ -1,13 +1,14 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 
 import AnimatedBeams from "../components/AnimatedBeams"
+import PlansModal from "../components/Modals/PlansModal"
 
 const HeroSection = () => {
   const titleRef = useRef(null)
   const textRef = useRef(null)
   const buttonsRef = useRef(null)
-  const introRef = useRef(null)
+  const [isPlansOpen, setIsPlansOpen] = useState(false)
 
   useEffect(() => {
     if (!titleRef.current || !textRef.current || !buttonsRef.current) return;
@@ -57,7 +58,6 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
 
         <div
-          ref={introRef}
           className="inline-block mb-8 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 backdrop-blur"
         >
           <span className="text-sm font-semibold tracking-wide uppercase text-blue-400">
@@ -89,21 +89,23 @@ const HeroSection = () => {
           ref={buttonsRef}
           className="mt-14 flex flex-col sm:flex-row gap-4 justify-center"
         >
-          <a
-            href="#contact"
+          <button
+            onClick={() => setIsPlansOpen(true)}
             className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-500/30"
           >
             Get Your Growth Plan
-          </a>
+          </button>
 
           <a
-            href="#services"
+            href="/services"
             className="px-8 py-4 bg-white/5 border border-white/10 hover:border-blue-400 text-gray-300 hover:text-white rounded-full font-bold text-lg transition-all backdrop-blur"
           >
             Explore Services
           </a>
         </div>
       </div>
+
+      <PlansModal isOpen={isPlansOpen} onClose={() => setIsPlansOpen(false)} />
     </section>
   )
 }

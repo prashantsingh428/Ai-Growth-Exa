@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Link } from 'react-router-dom';
 import FloatingParticles from '../components/FloatingParticles';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -79,9 +80,9 @@ const BrandStorySection = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
                                 </div>
-                                <span className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                <Link to="/careers" className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
                                     Start Your Transformation
-                                </span>
+                                </Link>
                             </div>
                         </div>
                     </div>
