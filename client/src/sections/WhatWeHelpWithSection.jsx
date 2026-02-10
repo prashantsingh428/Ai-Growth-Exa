@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FloatingParticles from '../components/FloatingParticles';
@@ -184,7 +185,8 @@ const WhatWeHelpWithSection = () => {
 
                 {/* CTA Button */}
                 <div className="text-center">
-                    <button
+                    <Link
+                        to="/services"
                         ref={buttonRef}
                         className="group relative inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-blue-600/30 hover:border-blue-600 text-blue-600 font-bold text-lg rounded-full transition-all duration-300 hover:shadow-xl hover:shadow-blue-200 hover:-translate-y-1"
                     >
@@ -192,7 +194,7 @@ const WhatWeHelpWithSection = () => {
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

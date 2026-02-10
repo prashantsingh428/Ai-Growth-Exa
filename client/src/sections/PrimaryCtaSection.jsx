@@ -2,12 +2,16 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ParticleBackground from '../components/ParticleBackground';
+import PlansModal from '../components/Modals/PlansModal';
+import StrategyCallModal from '../components/Modals/StrategyCallModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PrimaryCtaSection = () => {
     const sectionRef = useRef(null);
     const contentRef = useRef(null);
+    const [isPlansOpen, setIsPlansOpen] = React.useState(false);
+    const [isStrategyOpen, setIsStrategyOpen] = React.useState(false);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -42,69 +46,83 @@ const PrimaryCtaSection = () => {
             {/* Particle Background - Neuron Effect */}
             <ParticleBackground />
 
-            <div ref={contentRef} className="container mx-auto px-4 sm:px-6 max-w-5xl relative z-10 text-center">
-                {/* Motivation Line */}
-                <div className="inline-block px-4 py-2 bg-blue-900/30 rounded-full border border-blue-500/30 mb-4">
-                    <span className="text-blue-400 text-xs md:text-sm font-semibold tracking-widest uppercase">
-                        WHERE STRATEGY MEETS EXECUTION
-                    </span>
-                </div>
+            <div ref={contentRef} className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-                {/* Main Heading */}
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight mb-3 px-2">
-                    <span className="text-white">Ready to </span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Transform</span>
-                    <br />
-                    <span className="text-white">Your Growth?</span>
-                </h2>
+                    {/* Left Column: Heading & Buttons */}
+                    <div className="text-left space-y-6">
+                        <div className="inline-block px-4 py-2 bg-blue-900/30 rounded-full border border-blue-500/30">
+                            <span className="text-blue-400 text-xs md:text-sm font-semibold tracking-widest uppercase">
+                                WHERE STRATEGY MEETS EXECUTION
+                            </span>
+                        </div>
 
-                {/* Description */}
-                <p className="text-base sm:text-lg text-gray-400 leading-snug max-w-3xl mx-auto mb-8 px-2">
-                    Because growth doesn't start with ads.<br />
-                    It starts with <span className="text-white font-semibold">clarity, strategy, and the right system.</span>
-                </p>
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-white">
+                            Ready to <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                                Transform Your Growth?
+                            </span>
+                        </h2>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center mb-8 px-4">
-                    <button className="group relative w-full sm:w-auto px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold text-base transition-all transform hover:scale-105 shadow-xl shadow-blue-500/20 overflow-hidden">
-                        <span className="relative z-10 flex items-center gap-3">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            Book a Strategy Call
-                        </span>
-                        {/* Shine effect on hover */}
-                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                    </button>
+                        <p className="text-lg text-gray-400 leading-relaxed max-w-xl">
+                            Stop guessing. Start scaling. We build the infrastructure that powers predictable, high-ROI growth for ambitious brands.
+                        </p>
 
-                    <button className="w-full sm:w-auto px-8 py-3 sm:py-4 bg-transparent border-2 border-indigo-500 hover:bg-indigo-500/10 text-indigo-400 hover:text-indigo-300 rounded-full font-bold text-base transition-all transform hover:scale-105 shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-3">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                        </svg>
-                        Customize Your Growth Plan
-                    </button>
-                </div>
+                        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                            <button
+                                onClick={() => setIsPlansOpen(true)}
+                                className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold text-base transition-all transform hover:scale-105 shadow-xl shadow-blue-500/20 overflow-hidden"
+                            >
+                                <span className="relative z-10 flex items-center gap-2">
+                                    Book Strategy Call
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </span>
+                                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                            </button>
 
-                {/* Bottom CTA Message Box */}
-                <div className="max-w-2xl mx-auto p-6 bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-2xl">
-                    <p className="text-gray-300 text-base mb-4 leading-snug">
-                        Get clarity on your growth roadmap in a <span className="text-blue-400 font-semibold">free 30-minute strategy session</span>
-                    </p>
+                            <button
+                                onClick={() => setIsPlansOpen(true)}
+                                className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full font-bold text-base transition-all transform hover:scale-105 backdrop-blur-sm flex items-center justify-center gap-2"
+                            >
+                                View Service Plans
+                            </button>
+                        </div>
+                    </div>
 
-                    <button className="w-full sm:w-auto px-8 sm:px-10 py-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white rounded-full font-bold text-base transition-all transform hover:scale-105 shadow-xl shadow-indigo-500/30">
-                        Get My Personalized Growth Plan
-                    </button>
+                    {/* Right Column: Value Props */}
+                    <div className="bg-gray-900/40 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-2xl relative overflow-hidden group hover:border-blue-500/30 transition-colors">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none"></div>
 
-                    {/* Decorative dots */}
-                    <div className="flex justify-center gap-2 mt-6">
-                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                        <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                        <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
-                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                        <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                        <h3 className="text-2xl font-bold text-white mb-6">Why Partner With Us?</h3>
+
+                        <ul className="space-y-4">
+                            {[
+                                { title: "Data-Driven Strategy", desc: "No guesswork. Just precision execution based on real metrics." },
+                                { title: "Full-Stack AI Integration", desc: "Automate workflows and scale faster with cutting-edge tech." },
+                                { title: "Dedicated Growth Team", desc: "Access to experts who treat your business like their own." },
+                            ].map((item, index) => (
+                                <li key={index} className="flex items-start gap-4">
+                                    <div className="mt-1 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 shrink-0">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-white font-semibold">{item.title}</h4>
+                                        <p className="text-gray-400 text-sm mt-1">{item.desc}</p>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </div >
+
+            <PlansModal isOpen={isPlansOpen} onClose={() => setIsPlansOpen(false)} />
+            <StrategyCallModal isOpen={isStrategyOpen} onClose={() => setIsStrategyOpen(false)} />
         </section >
     );
 };

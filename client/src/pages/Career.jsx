@@ -986,9 +986,9 @@ const CareersPage = () => {
             </div>
 
             {/* Hero Section */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#312e81] text-white py-32 px-4">
+            <div className="relative overflow-hidden bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#312e81] text-white py-52 px-4">
                 <div className="container mx-auto relative z-10">
-                    <div>
+                    <div className="text-center max-w-5xl mx-auto">
                         <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
                             Build the <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300">
                                 Future
@@ -997,12 +997,12 @@ const CareersPage = () => {
                             of <span className="text-white">AI-Driven Growth</span>
                         </h1>
 
-                        <p className="text-xl md:text-2xl mb-10 max-w-3xl text-blue-100 leading-relaxed font-light">
+                        <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-blue-100 leading-relaxed font-light">
                             At AI Growth Exa, we're not just building marketing campaigns — we're architecting careers,
                             cultivating leaders, and crafting future-ready professionals.
                         </p>
 
-                        <div className="flex flex-col md:flex-row gap-6">
+                        <div className="flex flex-col md:flex-row justify-center gap-6">
                             <button
                                 onClick={handleGeneralApplyClick}
                                 className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 shadow-lg shadow-blue-900/50 flex items-center justify-center gap-2"
@@ -1135,14 +1135,14 @@ const CareersPage = () => {
                 {/* Job Openings Section */}
                 <div className="mb-24">
                     <div className="text-center mb-12">
-                        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-2 rounded-full mb-4">
+                        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-800 text-white px-6 py-2 rounded-full mb-4">
                             <FaFire />
                             <span className="font-semibold">We're Hiring!</span>
                         </div>
 
                         <h2 className="text-5xl font-bold text-gray-900 mb-6">
                             Open Roles{' '}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">
                                 (Future-Focused Hiring)
                             </span>
                         </h2>
@@ -1214,9 +1214,9 @@ const CareersPage = () => {
                         {filteredJobs.map((job) => (
                             <div
                                 key={job.id}
-                                className={`group ${job.featured ? 'lg:col-span-2 lg:row-span-1' : ''}`}
+                                className="group"
                             >
-                                <div className={`bg-white rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 h-full ${job.featured ? 'border-transparent bg-gradient-to-br from-yellow-50 to-orange-50 hover:shadow-2xl' : 'hover:border-blue-300 hover:shadow-xl'} overflow-hidden`}>
+                                <div className="bg-white rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 h-full hover:border-blue-300 overflow-hidden">
                                     <div className="p-6 pb-2">
                                         <div className="flex justify-between items-start">
                                             <div className="flex items-center gap-3">
@@ -1232,7 +1232,7 @@ const CareersPage = () => {
                                                             {job.department}
                                                         </span>
                                                         {job.featured && (
-                                                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
+                                                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-blue-400 to-blue-700 text-white">
                                                                 <FaStar className="mr-1" /> Featured
                                                             </span>
                                                         )}
@@ -1317,13 +1317,13 @@ const CareersPage = () => {
                 {/* Final CTA Section */}
                 <div className="text-center py-20">
                     <div className="max-w-4xl mx-auto">
-                        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-3 rounded-full mb-8">
+                        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-800 text-white px-8 py-3 rounded-full mb-8">
                             <FaHandshake className="text-xl" />
                             <span className="text-lg font-bold">Ready to Transform Your Career?</span>
                         </div>
 
                         <h2 className="text-6xl font-bold mb-10">
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-800 to-pink-800">
                                 Apply to Join
                             </span>
                             <br />
