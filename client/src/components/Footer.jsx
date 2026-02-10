@@ -1,11 +1,52 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import api from '../api/api.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
     const footerRef = useRef(null);
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        message: "",
+    });
+
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            setLoading(true);
+            await api.post("/connect", formData);
+            alert("Message sent successfully 🚀");
+
+            setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                company: "",
+                message: "",
+            });
+        } catch (error) {
+            alert("Something went wrong 😢");
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -135,29 +176,44 @@ const Footer = () => {
                         Connect With Us
                         <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-blue-500"></span>
                     </h3>
-                    <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+                    <form className="space-y-3" onSubmit={handleSubmit}>
                         <input
                             type="text"
                             placeholder="Name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
                             className="w-full bg-gray-800 bg-opacity-50 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors text-sm"
                         />
                         <input
                             type="email"
                             placeholder="Email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             className="w-full bg-gray-800 bg-opacity-50 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors text-sm"
                         />
                         <input
                             type="tel"
                             placeholder="Phone Number"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
                             className="w-full bg-gray-800 bg-opacity-50 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors text-sm"
                         />
                         <input
                             type="text"
                             placeholder="Company Name"
+                            name="company"
+                            value={formData.company}
+                            onChange={handleChange}
                             className="w-full bg-gray-800 bg-opacity-50 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors text-sm"
                         />
                         <textarea
                             placeholder="Message"
+                            name="message"
+                            value={formData.message}
+                            onChange={handleChange}
                             rows="3"
                             className="w-full bg-gray-800 bg-opacity-50 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors text-sm resize-none"
                         ></textarea>

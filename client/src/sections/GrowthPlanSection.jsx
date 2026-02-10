@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import api from '../api/api.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,9 @@ const GrowthPlanSection = () => {
         budget: '',
         message: ''
     });
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -61,42 +65,107 @@ const GrowthPlanSection = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
+        // Reset status when user starts typing again
+        if (submitStatus) setSubmitStatus(null);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+        setIsSubmitting(true);
+        setSubmitStatus(null);
+
+        try {
+            // Validate required fields
+            if (!formData.name || !formData.phone || !formData.email) {
+                throw new Error('Please fill in all required fields');
+            }
+
+            // Validate phone number format
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(formData.phone.replace(/\D/g, ''))) {
+                throw new Error('Please enter a valid 10-digit phone number');
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                throw new Error('Please enter a valid email address');
+            }
+
+            const response = await api.post('/leads/leadcreate', formData);
+
+            console.log('Form submitted successfully:', response.data);
+
+            // Success message
+            setSubmitStatus('success');
+
+            // Reset form
+            setFormData({
+                name: '',
+                phone: '',
+                email: '',
+                company: '',
+                industry: '',
+                services: '',
+                budget: '',
+                message: ''
+            });
+
+            // Show success alert
+            alert('✅ Thank you! Your growth plan request has been submitted successfully. We will contact you within 24 hours.');
+
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setSubmitStatus('error');
+
+            let errorMessage = 'Something went wrong. Please try again.';
+
+            if (error.response) {
+                // Server responded with error status
+                errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+            } else if (error.request) {
+                // Request was made but no response
+                errorMessage = 'Network error. Please check your connection.';
+            } else if (error.message) {
+                // Custom validation error
+                errorMessage = error.message;
+            }
+
+            alert(`❌ ${errorMessage}`);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
-        <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden py-10 transition-colors duration-500">
-            {/* Background effects - Softened for Light Theme */}
+        <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 transition-colors duration-500">
+            {/* Background effects */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-50/10 via-transparent to-purple-50/10"></div>
             <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-blue-400/5 rounded-full blur-[128px]"></div>
             <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-purple-400/5 rounded-full blur-[128px]"></div>
 
             <div className="container mx-auto px-6 max-w-7xl relative z-10">
-                <div className="grid lg:grid-cols-2 gap-8 items-start">
+                <div className="grid lg:grid-cols-2 gap-12 items-start">
                     {/* Left Side - Heading & Tagline */}
-                    <div ref={leftRef} className="space-y-4">
-                        <div className="inline-block px-4 py-1.5 bg-blue-50 rounded-full border border-blue-100 mb-2">
-                            <span className="text-blue-600 text-xs font-semibold uppercase">PERSONALIZED GROWTH PLAN</span>
+                    <div ref={leftRef} className="space-y-6">
+                        <div className="inline-block px-4 py-2 bg-blue-50 rounded-full border border-blue-100 mb-4">
+                            <span className="text-blue-600 text-sm font-semibold uppercase">PERSONALIZED GROWTH PLAN</span>
                         </div>
 
-                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+                        <h2 className="text-5xl md:text-6xl font-black text-gray-900 leading-tight">
                             Every brand is different.
                         </h2>
 
-                        <p className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 leading-tight">
+                        <p className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 leading-tight">
                             Your growth plan should be too.
                         </p>
 
-                        <p className="text-base text-gray-600 leading-relaxed max-w-xl pt-2">
+                        <p className="text-xl text-gray-600 leading-relaxed max-w-xl pt-4">
                             Share your goals and challenges with us. We'll create a personalized AI-powered marketing plan
                             tailored to your brand's unique needs and objectives.
                         </p>
 
-                        <div className="space-y-2 pt-3">
+                        <div className="space-y-4 pt-6">
                             <div className="flex items-start gap-3">
                                 <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mt-1">
                                     <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
@@ -126,11 +195,34 @@ const GrowthPlanSection = () => {
 
                     {/* Right Side - Lead Form */}
                     <div ref={formRef}>
-                        <form onSubmit={handleSubmit} className="bg-white backdrop-blur-sm rounded-xl p-6 border border-gray-100 shadow-xl">
-                            <div className="space-y-3">
+                        <form onSubmit={handleSubmit} className="bg-white backdrop-blur-sm rounded-2xl p-8 border border-gray-100 shadow-2xl">
+                            {/* Status Messages */}
+                            {submitStatus === 'success' && (
+                                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                        <span className="text-green-700 font-medium">Thank you! We'll contact you soon.</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {submitStatus === 'error' && (
+                                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                        </svg>
+                                        <span className="text-red-700 font-medium">Something went wrong. Please try again.</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="space-y-5">
                                 {/* Full Name */}
                                 <div>
-                                    <label htmlFor="name" className="block text-xs font-bold text-gray-700 mb-1">
+                                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
                                         Full Name *
                                     </label>
                                     <input
@@ -140,14 +232,15 @@ const GrowthPlanSection = () => {
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
                                         placeholder="John Doe"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
                                 {/* Phone Number */}
                                 <div>
-                                    <label htmlFor="phone" className="block text-xs font-bold text-gray-700 mb-1">
+                                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
                                         Phone Number *
                                     </label>
                                     <input
@@ -157,14 +250,15 @@ const GrowthPlanSection = () => {
                                         value={formData.phone}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
-                                        placeholder="+1 (555) 000-0000"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        placeholder="9876543210"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
                                 {/* Email Address */}
                                 <div>
-                                    <label htmlFor="email" className="block text-xs font-bold text-gray-700 mb-1">
+                                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
                                         Email Address *
                                     </label>
                                     <input
@@ -174,14 +268,15 @@ const GrowthPlanSection = () => {
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
                                         placeholder="john@company.com"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
                                 {/* Company Name */}
                                 <div>
-                                    <label htmlFor="company" className="block text-xs font-bold text-gray-700 mb-1">
+                                    <label htmlFor="company" className="block text-sm font-semibold text-gray-700 mb-2">
                                         Company Name
                                     </label>
                                     <input
@@ -190,14 +285,15 @@ const GrowthPlanSection = () => {
                                         name="company"
                                         value={formData.company}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
                                         placeholder="Your Company Inc."
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
                                 {/* Industry */}
                                 <div>
-                                    <label htmlFor="industry" className="block text-xs font-bold text-gray-700 mb-1">
+                                    <label htmlFor="industry" className="block text-sm font-semibold text-gray-700 mb-2">
                                         Industry
                                     </label>
                                     <select
@@ -205,24 +301,26 @@ const GrowthPlanSection = () => {
                                         name="industry"
                                         value={formData.industry}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        disabled={isSubmitting}
                                     >
+
                                         <option value="">Select your industry</option>
-                                        <option value="ecommerce">E-commerce</option>
-                                        <option value="saas">SaaS / Technology</option>
-                                        <option value="healthcare">Healthcare</option>
-                                        <option value="finance">Finance</option>
-                                        <option value="realestate">Real Estate</option>
-                                        <option value="education">Education</option>
-                                        <option value="retail">Retail</option>
-                                        <option value="consulting">Consulting</option>
-                                        <option value="other">Other</option>
+                                        <option value="E-commerce">E-commerce</option>
+                                        <option value="SaaS / Technology">SaaS / Technology</option>
+                                        <option value="Healthcare">Healthcare</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Real Estate">Real Estate</option>
+                                        <option value="Education">Education</option> {/* ✅ CHANGED */}
+                                        <option value="Retail">Retail</option>
+                                        <option value="Consulting">Consulting</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
 
                                 {/* Services You're Looking For */}
                                 <div>
-                                    <label htmlFor="services" className="block text-xs font-bold text-gray-700 mb-1">
+                                    <label htmlFor="services" className="block text-sm font-semibold text-gray-700 mb-2">
                                         Services You're Looking For
                                     </label>
                                     <select
@@ -230,7 +328,8 @@ const GrowthPlanSection = () => {
                                         name="services"
                                         value={formData.services}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        disabled={isSubmitting}
                                     >
                                         <option value="">Select service</option>
                                         <option value="brand-identity">Brand Identity & Design</option>
@@ -245,7 +344,7 @@ const GrowthPlanSection = () => {
 
                                 {/* Monthly Marketing Budget */}
                                 <div>
-                                    <label htmlFor="budget" className="block text-xs font-bold text-gray-700 mb-1">
+                                    <label htmlFor="budget" className="block text-sm font-semibold text-gray-700 mb-2">
                                         Monthly Marketing Budget
                                     </label>
                                     <select
@@ -253,20 +352,21 @@ const GrowthPlanSection = () => {
                                         name="budget"
                                         value={formData.budget}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        disabled={isSubmitting}
                                     >
                                         <option value="">Select your budget range</option>
-                                        <option value="<5k">Less than $5,000</option>
-                                        <option value="5k-10k">$5,000 - $10,000</option>
-                                        <option value="10k-25k">$10,000 - $25,000</option>
-                                        <option value="25k-50k">$25,000 - $50,000</option>
-                                        <option value="50k+">$50,000+</option>
+                                        <option value="Less than $5,000">Less than $5,000</option>
+                                        <option value="$5,000 - $10,000">$5,000 - $10,000</option> {/* ✅ CHANGED */}
+                                        <option value="$10,000 - $25,000">$10,000 - $25,000</option>
+                                        <option value="$25,000 - $50,000">$25,000 - $50,000</option>
+                                        <option value="$50,000+">$50,000+</option>
                                     </select>
                                 </div>
 
                                 {/* Query / Message */}
                                 <div>
-                                    <label htmlFor="message" className="block text-xs font-bold text-gray-700 mb-1">
+                                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
                                         Query / Message
                                     </label>
                                     <textarea
@@ -274,24 +374,35 @@ const GrowthPlanSection = () => {
                                         name="message"
                                         value={formData.message}
                                         onChange={handleChange}
-                                        rows="3"
-                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none font-medium text-sm"
+                                        rows="4"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none font-medium"
                                         placeholder="What are your biggest marketing challenges?"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
-                                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-base rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/30"
+                                    disabled={isSubmitting}
+                                    className={`w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/30 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:from-blue-500 hover:to-purple-500 hover:scale-105'}`}
                                 >
-                                    Get My Personalized Growth Plan
+                                    {isSubmitting ? (
+                                        <span className="flex items-center justify-center gap-2">
+                                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Submitting...
+                                        </span>
+                                    ) : (
+                                        'Get My Personalized Growth Plan'
+                                    )}
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
-
             </div>
         </section>
     );
