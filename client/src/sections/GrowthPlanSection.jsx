@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import api from '../api/api.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,9 @@ const GrowthPlanSection = () => {
         budget: '',
         message: ''
     });
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -61,16 +65,81 @@ const GrowthPlanSection = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
+        // Reset status when user starts typing again
+        if (submitStatus) setSubmitStatus(null);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+        setIsSubmitting(true);
+        setSubmitStatus(null);
+
+        try {
+            // Validate required fields
+            if (!formData.name || !formData.phone || !formData.email) {
+                throw new Error('Please fill in all required fields');
+            }
+
+            // Validate phone number format
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(formData.phone.replace(/\D/g, ''))) {
+                throw new Error('Please enter a valid 10-digit phone number');
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                throw new Error('Please enter a valid email address');
+            }
+
+            const response = await api.post('/leads/leadcreate', formData);
+
+            console.log('Form submitted successfully:', response.data);
+
+            // Success message
+            setSubmitStatus('success');
+
+            // Reset form
+            setFormData({
+                name: '',
+                phone: '',
+                email: '',
+                company: '',
+                industry: '',
+                services: '',
+                budget: '',
+                message: ''
+            });
+
+            // Show success alert
+            alert('✅ Thank you! Your growth plan request has been submitted successfully. We will contact you within 24 hours.');
+
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setSubmitStatus('error');
+
+            let errorMessage = 'Something went wrong. Please try again.';
+
+            if (error.response) {
+                // Server responded with error status
+                errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+            } else if (error.request) {
+                // Request was made but no response
+                errorMessage = 'Network error. Please check your connection.';
+            } else if (error.message) {
+                // Custom validation error
+                errorMessage = error.message;
+            }
+
+            alert(`❌ ${errorMessage}`);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
         <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 transition-colors duration-500">
-            {/* Background effects - Softened for Light Theme */}
+            {/* Background effects */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-50/10 via-transparent to-purple-50/10"></div>
             <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-blue-400/5 rounded-full blur-[128px]"></div>
             <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-purple-400/5 rounded-full blur-[128px]"></div>
@@ -127,6 +196,29 @@ const GrowthPlanSection = () => {
                     {/* Right Side - Lead Form */}
                     <div ref={formRef}>
                         <form onSubmit={handleSubmit} className="bg-white backdrop-blur-sm rounded-2xl p-8 border border-gray-100 shadow-2xl">
+                            {/* Status Messages */}
+                            {submitStatus === 'success' && (
+                                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                        <span className="text-green-700 font-medium">Thank you! We'll contact you soon.</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {submitStatus === 'error' && (
+                                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                        </svg>
+                                        <span className="text-red-700 font-medium">Something went wrong. Please try again.</span>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="space-y-5">
                                 {/* Full Name */}
                                 <div>
@@ -142,6 +234,7 @@ const GrowthPlanSection = () => {
                                         required
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
                                         placeholder="John Doe"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
@@ -158,7 +251,8 @@ const GrowthPlanSection = () => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
-                                        placeholder="+1 (555) 000-0000"
+                                        placeholder="9876543210"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
@@ -176,6 +270,7 @@ const GrowthPlanSection = () => {
                                         required
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
                                         placeholder="john@company.com"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
@@ -192,6 +287,7 @@ const GrowthPlanSection = () => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
                                         placeholder="Your Company Inc."
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
@@ -206,17 +302,19 @@ const GrowthPlanSection = () => {
                                         value={formData.industry}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        disabled={isSubmitting}
                                     >
+
                                         <option value="">Select your industry</option>
-                                        <option value="ecommerce">E-commerce</option>
-                                        <option value="saas">SaaS / Technology</option>
-                                        <option value="healthcare">Healthcare</option>
-                                        <option value="finance">Finance</option>
-                                        <option value="realestate">Real Estate</option>
-                                        <option value="education">Education</option>
-                                        <option value="retail">Retail</option>
-                                        <option value="consulting">Consulting</option>
-                                        <option value="other">Other</option>
+                                        <option value="E-commerce">E-commerce</option>
+                                        <option value="SaaS / Technology">SaaS / Technology</option>
+                                        <option value="Healthcare">Healthcare</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Real Estate">Real Estate</option>
+                                        <option value="Education">Education</option> {/* ✅ CHANGED */}
+                                        <option value="Retail">Retail</option>
+                                        <option value="Consulting">Consulting</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
 
@@ -231,6 +329,7 @@ const GrowthPlanSection = () => {
                                         value={formData.services}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        disabled={isSubmitting}
                                     >
                                         <option value="">Select service</option>
                                         <option value="brand-identity">Brand Identity & Design</option>
@@ -254,13 +353,14 @@ const GrowthPlanSection = () => {
                                         value={formData.budget}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+                                        disabled={isSubmitting}
                                     >
                                         <option value="">Select your budget range</option>
-                                        <option value="<5k">Less than $5,000</option>
-                                        <option value="5k-10k">$5,000 - $10,000</option>
-                                        <option value="10k-25k">$10,000 - $25,000</option>
-                                        <option value="25k-50k">$25,000 - $50,000</option>
-                                        <option value="50k+">$50,000+</option>
+                                        <option value="Less than $5,000">Less than $5,000</option>
+                                        <option value="$5,000 - $10,000">$5,000 - $10,000</option> {/* ✅ CHANGED */}
+                                        <option value="$10,000 - $25,000">$10,000 - $25,000</option>
+                                        <option value="$25,000 - $50,000">$25,000 - $50,000</option>
+                                        <option value="$50,000+">$50,000+</option>
                                     </select>
                                 </div>
 
@@ -277,21 +377,32 @@ const GrowthPlanSection = () => {
                                         rows="4"
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none font-medium"
                                         placeholder="What are your biggest marketing challenges?"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
-                                    className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-lg rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/30"
+                                    disabled={isSubmitting}
+                                    className={`w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/30 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:from-blue-500 hover:to-purple-500 hover:scale-105'}`}
                                 >
-                                    Get My Personalized Growth Plan
+                                    {isSubmitting ? (
+                                        <span className="flex items-center justify-center gap-2">
+                                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Submitting...
+                                        </span>
+                                    ) : (
+                                        'Get My Personalized Growth Plan'
+                                    )}
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
-
             </div>
         </section>
     );
