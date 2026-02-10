@@ -1,10 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-// Import controller (assuming consistent naming, will be fixed later if needed, 
-// for now just placeholder routes)
 
-router.get('/', (req, res) => {
-    res.json({ message: 'Resource API working' });
-});
+const {
+    createAdmin,
+    register,
+    verifyEmail,
+    login,
+    forgotPassword,
+    resetPassword
+} = require("../controllers/authController");
+
+router.post("/create-admin", createAdmin);
+router.post("/register", register);
+router.post("/verify-email", verifyEmail);
+router.post("/login", login);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 
 module.exports = router;
