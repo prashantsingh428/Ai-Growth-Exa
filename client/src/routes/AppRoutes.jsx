@@ -4,9 +4,9 @@ import MainLayout from '../layouts/MainLayout';
 import ScrollToTop from '../components/ScrollToTop';
 import ContactModal from '../components/Modals/ContactModal';
 
-import CookiePolicy from '../pages/CookieInfo';
-import CopyrightPolicy from '../pages/CopyrightInfo';
-import PrivacyPolicy from '../pages/PrivacyInfo';
+import CookieInfo from '../pages/CookieInfo';
+import CopyrightInfo from '../pages/CopyrightInfo';
+import PrivacyInfo from '../pages/PrivacyInfo';
 import TermsAndConditions from '../pages/TermsAndConditions';
 
 const Home = lazy(() => import('../pages/Home'));
@@ -46,9 +46,9 @@ const AppRoutes = () => {
                     <Route path="/awards" element={<Awards />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/careers" element={<Career />} />
-                    <Route path="/cookie-policy" element={<CookiePolicy />} />
-                    <Route path="/copyright-policy" element={<CopyrightPolicy />} />
-                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/cookie-policy" element={<CookieInfo />} />
+                    <Route path="/copyright-policy" element={<CopyrightInfo />} />
+                    <Route path="/privacy-policy" element={<PrivacyInfo />} />
                     <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
