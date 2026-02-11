@@ -9,6 +9,7 @@ const careerRoutes = require('./routes/careerRoutes');
 const applicationRoutes = require("./routes/applicationRoutes");
 const connectRoutes = require("./routes/connectRoutes");
 const subscriberRoutes = require("./routes/subscriberRoutes");
+const serviceRoutes = require("./routes/pageRoutes");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/careers', careerRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api", connectRoutes);
 app.use("/api", subscriberRoutes);
+app.use("/api/services", serviceRoutes);
 
 
 app.get('/', (req, res) => {
