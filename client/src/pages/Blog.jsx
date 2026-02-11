@@ -122,7 +122,6 @@ export default function BlogInsights() {
                 setBlogs(data);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching blogs:", error);
                 setLoading(false);
             }
         };
@@ -180,7 +179,7 @@ export default function BlogInsights() {
                         initial={{ opacity: 0, y: -30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, type: "spring" }}
-                        className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4"
+                        className="text-3xl sm:text-4xl md:text-7xl font-extrabold tracking-tight mb-4"
                     >
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
                             BLOG / INSIGHTS
