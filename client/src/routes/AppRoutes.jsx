@@ -1,13 +1,21 @@
 import React, { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import ScrollToTop from '../components/ScrollToTop';
+import ContactModal from '../components/Modals/ContactModal';
+
+import CookiePolicy from '../pages/CookieInfo';
+import CopyrightPolicy from '../pages/CopyrightInfo';
+import PrivacyPolicy from '../pages/PrivacyInfo';
+import TermsAndConditions from '../pages/TermsAndConditions';
 
 const Home = lazy(() => import('../pages/Home'));
 const Blog = lazy(() => import('../pages/Blog'));
 const Career = lazy(() => import('../pages/Career'));
 const Services = lazy(() => import('../pages/Services'));
-const About = lazy(() => import('../pages/About')); // New Import
+const About = lazy(() => import('../pages/About'));
+const Awards = lazy(() => import('../pages/Awards'));
+const Founder = lazy(() => import('../pages/Founder'));
 
 const NotFound = () => <div className="p-20 text-center">404 - Page Not Found</div>;
 
@@ -18,17 +26,37 @@ const PageLoader = () => (
 );
 
 const AppRoutes = () => {
+    const location = useLocation();
+    const state = location.state;
+
+    // Check if we have a background location (for modal)
+    const background = state && state.background;
+
     return (
         <MainLayout>
             <ScrollToTop />
             <Suspense fallback={<PageLoader />}>
-                <Routes>
+                {/* Always render the main routes. 
+                    If we have a background, we use it as the location for the main routes. */}
+                <Routes location={background || location}>
                     <Route path="/" element={<Home />} />
                     <Route path="/services" element={<Services />} />
-                    <Route path="/about" element={<About />} /> {/* New Route */}
+                    <Route path="/about" element={<About />} />
+                    <Route path="/founder" element={<Founder />} />
+                    <Route path="/awards" element={<Awards />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/careers" element={<Career />} />
+                    <Route path="/cookie-policy" element={<CookiePolicy />} />
+                    <Route path="/copyright-policy" element={<CopyrightPolicy />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                     <Route path="*" element={<NotFound />} />
+                </Routes>
+
+                {/* Render the Contact Modal as a separate route if requested directly, 
+                    OR if it's the current location and we have a background. */}
+                <Routes>
+                    <Route path="/contact" element={<ContactModal isOpen={true} />} />
                 </Routes>
             </Suspense>
         </MainLayout>

@@ -152,11 +152,11 @@ const GrowthPlanSection = () => {
                             <span className="text-blue-600 text-sm font-semibold uppercase">PERSONALIZED GROWTH PLAN</span>
                         </div>
 
-                        <h2 className="text-5xl md:text-6xl font-black text-gray-900 leading-tight">
+                        <h2 className="text-4xl md:text-6xl font-black text-gray-900 leading-tight">
                             Every brand is different.
                         </h2>
 
-                        <p className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 leading-tight">
+                        <p className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 leading-tight">
                             Your growth plan should be too.
                         </p>
 

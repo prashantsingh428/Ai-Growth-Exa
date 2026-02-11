@@ -106,10 +106,10 @@ const FaqItem = ({ question, answer, isOpen, onClick }) => {
     }, [isOpen]);
 
     return (
-        <div className={`mb-4 rounded-2xl border transition-all duration-500 ${isOpen ? 'bg-white/10 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.1)]' : 'bg-white/5 border-white/5 hover:bg-white/8 hover:border-white/10'}`}>
+        <div className={`mb-2 rounded-2xl border transition-all duration-500 ${isOpen ? 'bg-white/10 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.1)]' : 'bg-white/5 border-white/5 hover:bg-white/8 hover:border-white/10'}`}>
             <button
                 onClick={onClick}
-                className="w-full px-4 sm:px-6 md:px-8 py-5 sm:py-6 md:py-7 flex items-center justify-between text-left group transition-all duration-300"
+                className="w-full px-4 sm:px-6 md:px-8 py-2 sm:py-6 md:py-4 flex items-center justify-between text-left group transition-all duration-300"
             >
                 <span className={`text-base sm:text-lg md:text-xl lg:text-2xl font-bold transition-colors duration-300 pr-3 ${isOpen ? 'text-blue-400' : 'text-gray-200 group-hover:text-white'}`}>
                     {question}

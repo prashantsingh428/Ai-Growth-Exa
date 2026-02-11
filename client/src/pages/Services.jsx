@@ -2389,28 +2389,69 @@ const ServicesContent = () => {
                         <Box sx={{ maxWidth: 900, mx: 'auto', textAlign: 'center', mb: 4 }}>
                             <Typography variant="h6" sx={{ fontWeight: 600, mb: 4 }}>Every service is:</Typography>
                             <Grid container spacing={4} justifyContent="center" sx={{ mb: 6 }}>
-                                {['AI-driven', 'ROI-focused', 'Designed to scale', 'Integrated with your sales journey'].map((item, index) => (
+                                {[
+                                    {
+                                        title: 'AI-Driven',
+                                        icon: <PsychologyIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />,
+                                        desc: 'Strategies powered by data, not guesswork.'
+                                    },
+                                    {
+                                        title: 'ROI-Focused',
+                                        icon: <TrendingUpIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />,
+                                        desc: 'Every campaign differs, but the goal is profit.'
+                                    },
+                                    {
+                                        title: 'Designed to Scale',
+                                        icon: <RocketLaunchIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />,
+                                        desc: 'Systems built to grow with your business.'
+                                    },
+                                    {
+                                        title: 'Sales Integrated',
+                                        icon: <HandshakeIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />,
+                                        desc: 'Marketing that actually drives closed deals.'
+                                    }
+                                ].map((item, index) => (
                                     <Grid item key={index} xs={12} sm={6} md={3}>
-                                        <Box sx={{
-                                            p: 3,
-                                            borderRadius: 4,
-                                            bgcolor: alpha(theme.palette.primary.main, 0.05),
-                                            color: theme.palette.primary.main,
-                                            fontWeight: 700,
-                                            height: '100%',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            textAlign: 'center',
-                                            boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                                            transition: 'transform 0.3s ease',
-                                            '&:hover': {
-                                                transform: 'translateY(-5px)',
-                                                bgcolor: alpha(theme.palette.primary.main, 0.1),
-                                            }
-                                        }}>
-                                            {item}
-                                        </Box>
+                                        <Paper
+                                            elevation={0}
+                                            sx={{
+                                                p: 4,
+                                                height: '100%',
+                                                borderRadius: 4,
+                                                bgcolor: alpha(theme.palette.background.paper, 0.6),
+                                                backdropFilter: 'blur(20px)',
+                                                border: '1px solid',
+                                                borderColor: alpha(theme.palette.divider, 0.1),
+                                                textAlign: 'center',
+                                                transition: 'all 0.3s ease',
+                                                '&:hover': {
+                                                    transform: 'translateY(-8px)',
+                                                    borderColor: theme.palette.primary.main,
+                                                    boxShadow: `0 12px 30px -10px ${alpha(theme.palette.primary.main, 0.15)}`
+                                                }
+                                            }}
+                                        >
+                                            <Box sx={{
+                                                mb: 3,
+                                                p: 2,
+                                                borderRadius: '50%',
+                                                bgcolor: alpha(theme.palette.primary.main, 0.05),
+                                                width: 80,
+                                                height: 80,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                mx: 'auto'
+                                            }}>
+                                                {item.icon}
+                                            </Box>
+                                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5 }}>
+                                                {item.title}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {item.desc}
+                                            </Typography>
+                                        </Paper>
                                     </Grid>
                                 ))}
                             </Grid>
@@ -2446,38 +2487,39 @@ const ServicesContent = () => {
 
                         <Grid container spacing={3} justifyContent="center">
                             {[
-                                "AI Marketing Solutions (LLM Growth)",
-                                { name: "Performance Marketing", subs: ["Google Ads", "Meta Ads", "LinkedIn Ads", "YouTube Ads"] },
-                                "SEO & Growth Strategy",
-                                "Podcast Marketing",
-                                "Social Media Marketing",
-                                "GMB with AI Model",
-                                "Funnel & Automation",
-                                "Branding & Creative",
-                                "Logo Design",
-                                "Website Development",
-                                "Mobile Applications (Android / iOS)",
-                                "Content Creation & Writing",
-                                "Marketing with Sales Alignment",
-                                "Email Marketing",
-                                "E-commerce Marketing",
-                                "WhatsApp Bulk Messaging",
-                                "Brand Collaborations",
-                                "Influencer Marketing",
-                                "UX/UI Design",
-                                "Application Marketing",
-                                "Go-To-Market Strategies"
+                                { name: "AI Marketing Solutions (LLM Growth)", icon: <PsychologyIcon /> },
+                                { name: "Performance Marketing", icon: <CampaignIcon />, subs: ["Google", "Meta", "LinkedIn", "YouTube"] },
+                                { name: "SEO & Growth Strategy", icon: <SearchIcon /> },
+                                { name: "Podcast Marketing", icon: <PodcastsIcon /> },
+                                { name: "Social Media Marketing", icon: <PublicIcon /> },
+                                { name: "GMB with AI Model", icon: <StoreIcon /> },
+                                { name: "Funnel & Automation", icon: <FilterFramesIcon /> },
+                                { name: "Branding & Creative", icon: <BrushIcon /> },
+                                { name: "Logo Design", icon: <DrawIcon /> },
+                                { name: "Website Development", icon: <CodeIcon /> },
+                                { name: "Mobile Applications (Android / iOS)", icon: <SmartphoneIcon /> },
+                                { name: "Content Creation & Writing", icon: <CreateIcon /> },
+                                { name: "Marketing with Sales Alignment", icon: <HandshakeIcon /> },
+                                { name: "Email Marketing", icon: <EmailIcon /> },
+                                { name: "E-commerce Marketing", icon: <ShoppingCartIcon /> },
+                                { name: "WhatsApp Bulk Messaging", icon: <WhatsAppIcon /> },
+                                { name: "Brand Collaborations", icon: <GroupsIcon /> },
+                                { name: "Influencer Marketing", icon: <PeopleIcon /> },
+                                { name: "UX/UI Design", icon: <DesignServicesIcon /> },
+                                { name: "Application Marketing", icon: <AppShortcutIcon /> },
+                                { name: "Go-To-Market Strategies", icon: <FlagIcon /> }
                             ].map((service, index) => (
-                                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                <Grid item xs={6} sm={4} md={3} key={index}>
                                     <Paper
                                         elevation={0}
                                         sx={{
-                                            p: 3,
+                                            p: 2,
                                             height: '100%',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             alignItems: 'center',
                                             justifyContent: 'center',
+                                            minHeight: '130px',
                                             textAlign: 'center',
                                             borderRadius: 4,
                                             background: 'white',
@@ -2492,6 +2534,10 @@ const ServicesContent = () => {
                                                 borderColor: 'transparent',
                                                 '& .service-highlight': {
                                                     opacity: 1
+                                                },
+                                                '& .service-icon': {
+                                                    color: theme.palette.primary.main,
+                                                    transform: 'scale(1.1) rotate(5deg)'
                                                 }
                                             }
                                         }}
@@ -2507,28 +2553,22 @@ const ServicesContent = () => {
                                             transition: 'opacity 0.3s ease'
                                         }} />
 
-                                        <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1rem', mb: typeof service === 'string' ? 0 : 1 }}>
-                                            {typeof service === 'string' ? service : service.name}
+                                        <Box className="service-icon" sx={{
+                                            mb: 2,
+                                            color: 'text.secondary',
+                                            transition: 'all 0.3s ease',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            {React.cloneElement(service.icon, { sx: { fontSize: 32 } })}
+                                        </Box>
+
+                                        <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1rem', mb: service.subs ? 1 : 0 }}>
+                                            {service.name}
                                         </Typography>
 
-                                        {typeof service !== 'string' && (
-                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8, justifyContent: 'center', mt: 1 }}>
-                                                {service.subs.map((sub, idx) => (
-                                                    <Typography key={idx} variant="caption" sx={{
-                                                        color: 'text.secondary',
-                                                        fontSize: '0.75rem',
-                                                        bgcolor: alpha(theme.palette.background.default, 0.8),
-                                                        px: 1,
-                                                        py: 0.5,
-                                                        borderRadius: 1,
-                                                        border: '1px solid',
-                                                        borderColor: 'divider'
-                                                    }}>
-                                                        {sub}
-                                                    </Typography>
-                                                ))}
-                                            </Box>
-                                        )}
+
                                     </Paper>
                                 </Grid>
                             ))}

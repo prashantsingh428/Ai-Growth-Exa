@@ -6,7 +6,6 @@ const sendEmail = require("../utils/sendEmail");
 const generateOTP = () =>
     Math.floor(100000 + Math.random() * 900000).toString();
 
-/* CREATE ADMIN */
 exports.createAdmin = async (req, res) => {
     const exists = await User.findOne({ role: "admin" });
     if (exists) return res.status(400).json({ message: "Admin exists" });
@@ -24,8 +23,6 @@ exports.createAdmin = async (req, res) => {
     res.json({ message: "Admin created" });
 };
 
-/* REGISTER */
-/* REGISTER */
 exports.register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -46,12 +43,10 @@ exports.register = async (req, res) => {
         await sendEmail(email, "Verify OTP", `Your OTP is ${otp}`);
         res.json({ message: "OTP sent" });
     } catch (error) {
-        console.error("Register Error:", error);
         res.status(500).json({ message: error.message });
     }
 };
 
-/* VERIFY EMAIL */
 exports.verifyEmail = async (req, res) => {
     const { email, otp } = req.body;
 
@@ -67,7 +62,6 @@ exports.verifyEmail = async (req, res) => {
     res.json({ message: "Email verified" });
 };
 
-/* LOGIN */
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -94,8 +88,6 @@ exports.login = async (req, res) => {
     res.json({ token, role: user.role });
 };
 
-/* FORGOT PASSWORD */
-/* FORGOT PASSWORD */
 exports.forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
@@ -111,12 +103,10 @@ exports.forgotPassword = async (req, res) => {
         await sendEmail(email, "Reset Password OTP", `OTP: ${otp}`);
         res.json({ message: "OTP sent" });
     } catch (error) {
-        console.error("Forgot Password Error:", error);
         res.status(500).json({ message: error.message });
     }
 };
 
-/* RESET PASSWORD */
 exports.resetPassword = async (req, res) => {
     try {
         const { email, otp, newPassword } = req.body;
@@ -132,7 +122,6 @@ exports.resetPassword = async (req, res) => {
 
         res.json({ message: "Password reset successful" });
     } catch (error) {
-        console.error("Reset Password Error:", error);
         res.status(500).json({ message: error.message });
     }
 };

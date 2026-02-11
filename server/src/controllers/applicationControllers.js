@@ -2,8 +2,6 @@ const Application = require("../models/Application");
 
 exports.applyForJob = async (req, res) => {
     try {
-        console.log("BODY:", req.body);
-        console.log("FILE:", req.file);
 
         if (!req.file) {
             return res.status(400).json({ message: "Resume required" });
@@ -21,7 +19,6 @@ exports.applyForJob = async (req, res) => {
             message: "Application submitted successfully",
         });
     } catch (error) {
-        console.error("APPLICATION ERROR:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };

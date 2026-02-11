@@ -686,11 +686,11 @@ export default function BlogInsights() {
                                                 "AI SOLUTIONS": "/services",
                                                 "Blog": "/blog",
                                                 "Careers": "/careers",
-                                                "Terms & Conditions": "/terms-and-conditions",
-                                                "Privacy Policy": "/privacy-policy",
-                                                "Cookie Policy": "/cookie-policy",
-                                                "Copyright Policy": "/copyright-policy",
-                                                "Awards & Recognitions": "/awards"
+                                                "Terms & Conditions": "#",
+                                                "Privacy Policy": "#",
+                                                "Cookie Policy": "#",
+                                                "Copyright Policy": "#",
+                                                "Awards & Recognitions": "#"
                                             };
                                             const path = pathMap[item] || "#";
                                             return (

@@ -42,15 +42,8 @@ const leadSchema = new mongoose.Schema(
 
         services: {
             type: String,
-            enum: [
-                "Brand Identity & Design",
-                "AI-Powered Marketing",
-                "Content Creation",
-                "Social Media Management",
-                "SEO & Performance Marketing",
-                "Marketing Automation",
-                "Full-Service Growth"
-            ]
+            required: [true, "Service selection is required"],
+            trim: true
         },
 
         budget: {

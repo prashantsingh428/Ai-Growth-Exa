@@ -1,14 +1,14 @@
+import { Link, useLocation } from "react-router-dom"
 import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 
 import AnimatedBeams from "../components/AnimatedBeams"
-import PlansModal from "../components/Modals/PlansModal"
 
 const HeroSection = () => {
   const titleRef = useRef(null)
   const textRef = useRef(null)
   const buttonsRef = useRef(null)
-  const [isPlansOpen, setIsPlansOpen] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     if (!titleRef.current || !textRef.current || !buttonsRef.current) return;
@@ -35,7 +35,7 @@ const HeroSection = () => {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 md:pt-32 pb-12">
 
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#050b1a] via-[#040914] to-black" />
@@ -67,7 +67,7 @@ const HeroSection = () => {
 
         <h1
           ref={titleRef}
-          className="text-5xl md:text-7xl font-extrabold tracking-tight text-white"
+          className="text-3xl sm:text-4xl md:text-7xl font-extrabold tracking-tight text-white"
         >
           AI GrowthExa
           <span className="block mt-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -77,7 +77,7 @@ const HeroSection = () => {
 
         <p
           ref={textRef}
-          className="mt-10 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed"
+          className="mt-6 md:mt-10 text-base md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed px-4 md:px-0"
         >
           AI-Driven Growth, IT & Marketing Agency
           <span className="block mt-3 text-gray-300 font-medium">
@@ -87,25 +87,25 @@ const HeroSection = () => {
 
         <div
           ref={buttonsRef}
-          className="mt-14 flex flex-col sm:flex-row gap-4 justify-center"
+          className="mt-8 md:mt-14 flex flex-col sm:flex-row gap-4 justify-center"
         >
-          <button
-            onClick={() => setIsPlansOpen(true)}
+          <Link
+            to="/contact"
+            state={{ background: location }}
             className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-500/30"
           >
             Get Your Growth Plan
-          </button>
+          </Link>
 
-          <a
-            href="/services"
+          <Link
+            to="/services"
             className="px-8 py-4 bg-white/5 border border-white/10 hover:border-blue-400 text-gray-300 hover:text-white rounded-full font-bold text-lg transition-all backdrop-blur"
           >
             Explore Services
-          </a>
+          </Link>
         </div>
       </div>
 
-      <PlansModal isOpen={isPlansOpen} onClose={() => setIsPlansOpen(false)} />
     </section>
   )
 }

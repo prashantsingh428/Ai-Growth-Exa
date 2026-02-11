@@ -1,670 +1,474 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useTheme as useAppTheme } from '../context/ThemeContext';
-import {
-  Box, Container, Typography, Grid, Button, useTheme as useMuiTheme, alpha,
-  ThemeProvider,
-  CssBaseline,
-  createTheme,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Stack,
-  Avatar,
-  Divider
-} from '@mui/material';
-import {
-  ArrowForward as ArrowForwardIcon,
-  CheckCircle as CheckCircleIcon,
-  TrendingUp as TrendingUpIcon,
-  Psychology as PsychologyIcon,
-  AutoAwesome as AutoAwesomeIcon,
-  Security as SecurityIcon,
-  Speed as SpeedIcon,
-  Group as GroupIcon,
-  Lightbulb as LightbulbIcon,
-  ExpandMore as ExpandMoreIcon,
-  Star as StarIcon,
-  FormatQuote as FormatQuoteIcon
-} from '@mui/icons-material';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Link, useLocation } from 'react-router-dom';
 import FloatingParticles from '../components/FloatingParticles';
+// Import assets
+const imagesGlob = import.meta.glob('../assets/images/*.{png,svg,webp,jpeg,jpg}', { eager: true, as: 'url' });
+const clientImages = Object.values(imagesGlob);
+import {
+  Lightbulb,
+  Target,
+  Rocket,
+  CheckCircle,
+  TrendingUp,
+  Settings,
+  BarChart,
+  Users,
+  Globe,
+  ShieldCheck,
+  Smartphone,
+  Cpu,
+  MessageSquare,
+  Search
+} from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Import assets for custom logo grid
-const imagesGlob = import.meta.glob('../assets/images/*.{png,jpeg,svg,jpg}', { eager: true, as: 'url' });
-const clientImages = Object.values(imagesGlob);
-
-// --- Custom Section Components ---
-
-const HeroSection = () => {
-  const theme = useMuiTheme();
-  const containerRef = useRef(null);
+const About = () => {
+  const location = useLocation();
+  const heroRef = useRef(null);
+  const statsRef = useRef(null);
+  const [showAllFaqs, setShowAllFaqs] = React.useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(".hero-text",
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power2.out" }
+      // Hero animations
+      gsap.fromTo(
+        '.hero-text',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'power3.out' }
       );
 
-      gsap.fromTo(".client-logo-item",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: "power2.out", delay: 0.5 }
-      );
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <Box ref={containerRef} sx={{
-      position: 'relative',
-      pt: { xs: 15, md: 20 },
-      pb: { xs: 10, md: 12 },
-      textAlign: 'center',
-      overflow: 'hidden',
-      background: theme.palette.background.default
-    }}>
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
-        <Typography variant="overline" className="hero-text" sx={{
-          color: theme.palette.text.secondary,
-          fontWeight: 600,
-          letterSpacing: 3,
-          mb: 2,
-          display: 'block',
-          fontSize: '0.85rem'
-        }}>
-          ABOUT US
-        </Typography>
-        <Typography variant="h1" className="hero-text" sx={{
-          fontWeight: 800,
-          fontSize: { xs: '2.5rem', md: '4rem' },
-          lineHeight: 1.2,
-          mb: 3,
-          color: theme.palette.text.primary,
-          letterSpacing: '-0.02em'
-        }}>
-          Building Growth Systems <br /> for the AI-First World
-        </Typography>
-        <Typography variant="h5" className="hero-text" sx={{
-          color: theme.palette.text.secondary,
-          maxWidth: 700,
-          mx: 'auto',
-          mb: 8,
-          fontWeight: 400,
-          fontSize: { xs: '1.1rem', md: '1.25rem' },
-          lineHeight: 1.6
-        }}>
-          Trusted by top companies to scale smarter, faster, and more efficiently.
-        </Typography>
-
-        {/* Custom Horizontal Logo Marquee */}
-        <Box className="hero-text" sx={{ mt: 10, overflow: 'hidden', position: 'relative', width: '100%' }}>
-          <Typography variant="caption" sx={{
-            color: theme.palette.text.secondary,
-            opacity: 0.7,
-            mb: 4,
-            display: 'block',
-            letterSpacing: 2,
-            fontWeight: 600
-          }}>
-            TRUSTED PARTNERS
-          </Typography>
-
-          <Box sx={{
-            display: 'flex',
-            width: '100%',
-            overflow: 'hidden',
-            position: 'relative',
-            maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
-            WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
-          }}>
-            <Box sx={{
-              display: 'flex',
-              width: 'max-content',
-              animation: 'marquee 40s linear infinite',
-              '&:hover': { animationPlayState: 'paused' },
-              '@keyframes marquee': {
-                '0%': { transform: 'translateX(0)' },
-                '100%': { transform: 'translateX(-50%)' }
-              }
-            }}>
-              {/* Double the logos for seamless loop */}
-              {[...clientImages, ...clientImages].map((src, index) => (
-                <Box key={index} sx={{
-                  mx: 4,
-                  width: 120,
-                  height: 50,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'transform 0.3s ease',
-                  '&:hover': {
-                    transform: 'scale(1.1)'
-                  }
-                }}>
-                  <img src={src} alt="Client" style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        </Box>
-      </Container>
-
-      { }
-      <Box sx={{ position: 'absolute', inset: 0, zIndex: 0, opacity: 0.3 }}>
-        <FloatingParticles theme={theme.palette.mode} />
-      </Box>
-    </Box>
-  );
-};
-
-const WhoWeAreSection = () => {
-  const theme = useMuiTheme();
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".who-we-are-item",
+      // Stats animation
+      gsap.fromTo(
+        '.stat-card',
         { y: 30, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.8, stagger: 0.2,
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.1,
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%"
-          }
+            trigger: statsRef.current,
+            start: 'top 80%',
+          },
         }
       );
-    }, sectionRef);
+    });
+
     return () => ctx.revert();
   }, []);
 
-  return (
-    <Box ref={sectionRef} sx={{ py: 12, background: theme.palette.background.paper, borderTop: `1px solid ${theme.palette.divider}` }}>
-      <Container maxWidth="md">
-        <Grid container spacing={8} alignItems="flex-start">
-          <Grid item xs={12} md={6}>
-            <Typography variant="h4" className="who-we-are-item" sx={{ fontWeight: 700, mb: 3, letterSpacing: '-0.01em' }}>
-              Who We Are
-            </Typography>
-            <Typography variant="body1" className="who-we-are-item" sx={{ fontSize: '1.05rem', color: theme.palette.text.secondary, mb: 3, lineHeight: 1.8 }}>
-              AI Growth Exa is more than a marketing agency; we are an <strong>AI-driven growth technology partner</strong>. Founded in 2019, we bridge the gap between creative strategy and rigorous data science.
-            </Typography>
-            <Typography variant="body1" className="who-we-are-item" sx={{ fontSize: '1.05rem', color: theme.palette.text.secondary, lineHeight: 1.8 }}>
-              We don't just run campaigns; we build intelligent engines that learn, adapt, and scale your business with mathematical precision.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Box className="who-we-are-item" sx={{ pl: { md: 6 }, pt: { md: 2 } }}>
-              {[
-                "Smart Data Decisions",
-                "AI-Powered Performance Marketing",
-                "Automation-Led Scalability"
-              ].map((item, idx) => (
-                <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-                  <Box sx={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    width: 24, height: 24, borderRadius: '50%',
-                    bgcolor: alpha(theme.palette.primary.main, 0.1), mr: 2,
-                    color: theme.palette.primary.main
-                  }}>
-                    <CheckCircleIcon sx={{ fontSize: 16 }} />
-                  </Box>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{item}</Typography>
-                </Box>
-              ))}
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-  );
-};
-
-const BeliefSection = () => {
-  const theme = useMuiTheme();
-  const isDark = theme.palette.mode === 'dark';
-
-  return (
-    <Box sx={{ py: 15, bgcolor: isDark ? '#000000' : '#f4f4f5', color: isDark ? '#fff' : '#111827' }}>
-      <Container maxWidth="lg">
-        <Box sx={{ textAlign: 'center', mb: 10 }}>
-          <Typography variant="h3" sx={{ fontWeight: 700, mb: 2, letterSpacing: '-0.02em' }}>
-            Marketing Should Be Intelligent.
-          </Typography>
-          <Typography variant="h5" sx={{ fontWeight: 400, color: 'text.secondary', maxWidth: 600, mx: 'auto' }}>
-            Stop guessing. Start growing.
-          </Typography>
-        </Box>
-
-        <Grid container spacing={4} justifyContent="center" alignItems="stretch">
-          <Grid item xs={12} md={5}>
-            <Box sx={{
-              p: 5,
-              border: `1px solid ${theme.palette.divider}`,
-              borderRadius: 2,
-              height: '100%',
-              bgcolor: theme.palette.background.paper
-            }}>
-              <Typography variant="h6" sx={{ color: theme.palette.error.main, mb: 4, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, fontSize: '0.8rem' }}>The Old Way</Typography>
-              <Stack spacing={3}>
-                {['Money spent without clarity', 'Reports without insights', 'Vanity metrics instead of real growth'].map((item, i) => (
-                  <Box key={i} sx={{ display: 'flex', alignItems: 'center', color: theme.palette.text.secondary }}>
-                    <Typography sx={{ mr: 2, color: theme.palette.error.main, fontWeight: 700 }}>&mdash;</Typography>
-                    {item}
-                  </Box>
-                ))}
-              </Stack>
-            </Box>
-          </Grid>
-
-          <Grid item xs={12} md={5}>
-            <Box sx={{
-              p: 5,
-              border: `1px solid ${theme.palette.primary.main}`,
-              borderRadius: 2,
-              height: '100%',
-              bgcolor: alpha(theme.palette.primary.main, 0.03)
-            }}>
-              <Typography variant="h6" sx={{ color: theme.palette.primary.main, mb: 4, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, fontSize: '0.8rem' }}>The AI Growth Exa Way</Typography>
-              <Stack spacing={3}>
-                {['Predictive spending models', 'Actionable, data-led intelligence', 'Tangible ROI & Scalability'].map((item, i) => (
-                  <Box key={i} sx={{ display: 'flex', alignItems: 'center', fontWeight: 500 }}>
-                    <CheckCircleIcon sx={{ mr: 2, color: theme.palette.primary.main, fontSize: 20 }} />
-                    {item}
-                  </Box>
-                ))}
-              </Stack>
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-  );
-};
-
-const JourneySection = () => {
-  const theme = useMuiTheme();
-  const steps = [
-    { year: '2019', title: 'The Problem', desc: 'We observed businesses wasting budget on blind campaigns.' },
-    { year: '2021', title: 'The Pivot', desc: 'Integrated AI models to predict campaign outcomes with accuracy.' },
-    { year: '2024', title: 'The Ecosystem', desc: 'Shifted to building full-stack growth engines for global brands.' },
-  ];
-
-  return (
-    <Box sx={{ py: 15, bgcolor: theme.palette.background.default }}>
-      <Container maxWidth="md">
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 10, textAlign: 'center' }}>Our Journey</Typography>
-        <Box sx={{ position: 'relative', borderLeft: `1px solid ${theme.palette.divider}`, ml: { xs: 3, md: 40 }, pl: 6, py: 2 }}>
-          {steps.map((step, index) => (
-            <Box key={index} sx={{ mb: 10, position: 'relative', '&:last-child': { mb: 0 } }}>
-              <Box sx={{
-                position: 'absolute',
-                left: -54,
-                top: 0,
-                width: 12,
-                height: 12,
-                borderRadius: '50%',
-                bgcolor: theme.palette.text.secondary,
-                border: `4px solid ${theme.palette.background.default}`
-              }} />
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={3} sx={{ position: { md: 'absolute' }, left: { md: -180 }, top: 0, textAlign: { md: 'right' } }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
-                    {step.year}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={9}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>{step.title}</Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.text.secondary, lineHeight: 1.6 }}>{step.desc}</Typography>
-                </Grid>
-              </Grid>
-            </Box>
-          ))}
-        </Box>
-      </Container>
-    </Box>
-  );
-};
-
-const ProcessSection = () => {
-  const theme = useMuiTheme();
-  const processes = [
-    { title: "Research", icon: <PsychologyIcon sx={{ fontSize: 32 }} /> },
-    { title: "Strategy", icon: <LightbulbIcon sx={{ fontSize: 32 }} /> },
-    { title: "Execution", icon: <SpeedIcon sx={{ fontSize: 32 }} /> },
-    { title: "Optimization", icon: <AutoAwesomeIcon sx={{ fontSize: 32 }} /> },
-    { title: "Scale", icon: <TrendingUpIcon sx={{ fontSize: 32 }} /> },
-  ];
-
-  return (
-    <Box sx={{ py: 15, bgcolor: theme.palette.background.paper, borderTop: `1px solid ${theme.palette.divider}`, borderBottom: `1px solid ${theme.palette.divider}` }}>
-      <Container>
-        <Box sx={{ textAlign: 'center', mb: 8 }}>
-          <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
-            Scalable Framework
-          </Typography>
-          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-            A systematic approach to predictable growth.
-          </Typography>
-        </Box>
-
-        <Grid container spacing={4} justifyContent="center">
-          {processes.map((p, i) => (
-            <Grid item xs={6} md={2} key={i}>
-              <Box sx={{
-                p: 3,
-                borderRadius: 2,
-                height: '100%',
-                bgcolor: theme.palette.background.default,
-                border: '1px solid',
-                borderColor: theme.palette.divider,
-                textAlign: 'center',
-                transition: 'border-color 0.2s',
-                '&:hover': { borderColor: theme.palette.primary.main }
-              }}>
-                <Box sx={{ color: theme.palette.text.primary, mb: 2, opacity: 0.8 }}>{p.icon}</Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{p.title}</Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
-  );
-};
-
-const WhyChooseUsSection = () => {
-  const theme = useMuiTheme();
-  return (
-    <Box sx={{ py: 15, bgcolor: theme.palette.background.default }}>
-      <Container maxWidth="lg">
-        <Typography variant="h4" align="center" sx={{ fontWeight: 700, mb: 8 }}>Why Choose Us?</Typography>
-        <Grid container spacing={4}>
-          {[
-            { title: "Performance-Driven", desc: "We focus purely on ROI and measurable outcomes, not vanity metrics." },
-            { title: "Automation-First", desc: "We build systems that work continuously, reducing manual overhead." },
-            { title: "Transparent Reporting", desc: "Complete clarity on every dollar spent and every result generated." }
-          ].map((item, i) => (
-            <Grid item xs={12} md={4} key={i}>
-              <Box sx={{
-                p: 4, borderRadius: 2, height: '100%',
-                bgcolor: theme.palette.background.paper,
-                border: `1px solid ${theme.palette.divider}`
-              }} className="hover:border-gray-400 transition-colors duration-300">
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>{item.title}</Typography>
-                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, lineHeight: 1.6 }}>{item.desc}</Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
-  );
-};
-
-const MissionVisionValuesSection = () => {
-  const theme = useMuiTheme();
-  return (
-    <Box sx={{ py: 15, bgcolor: theme.palette.background.paper, borderTop: `1px solid ${theme.palette.divider}` }}>
-      <Container>
-        <Grid container spacing={8} alignItems="center">
-          <Grid item xs={12} md={6}>
-            <Typography variant="overline" sx={{ color: theme.palette.text.secondary, fontWeight: 700, letterSpacing: 1 }}>OUR MISSION</Typography>
-            <Typography variant="h5" sx={{ fontWeight: 700, mb: 6, mt: 1, lineHeight: 1.4 }}>Helping brands grow smarter and faster using AI.</Typography>
-
-            <Typography variant="overline" sx={{ color: theme.palette.text.secondary, fontWeight: 700, display: 'block', letterSpacing: 1 }}>OUR VISION</Typography>
-            <Typography variant="h5" sx={{ fontWeight: 700, mt: 1, lineHeight: 1.4 }}>Becoming a global growth partner in the AI-first economy.</Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Box sx={{ p: 6, borderRadius: 2, bgcolor: theme.palette.background.default, border: `1px solid ${theme.palette.divider}` }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 4 }}>Core Values</Typography>
-              <Grid container spacing={3}>
-                {['Innovation', 'Data-Driven', 'Growth Mindset', 'Integrity'].map((v, i) => (
-                  <Grid item xs={6} key={i}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: theme.palette.primary.main, mr: 2 }} />
-                      <Typography variant="body2" sx={{ fontWeight: 600 }}>{v}</Typography>
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-  );
-};
-
-// --- Updated Minimalist Stats Section ---
-const CustomStatsSection = () => {
-  const theme = useMuiTheme();
-  const stats = [
-    { value: "5000+", label: "Clients Served" },
-    { value: "95%", label: "Satisfaction" },
-    { value: "1100+", label: "Projects" },
-    { value: "150+", label: "AI Deployments" }
-  ];
-
-  return (
-    <Box sx={{ py: 10, bgcolor: theme.palette.background.default, borderTop: `1px solid ${theme.palette.divider}` }}>
-      <Container>
-        <Grid container spacing={4} justifyContent="center" divider={<Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' } }} />}>
-          {stats.map((stat, i) => (
-            <Grid item xs={6} md={3} key={i}>
-              <Box sx={{ textAlign: 'center', py: 2 }}>
-                <Typography variant="h3" sx={{ fontWeight: 800, color: theme.palette.text.primary, mb: 1, letterSpacing: '-0.02em' }}>
-                  {stat.value}
-                </Typography>
-                <Typography variant="button" sx={{ color: theme.palette.text.secondary, fontWeight: 600 }}>
-                  {stat.label}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
-  );
-};
-
-const WhoWeWorkWithSection = () => {
-  const theme = useMuiTheme();
-  return (
-    <Box sx={{ py: 12, bgcolor: theme.palette.background.paper, textAlign: 'center', borderTop: `1px solid ${theme.palette.divider}` }}>
-      <Container maxWidth="md">
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>Who We Work With</Typography>
-        <Typography variant="h6" sx={{ color: theme.palette.text.secondary, mb: 4, fontWeight: 400, lineHeight: 1.6 }}>
-          We partner with ambitious Startups, Scaling Brands, and Established Enterprises tired of inconsistent leads.
-        </Typography>
-      </Container>
-    </Box>
-  );
-};
-
-// --- Updated Minimalist Testimonials Section ---
-const CustomTestimonialsSection = () => {
-  const theme = useMuiTheme();
-  const reviews = [
-    { name: "Rahul Sharma", role: "CEO, TechFlow", text: "AI Growth Exa completely transformed our brand identity. Professional, creative, and highly recommended." },
-    { name: "Pooja Verma", role: "Founder, StyleUp", text: "Honest and transparent. The team didn't just design; they gave our brand a soul. Totally worth it." },
-    { name: "Amit Patel", role: "Director, RetailOne", text: "Next level branding. We now have a consistent identity across all platforms thanks to their diligent work." }
-  ];
-
-  return (
-    <Box sx={{ py: 15, bgcolor: theme.palette.background.default }}>
-      <Container>
-        <Typography variant="h4" align="center" sx={{ fontWeight: 700, mb: 8 }}>Client Perspectives</Typography>
-        <Grid container spacing={4}>
-          {reviews.map((r, i) => (
-            <Grid item xs={12} md={4} key={i}>
-              <Box sx={{
-                p: 4, height: '100%',
-                bgcolor: theme.palette.background.paper,
-                borderRadius: 1,
-                border: `1px solid ${theme.palette.divider}`,
-              }}>
-                <Typography variant="body1" sx={{
-                  mb: 4, color: theme.palette.text.secondary,
-                  fontStyle: 'italic', lineHeight: 1.6
-                }}>"{r.text}"</Typography>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                  <Avatar sx={{ bgcolor: theme.palette.grey[800], width: 32, height: 32, fontSize: '0.9rem' }}>{r.name[0]}</Avatar>
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>{r.name}</Typography>
-                    <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>{r.role}</Typography>
-                  </Box>
-                </Stack>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
-  );
-};
-
-// --- Updated Minimalist FAQ Section ---
-const CustomFaqSection = () => {
-  const theme = useMuiTheme();
   const faqs = [
-    { q: "What industries do you work with?", a: "We work across startups, e-commerce, SaaS, real estate, education, healthcare, and B2B brands." },
-    { q: "How does AI actually help in marketing?", a: "AI allows us to predict user behavior, optimize targeting, and improve conversions with precision." },
-    { q: "Do you replace human marketers with AI?", a: "Never. AI enhances human strategy. We combine creativity with machine intelligence." },
-    { q: "Is AI marketing expensive?", a: "Not when done right. It actually reduces costs by eliminating ad waste and improving efficiency." },
-    { q: "How long before we see results?", a: "Most clients see initial traction within 30 days, with strong scalable growth in 60–90 days." }
+    { q: 'When was AI Growth Exa founded?', a: 'We were founded in 2019 with a focus on AI-driven growth marketing.' },
+    { q: 'Are you a traditional marketing agency?', a: 'No. We are a growth-focused, AI-first agency.' },
+    { q: 'Do you work with international clients?', a: 'Yes. We work globally with a remote-first mindset.' },
+    { q: 'What size companies do you work with?', a: 'From growth-stage startups to enterprise-level brands.' },
+    { q: 'What makes your approach different?', a: 'We build systems, not just campaigns.' },
+    { q: 'Is AI replacing human marketers?', a: 'No. AI supports smarter human decisions.' },
+    { q: 'Do you provide reporting and insights?', a: 'Yes. Full transparency with actionable insights.' },
   ];
 
-  return (
-    <Box sx={{ py: 15, bgcolor: theme.palette.background.paper, borderTop: `1px solid ${theme.palette.divider}` }}>
-      <Container maxWidth="md">
-        <Typography variant="h4" align="center" sx={{ fontWeight: 700, mb: 8 }}>FAQ</Typography>
+  const visibleFaqs = showAllFaqs ? faqs : faqs.slice(0, 4);
 
-        <Box>
-          {faqs.map((f, i) => (
-            <Accordion key={i} disableGutters elevation={0} sx={{
-              mb: 0, bgcolor: 'transparent',
-              borderBottom: `1px solid ${theme.palette.divider}`,
-              '&:before': { display: 'none' }
-            }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{f.q}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, pb: 2, lineHeight: 1.6 }}>{f.a}</Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Box>
-      </Container>
-    </Box>
+  return (
+    <div className="bg-white">
+      {/* Hero Section */}
+      <section
+        ref={heroRef}
+        className="relative pt-32 pb-20 md:pt-44 md:pb-28 text-center overflow-hidden bg-[#0f172a] text-white"
+      >
+        {/* Background Blobs - Reduced opacity/removed gradients */}
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-indigo-900/10 rounded-full blur-[100px]"></div>
+
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <div className="hero-text inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/30 text-blue-200 text-xs font-bold uppercase tracking-widest mb-6 border border-blue-800">
+            <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+            About Us
+          </div>
+
+          <h1 className="hero-text text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] mb-6">
+            Building{' '}
+            <span className="text-blue-400">
+              Growth Systems
+            </span>
+            <br />
+            for the AI-First World
+          </h1>
+
+          <p className="hero-text text-xl md:text-2xl text-slate-300 max-w-4xl mx-auto mb-12 font-medium leading-relaxed">
+            At <span className="text-white font-bold">AI Growth Exa</span>, we don’t just market brands. We build intelligent growth systems designed for an AI-first world.<br /><br />
+            Founded in 2019, AI Growth Exa was created with one clear belief: Marketing should be intelligent, measurable, and scalable — not guesswork.
+          </p>
+        </div>
+      </section>
+
+      {/* Success Story Section */}
+      <section className="relative py-20 bg-white overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl relative z-10">
+          <div className="text-center mb-16">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100">
+              Our Success Story
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+              The “Why” Behind <span className="text-blue-600">AI Growth Exa</span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl transition-all duration-300">
+              <div className="mb-4 text-red-500">
+                <ShieldCheck size={40} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">It Started With a Problem…</h3>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Back in 2019, we noticed the same problem everywhere. Businesses were spending:
+              </p>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex gap-2 items-start"><span className="text-red-500 font-bold">•</span> Money on ads without clarity</li>
+                <li className="flex gap-2 items-start"><span className="text-red-500 font-bold">•</span> Time on reports without insights</li>
+                <li className="flex gap-2 items-start"><span className="text-red-500 font-bold">•</span> Energy on agencies promising “results” but delivering vanity metrics</li>
+              </ul>
+              <p className="mt-4 text-gray-600 font-medium italic">Traditional marketing was loud — but not smart.</p>
+            </div>
+
+            <div className="p-8 bg-blue-50 rounded-3xl border border-blue-100 hover:shadow-xl transition-all duration-300 relative">
+              <div className="mb-4 text-blue-600">
+                <Lightbulb size={40} />
+              </div>
+              <h3 className="text-2xl font-bold text-blue-900 mb-4">The Turning Point</h3>
+              <p className="text-blue-800 leading-relaxed mb-4">
+                We asked one simple question: <strong>What if marketing could think before acting?</strong> That question changed everything.
+              </p>
+              <p className="text-blue-800 mb-2">We began experimenting with:</p>
+              <ul className="space-y-2 text-blue-800">
+                <li className="flex gap-2 items-start"><CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0" /> Data-driven decision systems</li>
+                <li className="flex gap-2 items-start"><CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0" /> Predictive audience behaviour</li>
+                <li className="flex gap-2 items-start"><CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0" /> Automation that actually converted</li>
+              </ul>
+            </div>
+
+            <div className="p-8 bg-indigo-50 rounded-3xl border border-indigo-100 hover:shadow-xl transition-all duration-300 relative">
+              <div className="mb-4 text-indigo-600">
+                <Rocket size={40} />
+              </div>
+              <h3 className="text-2xl font-bold text-indigo-900 mb-4">Enterprise-Level Growth</h3>
+              <p className="text-indigo-800 leading-relaxed mb-4">
+                What started as a solution for a few clients quickly became a repeatable growth framework. Today, we don’t just run marketing. <strong>We design growth ecosystems.</strong>
+              </p>
+              <ul className="space-y-2 text-indigo-800">
+                <li className="flex gap-2 items-start"><CheckCircle className="w-5 h-5 text-indigo-600 flex-shrink-0" /> Handling complex funnels</li>
+                <li className="flex gap-2 items-start"><CheckCircle className="w-5 h-5 text-indigo-600 flex-shrink-0" /> High-budget performance campaigns</li>
+                <li className="flex gap-2 items-start"><CheckCircle className="w-5 h-5 text-indigo-600 flex-shrink-0" /> AI-powered systems for scaling brands</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Framework Section */}
+      <section className="relative py-20 bg-[#0f172a] text-white overflow-hidden">
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
+          <FloatingParticles theme="dark" />
+        </div>
+        <div className="container mx-auto px-6 max-w-7xl relative z-10">
+          <div className="text-center mb-16">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/30 text-blue-300 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-800">
+              How We Work
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black mb-4">
+              A Clear, Proven, <span className="text-blue-400">Scalable Growth Framework</span>
+            </h2>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+              Growth without structure breaks. That’s why we follow a disciplined, system-led process.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-5 gap-4">
+            {[
+              { step: '1', title: 'Research & Data', desc: 'We deep-dive into your market, audience behaviour, competitors, and data signals.' },
+              { step: '2', title: 'Strategy', desc: 'Every decision is backed by insights — not assumptions.' },
+              { step: '3', title: 'Execution', desc: 'AI-powered ads, funnels, automation, and content go live.' },
+              { step: '4', title: 'Optimization', desc: 'Continuous testing, learning, and performance improvement.' },
+              { step: '5', title: 'Scaling', desc: 'We double down on what works and build systems for long-term growth.' }
+            ].map((item, i) => (
+              <div key={i} className="bg-slate-800 p-6 rounded-2xl border border-slate-700 hover:border-blue-500 transition-all duration-300 group">
+                <div className="text-4xl font-black text-slate-600 mb-4 group-hover:text-blue-500 transition-colors">{item.step}</div>
+                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                <p className="text-slate-400 text-sm">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-12 bg-blue-900/10 p-4 rounded-xl border border-blue-800 inline-block w-full">
+            <p className="text-blue-300 font-semibold flex items-center justify-center gap-2">
+              <CheckCircle size={20} /> This is how we turn ideas into measurable results.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+      {/* Why Choose Us Section */}
+      <section className="relative py-20 bg-white scroll-mt-20">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+              Why Choose <span className="text-blue-600">AI Growth Exa</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto font-medium">
+              Because Growth Needs Focus — Not Fluff.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              { title: 'Performance-Driven Approach', desc: 'Every action is tied directly to ROI and outcomes.', icon: <TrendingUp size={32} />, color: 'bg-green-50 text-green-700 border-green-100' },
+              { title: 'Automation-Focused Systems', desc: 'Less manual work. More efficiency and scale.', icon: <Settings size={32} />, color: 'bg-blue-50 text-blue-700 border-blue-100' },
+              { title: 'Transparent Reporting', desc: 'Clear numbers. No confusion. No hidden data.', icon: <BarChart size={32} />, color: 'bg-indigo-50 text-indigo-700 border-indigo-100' },
+              { title: 'Dedicated Growth Team', desc: 'Strategists, analysts, and performance experts — aligned to your goals.', icon: <Users size={32} />, color: 'bg-orange-50 text-orange-700 border-orange-100' },
+            ].map((item, i) => (
+              <div key={i} className={`p-8 rounded-3xl border ${item.color} hover:shadow-lg transition-all duration-300 flex gap-6 items-start`}>
+                <div className="p-4 bg-white rounded-2xl shadow-sm">{item.icon}</div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+                  <p className="opacity-90">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-2xl font-bold text-gray-900 italic">"We don’t chase trends. We build systems that scale with you."</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission Vision Values */}
+      <section className="relative py-20 bg-[#1e1b4b] text-white">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="grid md:grid-cols-3 gap-8 text-center text-white">
+            <div className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10">
+              <div className="mb-4 text-center flex justify-center text-blue-300">
+                <Target size={48} />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
+              <p className="text-indigo-100">To help brands grow smarter and faster using AI-driven marketing systems that deliver real business impact.</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10">
+              <div className="mb-4 text-center flex justify-center text-blue-300">
+                <Globe size={48} />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
+              <p className="text-indigo-100">To become a global growth partner for brands in the AI-first economy — where marketing is intelligent, efficient, and scalable.</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-left">
+              <div className="mb-4 text-center flex justify-center text-blue-300">
+                <Lightbulb size={48} />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-center">Core Values</h3>
+              <ul className="space-y-3 text-indigo-100">
+                <li className="flex gap-3"><span className="font-bold text-white">Innovation</span> - We evolve with technology</li>
+                <li className="flex gap-3"><span className="font-bold text-white">Data</span> - Decisions backed by truth</li>
+                <li className="flex gap-3"><span className="font-bold text-white">Growth</span> - For our clients and ourselves</li>
+                <li className="flex gap-3"><span className="font-bold text-white">Trust</span> - Long-term partnerships over short wins</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section - Marquee */}
+      <section ref={statsRef} className="relative py-20 bg-white overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900">Our Growth in Numbers</h2>
+        </div>
+
+        <div className="relative w-full overflow-hidden mask-gradient-sides">
+          <div className="flex w-max animate-marquee hover:pause-animation">
+            {[
+              ...[
+                { value: '5000+', label: 'Clients Served' },
+                { value: '95%+', label: 'Happy Clients' },
+                { value: '98%', label: 'Project Success Ratio' },
+                { value: '1,100+', label: 'SEO Projects Delivered' },
+                { value: '571+', label: 'Websites Developed' },
+                { value: '11+', label: 'Mobile Apps (Android & iOS)' },
+                { value: '1,557+', label: 'Google & Meta Ad Campaigns' },
+                { value: '750+', label: 'Social Media Campaigns' },
+                { value: '151+', label: 'LLM & AI Growth Implementations' },
+              ],
+              ...[
+                { value: '5000+', label: 'Clients Served' },
+                { value: '95%+', label: 'Happy Clients' },
+                { value: '98%', label: 'Project Success Ratio' },
+                { value: '1,100+', label: 'SEO Projects Delivered' },
+                { value: '571+', label: 'Websites Developed' },
+                { value: '11+', label: 'Mobile Apps (Android & iOS)' },
+                { value: '1,557+', label: 'Google & Meta Ad Campaigns' },
+                { value: '750+', label: 'Social Media Campaigns' },
+                { value: '151+', label: 'LLM & AI Growth Implementations' },
+              ]
+            ].map((stat, i) => (
+              <div key={i} className="mx-4 flex-shrink-0 w-64 p-6 bg-slate-50 rounded-2xl border border-slate-100 text-center hover:scale-105 transition-transform">
+                <div className="text-4xl md:text-5xl font-black mb-2 text-blue-600">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-gray-600 font-bold uppercase tracking-wide">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Who We Are & Partners */}
+      <section className="relative py-20 bg-slate-50">
+        <div className="container mx-auto px-6 max-w-5xl text-center">
+          <h2 className="text-3xl font-bold mb-6">About The Company</h2>
+          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
+            AI Growth Exa is a growth marketing agency built for the new era of business — where AI, automation, and performance marketing work together.
+          </p>
+
+          <h3 className="text-2xl font-bold mb-8">We partner with:</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
+              <div className="mb-4 text-blue-600">
+                <Rocket size={40} />
+              </div>
+              <h4 className="font-bold text-lg">Startups</h4>
+              <p className="text-gray-500 text-sm">ready to scale</p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
+              <div className="mb-4 text-blue-600">
+                <TrendingUp size={40} />
+              </div>
+              <h4 className="font-bold text-lg">Growing Brands</h4>
+              <p className="text-gray-500 text-sm">stuck with inconsistent leads</p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
+              <div className="mb-4 text-blue-600">
+                <Settings size={40} />
+              </div>
+              <h4 className="font-bold text-lg">Mature Businesses</h4>
+              <p className="text-gray-500 text-sm">tired of ineffective marketing</p>
+            </div>
+          </div>
+          <p className="mt-12 text-2xl font-black text-blue-600">
+            Our mission is simple: Help brands grow faster, smarter, and sustainably.
+          </p>
+        </div>
+      </section>
+
+
+      {/* Testimonials - Marquee */}
+      <section className="relative py-20 bg-white border-t border-gray-100 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl mb-16 text-center">
+          <h2 className="text-4xl font-black text-center">Happy Clients & Testimonials</h2>
+        </div>
+
+        <div className="relative w-full overflow-hidden mask-gradient-sides">
+          <div className="flex w-max animate-marquee-fast hover:pause-animation">
+            {[
+              ...[
+                { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है। उनकी टीम ने हमारी सोच को सही रूप दिया। सच में, ऐसा लगा जैसे कोई अपना ही हमारे बिज़नेस को समझ रहा हो। Highly recommended!', stars: 5 },
+                { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya. Communication smooth tha aur output exactly wahi mila jo hum imagine kar rahe the. Totally worth it!', stars: 5 },
+                { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai. Creative bhi aur professional bhi. Dil se kaam karte hain, hamri website and seo dono pe kaam kia and timely reports di. Really Priyanshu helps a lot in this.', stars: 5 },
+                { name: 'Neha Kapoor', review: 'Working with AI Growthexa was a great experience. They truly understood our brand vision and translated it into a strong visual and messaging identity. The team is creative, responsive, and genuinely invested in your growth. Highly Highly Highly recommended!', stars: 5 },
+                { name: 'Rohit Malhotra', review: 'From last 7 months we are connected and Priyanshu sir strongly work on our SEO and SMO, meta ads & google ads all the reports are on time thankyou so much for all. AI Growthexa delivers more than just branding they deliver confidence. From strategy to execution, everything felt well thought out.', stars: 5 },
+                { name: 'Kuldeep', review: 'Best IT & marketing AGENCY INDIA AI GrowthExa didn’t just improve our ads they fixed our entire growth system. We finally have predictable leads and scalable sales. Their AI-driven approach saved us time, money, and guesswork. LOT OF LOVE AND SUPPORT TO PRIYANSHU SIR.', stars: 5 },
+              ],
+              ...[
+                { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है। उनकी टीम ने हमारी सोच को सही रूप दिया। सच में, ऐसा लगा जैसे कोई अपना ही हमारे बिज़नेस को समझ रहा हो। Highly recommended!', stars: 5 },
+                { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya. Communication smooth tha aur output exactly wahi mila jo hum imagine kar rahe the. Totally worth it!', stars: 5 },
+                { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai. Creative bhi aur professional bhi. Dil se kaam karte hain, hamri website and seo dono pe kaam kia and timely reports di. Really Priyanshu helps a lot in this.', stars: 5 },
+                { name: 'Neha Kapoor', review: 'Working with AI Growthexa was a great experience. They truly understood our brand vision and translated it into a strong visual and messaging identity. The team is creative, responsive, and genuinely invested in your growth. Highly Highly Highly recommended!', stars: 5 },
+                { name: 'Rohit Malhotra', review: 'From last 7 months we are connected and Priyanshu sir strongly work on our SEO and SMO, meta ads & google ads all the reports are on time thankyou so much for all. AI Growthexa delivers more than just branding they deliver confidence. From strategy to execution, everything felt well thought out.', stars: 5 },
+                { name: 'Kuldeep', review: 'Best IT & marketing AGENCY INDIA AI GrowthExa didn’t just improve our ads they fixed our entire growth system. We finally have predictable leads and scalable sales. Their AI-driven approach saved us time, money, and guesswork. LOT OF LOVE AND SUPPORT TO PRIYANSHU SIR.', stars: 5 },
+              ]
+            ].map((t, i) => (
+              <div key={i} className="mx-4 flex-shrink-0 w-96 bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all duration-300">
+                <div className="flex gap-1 text-yellow-500 mb-4 text-xl">{'★'.repeat(t.stars)}</div>
+                <p className="text-gray-600 italic mb-6 leading-relaxed line-clamp-4">"{t.review}"</p>
+                <div className="font-bold text-gray-900 border-t border-slate-200 pt-4 uppercase text-sm tracking-wide">{t.name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <style>{`
+          .mask-gradient-sides {
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+          }
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+          }
+          .animate-marquee {
+            animation: marquee 50s linear infinite;
+          }
+          .animate-marquee-fast {
+            animation: marquee 40s linear infinite;
+          }
+          .animate-marquee:hover, .animate-marquee-fast:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="relative py-20 bg-[#0f172a]">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-black text-white mb-4">Company FAQs</h2>
+            <p className="text-gray-500">Trust-Building & SEO-Focused</p>
+          </div>
+          <div className="space-y-4">
+            {[
+              { q: 'When was AI Growth Exa founded?', a: 'We were founded in 2019 with a focus on AI-driven growth marketing.' },
+              { q: 'Are you a traditional marketing agency?', a: 'No. We are a growth-focused, AI-first agency.' },
+              { q: 'Do you work with international clients?', a: 'Yes. We work globally with a remote-first mindset.' },
+              { q: 'What size companies do you work with?', a: 'From growth-stage startups to enterprise-level brands.' },
+            ].map((faq, i) => (
+              <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Q{i + 1}: {faq.q}</h3>
+                <p className="text-gray-600">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative py-20 md:py-28 bg-grey-300 text-center overflow-hidden text-white">
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+          <FloatingParticles theme="dark" />
+        </div>
+
+        <div className="container mx-auto px-6 max-w-4xl relative z-10">
+          <p className="text-xl md:text-2xl text-blue-600 mb-6 font-medium">Growth isn’t about doing more marketing.<br />It’s about doing the right things — smarter.</p>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl text-blue-600 font-black mb-12">Ready to Build Intelligent Growth?</h2>
+          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">Let’s replace guesswork with clarity, systems, and scale.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/contact"
+              state={{ background: location }}
+              className="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 text-lg"
+            >
+              Book a Strategy Call
+            </Link>
+            <Link
+              to="/services"
+              className="px-8 py-4 bg-transparent text-blue-400 font-bold rounded-xl border-2 border-blue-600 hover:border-blue-500 hover:text-blue-500 transition-all duration-300 text-lg"
+            >
+              Customize Your Growth Plan
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 
-const FinalThoughtSection = () => {
-  return (
-    <Box sx={{ py: 15, bgcolor: '#111827', color: '#fff', textAlign: 'center' }}>
-      <Container maxWidth="md">
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, lineHeight: 1.4 }}>
-          Growth isn’t about doing <span style={{ opacity: 0.5 }}>more marketing.</span> <br />
-          It’s about doing the <span style={{ textDecoration: 'underline', textUnderlineOffset: 4 }}>right things</span>.
-        </Typography>
-      </Container>
-    </Box>
-  );
-};
-
-const CtaSection = () => {
-  const theme = useMuiTheme();
-  return (
-    <Box sx={{ py: 15, textAlign: 'center', bgcolor: theme.palette.background.default }}>
-      <Container maxWidth="md">
-        <Typography variant="h3" sx={{ fontWeight: 800, mb: 6, letterSpacing: '-0.02em' }}>Ready to Transform?</Typography>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
-          <Button variant="contained" size="large" disableElevation sx={{
-            px: 5, py: 2, borderRadius: 1, fontSize: '1rem', fontWeight: 600,
-            bgcolor: theme.palette.primary.main,
-            color: '#fff',
-            textTransform: 'none',
-            '&:hover': { bgcolor: theme.palette.primary.dark }
-          }} href="/contact">
-            Book a Strategy Call
-          </Button>
-          <Button variant="outlined" size="large" sx={{
-            px: 5, py: 2, borderRadius: 1,
-            fontSize: '1rem', fontWeight: 600,
-            color: theme.palette.text.primary,
-            borderColor: theme.palette.divider,
-            textTransform:
-              'none',
-            '&:hover': { borderColor: theme.palette.text.primary, bgcolor: 'transparent' }
-          }} href="/services">
-
-            Explore Services
-          </Button>
-        </Stack>
-      </Container>
-    </Box>
-  );
-};
-
-// --- Main Page Component ---
-
-const AboutPage = () => {
-  const { theme: appTheme } = useAppTheme();
-
-  const muiTheme = React.useMemo(() => createTheme({
-    palette: {
-      mode:
-        appTheme || 'light',
-      primary:
-        { main: '#667eea' },
-      background: {
-        default: appTheme === 'dark' ? '#0b0f19' : '#ffffff',
-        paper: appTheme === 'dark' ? '#111827' : '#f9fafb',
-      },
-      text: {
-        primary: appTheme === 'dark' ? '#f3f4f6' : '#111827',
-        secondary: appTheme === 'dark' ? '#9ca3af' : '#4b5563',
-      },
-      divider: appTheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
-    },
-    typography: {
-      fontFamily:
-        '"Inter", "system-ui", sans-serif',
-    },
-    components: {
-
-      MuiButton: { styleOverrides: { root: { textTransform: 'none' } } },
-      MuiAccordion: { styleOverrides: { root: { '&.Mui-expanded': { margin: 0 } } } }
-    }
-  }), [appTheme]);
-
-  return (
-    <ThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      <Box sx={{ overflowX: 'hidden' }}>
-        <HeroSection />
-        <WhoWeAreSection />
-        <BeliefSection />
-        <JourneySection />
-
-        <ProcessSection />
-        <WhyChooseUsSection />
-
-        <MissionVisionValuesSection />
-        <CustomStatsSection />
-        <WhoWeWorkWithSection />
-        <CustomTestimonialsSection />
-        <CustomFaqSection />
-        <FinalThoughtSection />
-        <CtaSection />
-      </Box>
-
-    </ThemeProvider>
-  );
-};
-
-export default AboutPage;
+export default About;

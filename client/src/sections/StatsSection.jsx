@@ -58,7 +58,7 @@ const StatCard = ({ number, suffix = '', label, delay }) => {
     return (
         <div
             ref={cardRef}
-            className="flex-shrink-0 w-[280px] sm:w-[320px] mx-3 overflow-hidden rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-gray-700/50 hover:border-blue-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group"
+            className="flex-shrink-0 w-[280px] sm:w-[320px] mx-3 overflow-hidden rounded-2xl p-4 sm:p-5 backdrop-blur-xl border border-gray-700/50 hover:border-blue-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group"
             style={{
                 background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%)'
             }}
@@ -105,7 +105,6 @@ const StatsSection = () => {
     const scrollerRef = useRef(null);
     const cardsRef = useRef(null);
 
-    // Removed GSAP horizontal scroll - now using CSS marquee
 
     const [barData, setBarData] = useState([
         { month: 'Jan', value: 35, cost: '$35' },
