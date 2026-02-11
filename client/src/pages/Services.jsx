@@ -116,6 +116,11 @@ const fadeInUp = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
+const marquee = keyframes`
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.33%); }
+`;
+
 // Contact Form Modal Component
 const ContactFormModal = memo(({ open, onClose, serviceName, theme }) => {
     const [formData, setFormData] = useState({
@@ -2386,75 +2391,120 @@ const ServicesContent = () => {
                             "Most agencies focus on activities. We focus on outcomes."
                         </Typography>
 
-                        <Box sx={{ maxWidth: 900, mx: 'auto', textAlign: 'center', mb: 4 }}>
+                        <Box sx={{ width: '100%', mx: 'auto', textAlign: 'center', mb: 4 }}>
                             <Typography variant="h6" sx={{ fontWeight: 600, mb: 4 }}>Every service is:</Typography>
-                            <Grid container spacing={4} justifyContent="center" sx={{ mb: 6 }}>
-                                {[
-                                    {
-                                        title: 'AI-Driven',
-                                        icon: <PsychologyIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />,
-                                        desc: 'Strategies powered by data, not guesswork.'
-                                    },
-                                    {
-                                        title: 'ROI-Focused',
-                                        icon: <TrendingUpIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />,
-                                        desc: 'Every campaign differs, but the goal is profit.'
-                                    },
-                                    {
-                                        title: 'Designed to Scale',
-                                        icon: <RocketLaunchIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />,
-                                        desc: 'Systems built to grow with your business.'
-                                    },
-                                    {
-                                        title: 'Sales Integrated',
-                                        icon: <HandshakeIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />,
-                                        desc: 'Marketing that actually drives closed deals.'
+                            <Box sx={{
+                                width: '100%',
+                                overflow: 'hidden',
+                                position: 'relative',
+                                '&::before, &::after': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    top: 0,
+                                    width: '100px',
+                                    height: '100%',
+                                    zIndex: 2,
+                                    pointerEvents: 'none'
+                                },
+                                '&::before': {
+                                    left: 0,
+                                    background: `linear-gradient(to right, ${theme.palette.background.paper}, transparent)`
+                                },
+                                '&::after': {
+                                    right: 0,
+                                    background: `linear-gradient(to left, ${theme.palette.background.paper}, transparent)`
+                                }
+                            }}>
+                                <Box sx={{
+                                    display: 'flex',
+                                    width: 'max-content',
+                                    animation: `${marquee} 20s linear infinite`,
+                                    '&:hover': {
+                                        animationPlayState: 'paused'
                                     }
-                                ].map((item, index) => (
-                                    <Grid item key={index} xs={12} sm={6} md={3}>
-                                        <Paper
-                                            elevation={0}
-                                            sx={{
-                                                p: 4,
-                                                height: '100%',
-                                                borderRadius: 4,
-                                                bgcolor: alpha(theme.palette.background.paper, 0.6),
-                                                backdropFilter: 'blur(20px)',
-                                                border: '1px solid',
-                                                borderColor: alpha(theme.palette.divider, 0.1),
-                                                textAlign: 'center',
-                                                transition: 'all 0.3s ease',
-                                                '&:hover': {
-                                                    transform: 'translateY(-8px)',
-                                                    borderColor: theme.palette.primary.main,
-                                                    boxShadow: `0 12px 30px -10px ${alpha(theme.palette.primary.main, 0.15)}`
-                                                }
-                                            }}
-                                        >
-                                            <Box sx={{
-                                                mb: 3,
-                                                p: 2,
-                                                borderRadius: '50%',
-                                                bgcolor: alpha(theme.palette.primary.main, 0.05),
-                                                width: 80,
-                                                height: 80,
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                mx: 'auto'
-                                            }}>
-                                                {item.icon}
+                                }}>
+                                    {[...Array(3)].map((_, i) => (
+                                        [
+                                            {
+                                                title: 'AI-Driven',
+                                                icon: <PsychologyIcon sx={{ fontSize: 30, color: theme.palette.primary.main }} />,
+                                                desc: 'Strategies powered by data, not guesswork.'
+                                            },
+                                            {
+                                                title: 'ROI-Focused',
+                                                icon: <TrendingUpIcon sx={{ fontSize: 30, color: theme.palette.primary.main }} />,
+                                                desc: 'Every campaign differs, but the goal is profit.'
+                                            },
+                                            {
+                                                title: 'Designed to Scale',
+                                                icon: <RocketLaunchIcon sx={{ fontSize: 30, color: theme.palette.primary.main }} />,
+                                                desc: 'Systems built to grow with your business.'
+                                            },
+                                            {
+                                                title: 'Sales Integrated',
+                                                icon: <HandshakeIcon sx={{ fontSize: 30, color: theme.palette.primary.main }} />,
+                                                desc: 'Marketing that actually drives closed deals.'
+                                            }
+                                        ].map((item, index) => (
+                                            <Box
+                                                key={`${i}-${index}`}
+                                                sx={{
+                                                    width: { xs: 200, md: 220 },
+                                                    mx: 1.5,
+                                                    flexShrink: 0,
+                                                    display: 'flex'
+                                                }}
+                                            >
+                                                <Paper
+                                                    elevation={0}
+                                                    sx={{
+                                                        p: 3,
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        borderRadius: 3,
+                                                        bgcolor: alpha(theme.palette.background.paper, 0.6),
+                                                        backdropFilter: 'blur(20px)',
+                                                        border: '1px solid',
+                                                        borderColor: alpha(theme.palette.divider, 0.1),
+                                                        textAlign: 'center',
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        transition: 'all 0.3s ease',
+                                                        '&:hover': {
+                                                            transform: 'translateY(-8px)',
+                                                            borderColor: theme.palette.primary.main,
+                                                            boxShadow: `0 12px 30px -10px ${alpha(theme.palette.primary.main, 0.15)}`
+                                                        }
+                                                    }}
+                                                >
+                                                    <Box sx={{
+                                                        mb: 2,
+                                                        p: 1.5,
+                                                        borderRadius: '50%',
+                                                        bgcolor: alpha(theme.palette.primary.main, 0.05),
+                                                        width: 60,
+                                                        height: 60,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        mx: 'auto'
+                                                    }}>
+                                                        {item.icon}
+                                                    </Box>
+                                                    <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1, lineHeight: 1.2 }}>
+                                                        {item.title}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem', lineHeight: 1.4 }}>
+                                                        {item.desc}
+                                                    </Typography>
+                                                </Paper>
                                             </Box>
-                                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5 }}>
-                                                {item.title}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {item.desc}
-                                            </Typography>
-                                        </Paper>
-                                    </Grid>
-                                ))}
-                            </Grid>
+                                        ))
+                                    ))}
+                                </Box>
+                            </Box>
                             <Typography
                                 variant="h5"
                                 sx={{
@@ -2513,62 +2563,57 @@ const ServicesContent = () => {
                                     <Paper
                                         elevation={0}
                                         sx={{
-                                            p: 2,
+                                            p: 3,
                                             height: '100%',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            minHeight: '130px',
+                                            minHeight: '180px',
                                             textAlign: 'center',
-                                            borderRadius: 4,
+                                            borderRadius: 3,
                                             background: 'white',
                                             border: '1px solid',
-                                            borderColor: 'divider',
+                                            borderColor: alpha(theme.palette.divider, 0.1),
                                             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                             position: 'relative',
                                             overflow: 'hidden',
                                             '&:hover': {
-                                                transform: 'translateY(-8px)',
-                                                boxShadow: '0 12px 30px rgba(0,0,0,0.08)',
-                                                borderColor: 'transparent',
-                                                '& .service-highlight': {
-                                                    opacity: 1
-                                                },
-                                                '& .service-icon': {
-                                                    color: theme.palette.primary.main,
-                                                    transform: 'scale(1.1) rotate(5deg)'
+                                                transform: 'translateY(-4px)',
+                                                boxShadow: `0 12px 24px -10px ${alpha(theme.palette.primary.main, 0.15)}`,
+                                                borderColor: theme.palette.primary.main,
+                                                '& .icon-box': {
+                                                    bgcolor: theme.palette.primary.main,
+                                                    color: 'white',
+                                                    transform: 'scale(1.1)'
                                                 }
                                             }
                                         }}
                                     >
-                                        <Box className="service-highlight" sx={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            right: 0,
-                                            height: '4px',
-                                            bgcolor: theme.palette.primary.main,
-                                            opacity: 0,
-                                            transition: 'opacity 0.3s ease'
-                                        }} />
-
-                                        <Box className="service-icon" sx={{
-                                            mb: 2,
-                                            color: 'text.secondary',
-                                            transition: 'all 0.3s ease',
+                                        <Box className="icon-box" sx={{
+                                            mb: 2.5,
+                                            width: 64,
+                                            height: 64,
+                                            borderRadius: '50%',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            justifyContent: 'center'
+                                            justifyContent: 'center',
+                                            bgcolor: alpha(theme.palette.primary.main, 0.08),
+                                            color: theme.palette.primary.main,
+                                            transition: 'all 0.3s ease'
                                         }}>
-                                            {React.cloneElement(service.icon, { sx: { fontSize: 32 } })}
+                                            {React.cloneElement(service.icon, { sx: { fontSize: 30 } })}
                                         </Box>
 
-                                        <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1rem', mb: service.subs ? 1 : 0 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.05rem', mb: service.subs ? 0.5 : 0, lineHeight: 1.3 }}>
                                             {service.name}
                                         </Typography>
 
-
+                                        {service.subs && (
+                                            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.85rem', mt: 1 }}>
+                                                {service.subs.join(" • ")}
+                                            </Typography>
+                                        )}
                                     </Paper>
                                 </Grid>
                             ))}

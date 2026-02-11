@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import logo from '../assets/images/AI_Growth_Exa_logo_designs22-removebg-preview.png';
 import { FaTimes, FaBars } from 'react-icons/fa';
+import AuthModal from './Modals/AuthModal';
 
 const Navbar = () => {
     const navRef = useRef(null);
@@ -12,7 +13,15 @@ const Navbar = () => {
     const mobileLinksRef = useRef([]);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [authModalView, setAuthModalView] = useState('login');
     const location = useLocation();
+
+    const openAuthModal = (view) => {
+        setAuthModalView(view);
+        setIsAuthModalOpen(true);
+        setIsMenuOpen(false);
+    };
 
     // Close menu when route changes
     useEffect(() => {
@@ -166,14 +175,17 @@ const Navbar = () => {
                         />
                     </div>
 
-                    <div ref={addToRefs}>
-                        <Link
-                            to="/contact"
-                            state={{ background: location }}
-                            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/20"
-                        >
-                            Get Started
-                        </Link>
+                    <div className="flex items-center gap-4">
+
+
+                        <div ref={addToRefs}>
+                            <button
+                                onClick={() => openAuthModal('register')}
+                                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/20"
+                            >
+                                Get Started
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -184,74 +196,80 @@ const Navbar = () => {
                 >
                     {isMenuOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
                 </button>
-            </div>
 
-            {/* Mobile Dropdown Menu */}
-            {isMenuOpen && (
-                <div
-                    ref={mobileMenuRef}
-                    className="absolute top-full left-0 w-full bg-gray-900 border-b border-gray-800 shadow-xl md:hidden overflow-hidden"
-                >
-                    <div className="flex flex-col p-4 space-y-1">
-                        {navLinks.map((link, index) => (
-                            <div key={index}>
-                                {link.dropdown ? (
-                                    <>
-                                        <button
-                                            onClick={() => setOpenDropdown(openDropdown === link.name ? null : link.name)}
-                                            className="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg text-base font-medium transition-colors"
+                {/* Mobile Dropdown Menu */}
+                {isMenuOpen && (
+                    <div
+                        ref={mobileMenuRef}
+                        className="absolute top-full left-0 w-full bg-gray-900 border-b border-gray-800 shadow-xl md:hidden overflow-hidden"
+                    >
+                        <div className="flex flex-col p-4 space-y-1">
+                            {navLinks.map((link, index) => (
+                                <div key={index}>
+                                    {link.dropdown ? (
+                                        <>
+                                            <button
+                                                onClick={() => setOpenDropdown(openDropdown === link.name ? null : link.name)}
+                                                className="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg text-base font-medium transition-colors"
+                                            >
+                                                {link.name}
+                                                <svg className={`w-4 h-4 transition-transform ${openDropdown === link.name ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+                                            {openDropdown === link.name && (
+                                                <div className="bg-gray-800/50 rounded-lg mt-1 space-y-1">
+                                                    {link.dropdown.map((subItem, subIdx) => (
+                                                        <Link
+                                                            key={subIdx}
+                                                            to={subItem.path}
+                                                            onClick={() => setIsMenuOpen(false)}
+                                                            className={`block px-8 py-2.5 text-sm transition-colors ${location.pathname === subItem.path ? 'text-blue-400' : 'text-gray-400 hover:text-white'
+                                                                }`}
+                                                        >
+                                                            {subItem.name}
+                                                        </Link>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <NavLink
+                                            to={link.path}
+                                            onClick={() => setIsMenuOpen(false)}
+                                            className={({ isActive }) =>
+                                                `block px-4 py-3 rounded-lg text-base font-medium transition-colors ${isActive
+                                                    ? 'bg-blue-600/10 text-blue-400'
+                                                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                                                }`
+                                            }
                                         >
                                             {link.name}
-                                            <svg className={`w-4 h-4 transition-transform ${openDropdown === link.name ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </button>
-                                        {openDropdown === link.name && (
-                                            <div className="bg-gray-800/50 rounded-lg mt-1 space-y-1">
-                                                {link.dropdown.map((subItem, subIdx) => (
-                                                    <Link
-                                                        key={subIdx}
-                                                        to={subItem.path}
-                                                        onClick={() => setIsMenuOpen(false)}
-                                                        className={`block px-8 py-2.5 text-sm transition-colors ${location.pathname === subItem.path ? 'text-blue-400' : 'text-gray-400 hover:text-white'
-                                                            }`}
-                                                    >
-                                                        {subItem.name}
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </>
-                                ) : (
-                                    <NavLink
-                                        to={link.path}
-                                        onClick={() => setIsMenuOpen(false)}
-                                        className={({ isActive }) =>
-                                            `block px-4 py-3 rounded-lg text-base font-medium transition-colors ${isActive
-                                                ? 'bg-blue-600/10 text-blue-400'
-                                                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                                            }`
-                                        }
-                                    >
-                                        {link.name}
-                                    </NavLink>
-                                )}
-                            </div>
-                        ))}
+                                        </NavLink>
+                                    )}
+                                </div>
+                            ))}
 
-                        <div className="pt-2 mt-2 border-t border-gray-800">
-                            <Link
-                                to="/contact"
-                                state={{ background: location }}
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block w-full text-center px-4 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-base font-medium transition-colors"
-                            >
-                                Get Started
-                            </Link>
+                            <div className="pt-2 mt-2 border-t border-gray-800">
+
+                                <button
+                                    onClick={() => openAuthModal('register')}
+                                    className="block w-full text-center px-4 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-base font-medium transition-colors"
+                                >
+                                    Get Started
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+
+            </div>
+
+            <AuthModal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+                initialView={authModalView}
+            />
         </nav>
     );
 };
