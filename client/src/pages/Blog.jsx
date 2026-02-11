@@ -120,9 +120,8 @@ export default function BlogInsights() {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/blogs');
-                const data = await response.json();
-                setBlogs(data);
+                const response = await api.get('/blogs');
+                setBlogs(response.data);
                 setLoading(false);
             } catch (error) {
                 setLoading(false);
@@ -827,7 +826,7 @@ function EnhancedBlogCard({ index, blog }) {
         views: "1.2k",
         tag: "New",
         image: blog?.image
-            ? (blog.image.startsWith('http') ? blog.image : `http://localhost:5000${blog.image}`)
+            ? (blog.image.startsWith('http') ? blog.image : `${import.meta.env.VITE_SERVER_URL}${blog.image}`)
             : "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80"
     };
 
