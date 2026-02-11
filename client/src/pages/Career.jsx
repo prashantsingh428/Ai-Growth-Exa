@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import  axios from 'react'
 import api from "../api/api";
 
 import {
@@ -32,7 +31,7 @@ import {
     FaFilePdf,
 } from 'react-icons/fa';
 
-// Job Application Modal Component
+// Single Job Application Modal Component
 const JobApplicationModal = ({ job, onClose, onSubmit }) => {
     const [formData, setFormData] = useState({
         name: '',
@@ -79,10 +78,13 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
 
             const data = new FormData();
 
+            // Personal Information
             data.append("name", formData.name);
             data.append("email", formData.email);
             data.append("phone", formData.phone);
             data.append("location", formData.location);
+
+            // Professional Information
             data.append("experience", formData.experience);
             data.append("yearsOfExperience", formData.yearsOfExperience);
             data.append("currentSalary", formData.currentSalary);
@@ -92,9 +94,23 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
             data.append("noticePeriod", formData.noticePeriod);
             data.append("coverLetter", formData.coverLetter);
 
-            //  FILE — MUST MATCH upload.single("resume")
+            // If job is selected, add job details
+            if (job) {
+                data.append("jobTitle", job.title);
+                data.append("jobDepartment", job.department);
+                data.append("jobLocation", job.location);
+                data.append("jobId", job.id);
+                data.append("applicationType", "specific");
+            } else {
+                data.append("jobTitle", "General Application");
+                data.append("jobDepartment", "Various");
+                data.append("applicationType", "general");
+            }
+
+            // Resume file
             data.append("resume", formData.resume);
 
+            // Submit to single API endpoint
             const res = await api.post("/applications/apply", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -111,8 +127,6 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
             setFormData(prev => ({ ...prev, isSubmitting: false }));
         }
     };
-    // 4️⃣ IMPORTANT CHECKLIST (agar yaha galti hui to error aayega)
-    // ✅ Backend
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -120,9 +134,17 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                 <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center z-10">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-900">
-                            Apply for: <span className="text-blue-600">{job?.title}</span>
+                            {job ? (
+                                <>
+                                    Apply for: <span className="text-blue-600">{job.title}</span>
+                                </>
+                            ) : (
+                                "Start Your Application Journey"
+                            )}
                         </h2>
-                        <p className="text-gray-600">{job?.department} • {job?.location}</p>
+                        <p className="text-gray-600">
+                            {job ? `${job.department} • ${job.location}` : "Tell us about yourself and your career aspirations"}
+                        </p>
                     </div>
                     <button
                         onClick={onClose}
@@ -135,7 +157,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
 
                 <form onSubmit={handleSubmit} className="p-6">
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        { }
+                        {/* Personal Information */}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <FaUserTie className="text-blue-500" />
@@ -203,7 +225,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                             </div>
                         </div>
 
-                        { }
+                        {/* Professional Information */}
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <FaBriefcase className="text-blue-500" />
@@ -289,7 +311,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    { }
+                    {/* Resume Upload */}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
                             <FaUpload className="text-blue-500" />
@@ -322,7 +344,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    { }
+                    {/* Social Profiles */}
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -363,7 +385,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                         </div>
                     </div>
 
-                    { }
+                    {/* Additional Information */}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
                             <FaGraduationCap className="text-blue-500" />
@@ -391,7 +413,7 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Cover Letter / Why should we hire you? *
+                                {job ? "Cover Letter / Why should we hire you?" : "Tell us about yourself and your career aspirations"} *
                             </label>
                             <textarea
                                 name="coverLetter"
@@ -400,12 +422,12 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                                 required
                                 rows="4"
                                 className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                placeholder="Tell us why you're the perfect fit for this role..."
+                                placeholder={job ? "Tell us why you're the perfect fit for this role..." : "Share your motivation for joining our team and your career goals..."}
                             />
                         </div>
                     </div>
 
-                    { }
+                    {/* Terms and Submit */}
                     <div className="border-t border-gray-200 pt-6">
                         <div className="flex items-start mb-6">
                             <input
@@ -443,345 +465,6 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
     );
 };
 
-
-const GeneralApplicationModal = ({ jobOpenings, onClose, onSubmit }) => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        location: '',
-        currentRole: '',
-        expectedSalary: '',
-        experience: 'fresher',
-        resume: null,
-        resumeName: '',
-        linkedin: '',
-        coverLetter: '',
-        interestRole: '',
-        isSubmitting: false
-    });
-
-    const [selectedJob, setSelectedJob] = useState(null);
-
-    const handleInputChange = (e) => {
-        const { name, value, type, files } = e.target;
-
-        if (type === 'file') {
-            if (files && files[0]) {
-                setFormData(prev => ({
-                    ...prev,
-                    resume: files[0],
-                    resumeName: files[0].name
-                }));
-            }
-        } else {
-            setFormData(prev => ({
-                ...prev,
-                [name]: value
-            }));
-        }
-    };
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            setFormData(prev => ({ ...prev, isSubmitting: true }));
-
-            const data = new FormData();
-
-            data.append("name", formData.name);
-            data.append("email", formData.email);
-            data.append("phone", formData.phone);
-            data.append("location", formData.location);
-            data.append("experience", formData.experience);
-            data.append("currentRole", formData.currentRole);
-            data.append("expectedSalary", formData.expectedSalary);
-            data.append("linkedin", formData.linkedin);
-            data.append("coverLetter", formData.coverLetter);
-            data.append("interestRole", formData.interestRole);
-
-            //  FILE — MUST MATCH upload.single("resume")
-            data.append("resume", formData.resume);
-
-            const res = await api.post("/careers/apply", data, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-
-            alert("Application submitted successfully ✅");
-            onClose();
-
-        } catch (error) {
-            console.error(error);
-            alert("Something went wrong ❌");
-        } finally {
-            setFormData(prev => ({ ...prev, isSubmitting: false }));
-        }
-    };
-
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
-                    <div>
-                        <h2 className="text-2xl font-bold text-gray-900">
-                            Start Your Application Journey
-                        </h2>
-                        <p className="text-gray-600">Tell us about yourself and your career aspirations</p>
-                    </div>
-                    <button
-                        onClick={onClose}
-                        className="text-gray-400 hover:text-gray-600 text-2xl"
-                        type="button"
-                    >
-                        <FaTimes />
-                    </button>
-                </div>
-
-                <form onSubmit={handleSubmit} className="p-6">
-                    <div className="mb-8">
-                        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-6">
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">Which role interests you?</h3>
-                            <p className="text-gray-600 mb-4">Select the role you're interested in or choose "General Application"</p>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                <select
-                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    name="interestRole"
-                                    value={formData.interestRole}
-                                    onChange={(e) => {
-                                        handleInputChange(e);
-                                        if (e.target.value !== 'general') {
-                                            const job = jobOpenings.find(j => j.id === parseInt(e.target.value));
-                                            if (job) {
-                                                setSelectedJob(job);
-                                            }
-                                        } else {
-                                            setSelectedJob({ title: "General Application", department: "Various" });
-                                        }
-                                    }}
-                                    required
-                                >
-                                    <option value="">Select a role</option>
-                                    <option value="general">General Application</option>
-                                    {jobOpenings.map(job => (
-                                        <option key={job.id} value={job.id}>
-                                            {job.title} ({job.department})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        { }
-                        <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Full Name *
-                                </label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    placeholder="John Doe"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Email Address *
-                                </label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    placeholder="john@example.com"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Phone Number *
-                                </label>
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    placeholder="+1 (555) 123-4567"
-                                />
-                            </div>
-                        </div>
-
-                        { }
-                        <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-gray-900">Professional Background</h3>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Experience Level *
-                                </label>
-                                <select
-                                    name="experience"
-                                    value={formData.experience}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                >
-                                    <option value="fresher">Fresher (0-1 years)</option>
-                                    <option value="junior">Junior (1-3 years)</option>
-                                    <option value="mid">Mid-Level (3-5 years)</option>
-                                    <option value="senior">Senior (5+ years)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Current/Last Role
-                                </label>
-                                <input
-                                    type="text"
-                                    name="currentRole"
-                                    value={formData.currentRole}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    placeholder="e.g., Marketing Specialist"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Expected Salary Range
-                                </label>
-                                <input
-                                    type="text"
-                                    name="expectedSalary"
-                                    value={formData.expectedSalary}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                    placeholder="e.g., $70,000 - $90,000"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    { }
-                    <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Resume / CV *</h3>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
-                            <FaFilePdf className="text-3xl text-gray-400 mx-auto mb-2" />
-                            <label className="block mb-2 cursor-pointer">
-                                <span className="text-blue-600 font-medium hover:text-blue-700">
-                                    Click to upload
-                                </span>
-                                <input
-                                    type="file"
-                                    name="resume"
-                                    onChange={handleInputChange}
-                                    accept=".pdf,.doc,.docx"
-                                    className="hidden"
-                                    required
-                                />
-                                <span className="text-gray-600"> or drag and drop</span>
-                            </label>
-                            <p className="text-sm text-gray-500">
-                                PDF, DOC, DOCX up to 10MB
-                            </p>
-                            {formData.resumeName && (
-                                <p className="mt-2 text-sm text-green-600">
-                                    ✓ Selected: {formData.resumeName}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Additional Information */}
-                    <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h3>
-
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Why do you want to join AI Growth Exa? *
-                            </label>
-                            <textarea
-                                name="coverLetter"
-                                value={formData.coverLetter}
-                                onChange={handleInputChange}
-                                required
-                                rows="4"
-                                className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                placeholder="Share your motivation for joining our team..."
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                LinkedIn Profile (Optional)
-                            </label>
-                            <input
-                                type="url"
-                                name="linkedin"
-                                value={formData.linkedin}
-                                onChange={handleInputChange}
-                                className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                                placeholder="https://linkedin.com/in/username"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Terms and Submit */}
-                    <div className="border-t border-gray-200 pt-6">
-                        <div className="flex items-start mb-6">
-                            <input
-                                type="checkbox"
-                                id="terms2"
-                                required
-                                className="mt-1 mr-2"
-                            />
-                            <label htmlFor="terms2" className="text-sm text-gray-600">
-                                I agree to the terms and conditions and confirm that the information provided is accurate.
-                            </label>
-                        </div>
-
-                        <div className="flex gap-4">
-                            <button
-                                type="submit"
-                                disabled={formData.isSubmitting}
-                                className={`flex-1 bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 ${formData.isSubmitting ? 'opacity-50 cursor-not-allowed' : 'transform hover:scale-105'} flex items-center justify-center gap-2`}
-                            >
-                                {formData.isSubmitting ? 'Submitting...' : 'Start Application Journey'}
-                                {!formData.isSubmitting && <FaArrowRight />}
-                            </button>
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="flex-1 border-2 border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 bg-white hover:bg-blue-50 font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    );
-};
-
 // Main Careers Page Component
 const CareersPage = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -796,9 +479,8 @@ const CareersPage = () => {
     const [activeTab, setActiveTab] = useState('all');
     const [hoveredCard, setHoveredCard] = useState(null);
 
-    // Modal states
-    const [showJobApplicationModal, setShowJobApplicationModal] = useState(false);
-    const [showGeneralApplicationModal, setShowGeneralApplicationModal] = useState(false);
+    // Single modal state for all applications
+    const [showApplicationModal, setShowApplicationModal] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
 
     // Job openings data
@@ -929,42 +611,10 @@ const CareersPage = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Handle job application button click
-    const handleJobApplyClick = (job) => {
+    // Single function for all apply buttons
+    const handleApplyClick = (job = null) => {
         setSelectedJob(job);
-        setShowJobApplicationModal(true);
-    };
-
-    // Handle general application button click
-    const handleGeneralApplyClick = () => {
-        setSelectedJob(null);
-        setShowGeneralApplicationModal(true);
-    };
-
-    // Handle job form submission
-    const handleJobSubmit = (formData) => {
-        console.log('Job form submitted:', formData);
-        console.log('Applied for job:', selectedJob?.title);
-
-        // Simulate API call
-        setTimeout(() => {
-            alert('Application submitted successfully! We will get back to you soon.');
-            setShowJobApplicationModal(false);
-        }, 1000);
-    };
-
-    // Handle general form submission
-    const handleGeneralSubmit = (formData, selectedJob) => {
-        console.log('General form submitted:', formData);
-        if (selectedJob) {
-            console.log('Selected job:', selectedJob.title);
-        }
-
-        // Simulate API call
-        setTimeout(() => {
-            alert('Application submitted successfully! We will get back to you soon.');
-            setShowGeneralApplicationModal(false);
-        }, 1000);
+        setShowApplicationModal(true);
     };
 
     if (isLoading) {
@@ -1003,8 +653,9 @@ const CareersPage = () => {
                         </p>
 
                         <div className="flex flex-col md:flex-row justify-center gap-6">
+                            {/* Explore Open Roles Button */}
                             <button
-                                onClick={handleGeneralApplyClick}
+                                onClick={() => handleApplyClick(null)}
                                 className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 shadow-lg shadow-blue-900/50 flex items-center justify-center gap-2"
                                 type="button"
                             >
@@ -1271,8 +922,9 @@ const CareersPage = () => {
                                     </div>
 
                                     <div className="p-6 pt-2">
+                                        {/* Apply Now Button */}
                                         <button
-                                            onClick={() => handleJobApplyClick(job)}
+                                            onClick={() => handleApplyClick(job)}
                                             className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 group/btn"
                                             type="button"
                                         >
@@ -1336,8 +988,9 @@ const CareersPage = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                            {/* Start Your Application Journey Button */}
                             <button
-                                onClick={handleGeneralApplyClick}
+                                onClick={() => handleApplyClick(null)}
                                 className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-bold py-5 px-14 rounded-2xl text-xl transition-all duration-300 shadow-2xl shadow-purple-500/30 flex items-center justify-center gap-4"
                                 type="button"
                             >
@@ -1350,20 +1003,14 @@ const CareersPage = () => {
                 </div>
             </div>
 
-            {/* Modals */}
-            {showJobApplicationModal && (
+            {/* Single Modal for all applications */}
+            {showApplicationModal && (
                 <JobApplicationModal
                     job={selectedJob}
-                    onClose={() => setShowJobApplicationModal(false)}
-                    onSubmit={handleJobSubmit}
-                />
-            )}
-
-            {showGeneralApplicationModal && (
-                <GeneralApplicationModal
-                    jobOpenings={jobOpenings}
-                    onClose={() => setShowGeneralApplicationModal(false)}
-                    onSubmit={handleGeneralSubmit}
+                    onClose={() => {
+                        setShowApplicationModal(false);
+                        setSelectedJob(null);
+                    }}
                 />
             )}
         </div>
