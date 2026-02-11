@@ -639,7 +639,7 @@ const CareersPage = () => {
             <div className="relative overflow-hidden bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#312e81] text-white py-52 px-4">
                 <div className="container mx-auto relative z-10">
                     <div className="text-center max-w-5xl mx-auto">
-                        <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                        <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold mb-6 leading-tight">
                             Build the <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300">
                                 Future
                             </span>

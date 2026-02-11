@@ -65,7 +65,7 @@ const AboutHeroSection = () => {
     ];
 
     return (
-        <section ref={containerRef} className="relative py-20 flex items-center justify-center overflow-hidden bg-white text-gray-900">
+        <section ref={containerRef} className="relative pt-32 pb-20 flex items-center justify-center overflow-hidden bg-white text-gray-900">
             {/* Background enhancement */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-30">
                 <FloatingParticles theme="light" />

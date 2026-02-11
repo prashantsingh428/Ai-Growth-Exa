@@ -8,7 +8,7 @@ exports.createLead = async (req, res) => {
             email,
             company,
             industry,
-            service,
+            services,
             budget,
             message
         } = req.body;
@@ -27,7 +27,7 @@ exports.createLead = async (req, res) => {
             email,
             company,
             industry,
-            service,
+            services,
             budget,
             message
         });

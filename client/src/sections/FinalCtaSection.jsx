@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import StrategyCallModal from '../components/Modals/StrategyCallModal';
@@ -54,6 +55,7 @@ const FinalCtaSection = () => {
     const nodesRef = useRef([]);
     const linesRef = useRef([]);
     const rocketRef = useRef(null);
+    const location = useLocation();
     const [isWhatsAppOpen, setIsWhatsAppOpen] = useState(false);
     const [isStrategyCallOpen, setIsStrategyCallOpen] = useState(false);
     const [isPlansOpen, setIsPlansOpen] = useState(false);
@@ -186,15 +188,16 @@ const FinalCtaSection = () => {
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
-                    <button
-                        onClick={() => setIsPlansOpen(true)}
+                    <Link
+                        to="/contact"
+                        state={{ background: location }}
                         className="px-8 md:px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-base md:text-lg rounded-full transition-all duration-300 shadow-xl shadow-blue-500/20 hover:-translate-y-1 flex items-center justify-center gap-3 whitespace-nowrap"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <span>Book Strategy Call</span>
-                    </button>
+                    </Link>
 
                     <button
                         onClick={toggleWhatsApp}
@@ -234,7 +237,7 @@ const FinalCtaSection = () => {
                         <div className="text-center">
                             <div className="w-full aspect-square bg-gray-100 rounded-xl overflow-hidden mb-4 border border-gray-100">
                                 <img
-                                    src="/whatsapp-qr.png"
+                                    src="/assets/whatsapp-qr.png"
                                     alt="WhatsApp QR Code"
                                     className="w-full h-full object-cover"
                                 />
@@ -244,7 +247,7 @@ const FinalCtaSection = () => {
                             <p className="text-sm text-gray-500 mb-4">Scan this code using the WhatsApp camera to get my number</p>
 
                             <a
-                                href="https://wa.me/qr/IH4OX4BQ2TJ2C1"
+                                href="https://wa.me/message/OUMPIAT35KYIC1"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold hover:underline bg-emerald-50 px-4 py-2 rounded-lg transition-colors"

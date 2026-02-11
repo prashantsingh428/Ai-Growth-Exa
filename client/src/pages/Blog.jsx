@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
 import api from "../api/api"
 import {
@@ -81,6 +82,7 @@ const cardHoverVariants = {
 };
 
 export default function BlogInsights() {
+    const location = useLocation();
     const [showContent, setShowContent] = useState(false);
     const [activeFilter, setActiveFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
@@ -122,7 +124,6 @@ export default function BlogInsights() {
                 setBlogs(data);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching blogs:", error);
                 setLoading(false);
             }
         };
@@ -149,13 +150,13 @@ export default function BlogInsights() {
     ];
 
     return (
-        <div className="bg-gradient-to-b from-slate-50 to-white text-slate-900 min-h-screen overflow-x-hidden">
+        <div className="bg-gradient-to-b from-blue-50 to-white text-slate-900 min-h-screen overflow-x-hidden">
             { }
             <section
                 ref={heroRef}
                 className="relative overflow-hidden border-b border-slate-200/50"
                 style={{
-                    background: "linear-gradient(135deg, #f8fafc 0%, #f0f9ff 50%, #eff6ff 100%)"
+                    background: "linear-gradient(135deg, #284be7ff 0%, #4143daff 50%, #120566ff 100%)"
                 }}
             >
                 { }
@@ -180,7 +181,7 @@ export default function BlogInsights() {
                         initial={{ opacity: 0, y: -30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, type: "spring" }}
-                        className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4"
+                        className="text-3xl sm:text-4xl md:text-7xl font-extrabold tracking-tight mb-4"
                     >
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
                             BLOG / INSIGHTS
@@ -673,16 +674,37 @@ export default function BlogInsights() {
                                         Website Navigation
                                     </h4>
                                     <div className="space-y-1">
-                                        {navItems.map((item, idx) => (
-                                            <a
-                                                key={idx}
-                                                href="#"
-                                                className="flex items-center gap-2 px-3 py-2.5 text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                            >
-                                                <ChevronRight size={14} className="text-slate-400" />
-                                                {item}
-                                            </a>
-                                        ))}
+                                        {navItems.map((item, idx) => {
+                                            const pathMap = {
+                                                "Home": "/",
+                                                "About us": "/about",
+                                                "About the Founder": "/about",
+                                                "Industries We Serve": "/services",
+                                                "Case Studies": "/blog",
+                                                "Contact Us": "/contact",
+                                                "Our Services": "/services",
+                                                "AI SOLUTIONS": "/services",
+                                                "Blog": "/blog",
+                                                "Careers": "/careers",
+                                                "Terms & Conditions": "/terms-and-conditions",
+                                                "Privacy Policy": "/privacy-policy",
+                                                "Cookie Policy": "/cookie-policy",
+                                                "Copyright Policy": "/copyright-policy",
+                                                "Awards & Recognitions": "/awards"
+                                            };
+                                            const path = pathMap[item] || "#";
+                                            return (
+                                                <Link
+                                                    key={idx}
+                                                    to={path}
+                                                    state={item === "Contact Us" ? { background: location } : undefined}
+                                                    className="flex items-center gap-2 px-3 py-2.5 text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                                >
+                                                    <ChevronRight size={14} className="text-slate-400" />
+                                                    {item}
+                                                </Link>
+                                            );
+                                        })}
                                     </div>
 
                                     <div className="mt-8 pt-6 border-t border-slate-200">

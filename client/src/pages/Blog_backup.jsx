@@ -1,0 +1,932 @@
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
+import api from "../api/api"
+import {
+    CalendarDays,
+    Clock,
+    User,
+    ArrowRight,
+    BookOpen,
+    Sparkles,
+    TrendingUp,
+    Zap,
+    Globe,
+    ChevronRight,
+    Eye,
+    Heart,
+    Share2,
+    Bookmark,
+    Target,
+    BarChart3,
+    Rocket,
+    Shield,
+    Search,
+    Mail,
+    CheckCircle,
+    DollarSign,
+    Users,
+    LineChart,
+    Brain,
+    Cpu,
+    PieChart,
+    Lightbulb,
+    Award,
+    Briefcase,
+    FileText,
+    Settings
+} from "lucide-react";
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.15,
+            delayChildren: 0.3
+        },
+    },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 60 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.8,
+            type: "spring",
+            stiffness: 100
+        }
+    },
+};
+
+const cardHoverVariants = {
+    rest: {
+        scale: 1,
+        y: 0,
+        rotateX: 0,
+        boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.08)"
+    },
+    hover: {
+        scale: 1.03,
+        y: -12,
+        rotateX: 5,
+        boxShadow: "0px 25px 50px rgba(59, 130, 246, 0.3)",
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 15
+        }
+    }
+};
+
+export default function BlogInsights() {
+    const location = useLocation();
+    const [showContent, setShowContent] = useState(false);
+    const [activeFilter, setActiveFilter] = useState("all");
+    const [searchQuery, setSearchQuery] = useState("");
+    const heroRef = useRef(null);
+    const isHeroInView = useInView(heroRef, { once: true });
+
+    const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const [email, setEmail] = useState("");
+
+    const handleSubscribe = async () => {
+        if (!email) {
+            alert("Please enter your work email");
+            return;
+        }
+
+        try {
+            await api.post("/subscribe", { email });
+            alert("Subscribed successfully 🎉");
+            setEmail("");
+        } catch (err) {
+            alert(err.response?.data?.message || "Subscription failed");
+        }
+    };
+
+
+    // Page 
+    useEffect(() => {
+        const timer = setTimeout(() => setShowContent(true), 1200);
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/blogs');
+                const data = await response.json();
+                setBlogs(data);
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
+            }
+        };
+
+        fetchBlogs();
+    }, []);
+
+    // Blog categories 
+    const categories = [
+        { id: "all", label: "All Articles", icon: <BookOpen size={16} />, count: 42 },
+        { id: "ai", label: "AI Marketing Trends", icon: <Brain size={16} />, count: 18 },
+        { id: "growth", label: "Growth Hacks", icon: <Rocket size={16} />, count: 12 },
+        { id: "performance", label: "Performance Strategies", icon: <Target size={16} />, count: 8 },
+        { id: "automation", label: "Automation Guides", icon: <Cpu size={16} />, count: 10 },
+        { id: "strategy", label: "Business Strategy", icon: <Globe size={16} />, count: 14 },
+    ];
+
+    // Navigation menu items
+    const navItems = [
+        "Home", "About us", "About the Founder", "Industries We Serve",
+        "Case Studies", "Awards & Recognitions", "Contact Us", "Our Services",
+        "AI SOLUTIONS", "Blog", "Careers", "Terms & Conditions",
+        "Privacy Policy", "Cookie Policy", "Copyright Policy"
+    ];
+
+    return (
+        <div className="bg-gradient-to-b from-blue-50 to-white text-slate-900 min-h-screen overflow-x-hidden">
+            { }
+            <section
+                ref={heroRef}
+                className="relative overflow-hidden border-b border-slate-200/50"
+                style={{
+                    background: "linear-gradient(135deg, #284be7ff 0%, #4143daff 50%, #120566ff 100%)"
+                }}
+            >
+                { }
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                    <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+                    <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-cyan-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+                </div>
+
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-36 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
+                        transition={{ duration: 0.7, type: "spring" }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200/50 mb-6"
+                    >
+                        <Sparkles size={14} className="text-blue-500" />
+                        <span className="text-sm font-medium text-slate-700">Latest Insights</span>
+                    </motion.div>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: -30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, type: "spring" }}
+                        className="text-3xl sm:text-4xl md:text-7xl font-extrabold tracking-tight mb-4"
+                    >
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+                            BLOG / INSIGHTS
+                        </span>
+                    </motion.h1>
+
+                    <motion.h2
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-2xl md:text-3xl text-slate-700 font-semibold mb-8"
+                    >
+                        Where Growth, AI & Strategy Come Together
+                    </motion.h2>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed mb-10"
+                    >
+                        Future-Focused. Decision-Ready. Smart Moves. Real Impact.
+                    </motion.p>
+                    { }
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                        className="max-w-2xl mx-auto relative mb-12"
+                    >
+                        <div className="relative">
+                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
+                            <input
+                                type="text"
+                                placeholder="Search insights, trends, strategies..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full pl-12 pr-4 py-4 bg-white/80 backdrop-blur-sm border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+                            />
+                        </div>
+                    </motion.div>
+
+                    { }
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8 }}
+                        className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto"
+                    >
+                        {[
+                            { label: "Marketing Revenue", value: "$42M+", icon: <DollarSign size={20} />, color: "text-emerald-600" },
+                            { label: "Net Promoter Score", value: "89 NPS", icon: <Users size={20} />, color: "text-blue-600" },
+                            { label: "Articles", value: "420+", icon: <FileText size={20} />, color: "text-purple-600" },
+                            { label: "Success Rate", value: "94%", icon: <CheckCircle size={20} />, color: "text-amber-600" },
+                        ].map((stat, index) => (
+                            <div key={index} className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-2xl border border-slate-200/50">
+                                <div className="flex justify-center mb-2">
+                                    <div className={`p-2 rounded-full ${stat.color.replace('text', 'bg')}/10`}>
+                                        {stat.icon}
+                                    </div>
+                                </div>
+                                <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
+                                <div className="text-sm text-slate-500 mt-1">{stat.label}</div>
+                            </div>
+                        ))}
+                    </motion.div>
+                </div>
+            </section>
+
+            { }
+            <AnimatePresence>
+                {showContent && (
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="show"
+                        exit="hidden"
+                        className="relative"
+                    >
+                        { }
+                        <motion.section
+                            variants={itemVariants}
+                            className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24"
+                        >
+                            <div className="text-center mb-16">
+                                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                                    Welcome to the <span className="text-blue-600">Insights Hub</span> of AI Growth Era
+                                </h2>
+                                <div className="text-lg text-slate-600 max-w-4xl mx-auto leading-relaxed space-y-4">
+                                    <p>
+                                        <span className="font-bold text-slate-800">This is not a typical marketing blog.</span>
+                                    </p>
+                                    <p>
+                                        This is where <span className="font-semibold text-blue-600">strategy meets execution</span>,
+                                        and artificial intelligence meets real business growth.
+                                    </p>
+                                    <p>
+                                        Here, we break down:
+                                    </p>
+                                </div>
+
+                                { }
+                                <div className="mt-10 max-w-2xl mx-auto">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        {[
+                                            {
+                                                title: "What's working right now",
+                                                desc: "Data-backed strategies currently delivering results",
+                                                icon: <CheckCircle className="text-emerald-500" size={24} />
+                                            },
+                                            {
+                                                title: "What's about to change next",
+                                                desc: "Future trends and emerging opportunities",
+                                                icon: <TrendingUp className="text-blue-500" size={24} />
+                                            },
+                                            {
+                                                title: "What brands must do to stay ahead",
+                                                desc: "Actionable steps for competitive advantage",
+                                                icon: <Rocket className="text-purple-500" size={24} />
+                                            }
+                                        ].map((item, index) => (
+                                            <motion.div
+                                                key={index}
+                                                whileHover={{ scale: 1.05 }}
+                                                className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm"
+                                            >
+                                                <div className="flex items-start gap-4">
+                                                    <div className="p-3 rounded-xl bg-slate-50">
+                                                        {item.icon}
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="font-bold text-slate-900 mb-1">{item.title}</h4>
+                                                        <p className="text-sm text-slate-600">{item.desc}</p>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Differentiation Section */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6 }}
+                                    viewport={{ once: true }}
+                                    className="mt-16 p-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl border border-blue-100"
+                                >
+                                    <h3 className="text-2xl font-bold text-slate-900 mb-4">Why Our Content Is Different</h3>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        <div>
+                                            <h4 className="font-semibold text-red-600 mb-3">Most blogs:</h4>
+                                            <ul className="space-y-2 text-slate-600">
+                                                <li className="flex items-start gap-2">
+                                                    <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                                    Rewrite what's already online
+                                                </li>
+                                                <li className="flex items-start gap-2">
+                                                    <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                                    Chase keywords only
+                                                </li>
+                                                <li className="flex items-start gap-2">
+                                                    <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                                    Miss real-world execution
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-semibold text-emerald-600 mb-3">AI Growth Era Insights:</h4>
+                                            <ul className="space-y-2 text-slate-600">
+                                                <li className="flex items-start gap-2">
+                                                    <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2"></div>
+                                                    Based on live campaigns
+                                                </li>
+                                                <li className="flex items-start gap-2">
+                                                    <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2"></div>
+                                                    Backed by data & experience
+                                                </li>
+                                                <li className="flex items-start gap-2">
+                                                    <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2"></div>
+                                                    Written for decision-makers — not beginners
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p className="mt-6 text-slate-700 italic">
+                                        We don't write just to rank. We write to educate, influence, and build trust.
+                                    </p>
+                                </motion.div>
+                            </div>
+
+                            {/* Category Filters */}
+                            <div className="mb-16">
+                                <h3 className="text-2xl font-bold text-slate-900 mb-6">Explore Categories</h3>
+                                <div className="flex flex-wrap justify-center gap-3">
+                                    {categories.map((cat) => (
+                                        <motion.button
+                                            key={cat.id}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={() => setActiveFilter(cat.id)}
+                                            className={`
+                        flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300
+                        ${activeFilter === cat.id
+                                                    ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30"
+                                                    : "bg-white text-slate-700 border border-slate-200 hover:border-blue-300 hover:shadow-md"
+                                                }
+                      `}
+                                        >
+                                            {cat.icon}
+                                            {cat.label}
+                                            <span className={`ml-2 text-xs px-2 py-1 rounded-full ${activeFilter === cat.id ? 'bg-white/30' : 'bg-slate-100'}`}>
+                                                {cat.count}
+                                            </span>
+                                        </motion.button>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.section>
+
+                        {/* FEATURED CATEGORIES DETAILS */}
+                        <motion.section
+                            variants={itemVariants}
+                            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16"
+                        >
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {/* AI Marketing Trends Card */}
+                                <motion.div
+                                    whileHover={{ y: -8 }}
+                                    className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-100"
+                                >
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="p-3 rounded-xl bg-blue-100">
+                                            <Brain className="text-blue-600" size={24} />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-slate-900">AI Marketing Trends</h3>
+                                    </div>
+                                    <p className="text-slate-700 mb-4">
+                                        Future-Focused. Decision-Ready. AI is reshaping how brands <strong>attract, convert, and retain customers</strong>.
+                                    </p>
+                                    <h4 className="font-semibold text-slate-900 mb-2">What You'll Learn Here:</h4>
+                                    <ul className="space-y-2 text-sm text-slate-600 mb-6">
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
+                                            How AI is changing paid ads & targeting
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
+                                            The rise of LLMs in content generation & personalization
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
+                                            AI vs traditional marketing — what actually works
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
+                                            Future-proof strategies for modern brands
+                                        </li>
+                                    </ul>
+                                    <div className="text-xs text-slate-500 italic">
+                                        Perfected for Founders & Strategists who want to stay ahead of the curve.
+                                    </div>
+                                </motion.div>
+
+                                {/* Growth Hacks Card */}
+                                <motion.div
+                                    whileHover={{ y: -8 }}
+                                    className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-6 border border-emerald-100"
+                                >
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="p-3 rounded-xl bg-emerald-100">
+                                            <Rocket className="text-emerald-600" size={24} />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-slate-900">Growth Hacks</h3>
+                                    </div>
+                                    <p className="text-slate-700 mb-4">
+                                        <strong>Smart Moves. Real Impact.</strong> Growth isn't about doing more. It's about doing what actually works.
+                                    </p>
+                                    <h4 className="font-semibold text-slate-900 mb-2">What You'll Learn Here:</h4>
+                                    <ul className="space-y-2 text-sm text-slate-600 mb-6">
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-emerald-500 mt-0.5 flex-shrink-0" />
+                                            Proven growth experiments
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-emerald-500 mt-0.5 flex-shrink-0" />
+                                            Future optimization tactics
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-emerald-500 mt-0.5 flex-shrink-0" />
+                                            Conversion psychology insights
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-emerald-500 mt-0.5 flex-shrink-0" />
+                                            Scaling hacks used by fast-growing brands
+                                        </li>
+                                    </ul>
+                                    <div className="text-xs text-slate-500 italic">
+                                        Built for brands that want results, not theories.
+                                    </div>
+                                </motion.div>
+
+                                {/* Performance Strategies Card */}
+                                <motion.div
+                                    whileHover={{ y: -8 }}
+                                    className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-100"
+                                >
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="p-3 rounded-xl bg-amber-100">
+                                            <Target className="text-amber-600" size={24} />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-slate-900">Performance Strategies</h3>
+                                    </div>
+                                    <p className="text-slate-700 mb-4">
+                                        <strong>ROI-Focused. Data-Backed.</strong> Performance Marketing is not about ads. It's about systems, signals, and cues.
+                                    </p>
+                                    <h4 className="font-semibold text-slate-900 mb-2">What You'll Learn Here:</h4>
+                                    <ul className="space-y-2 text-sm text-slate-600 mb-6">
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                                            How to reduce CPL without killing volume
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                                            ROI & optimization framework
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                                            Platform-neutral strategies (Google, Meta, LinkedIn, YouTube)
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <ArrowRight size={16} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                                            Budget scaling without losses
+                                        </li>
+                                    </ul>
+                                    <div className="text-xs text-slate-500 italic">
+                                        Written for brands managing serious ad budgets.
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </motion.section>
+
+                        {/* BLOG CARDS SECTION */}
+                        <motion.section
+                            variants={itemVariants}
+                            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16"
+                        >
+                            <div className="flex justify-between items-center mb-10">
+                                <h3 className="text-3xl font-bold text-slate-900">
+                                    Popular <span className="text-blue-600">Reads</span>
+                                </h3>
+                                <div className="flex items-center gap-2 text-blue-600 font-medium cursor-pointer hover:gap-3 transition-all duration-300">
+                                    View All Articles <ChevronRight size={18} />
+                                </div>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {loading ? (
+                                    <div className="col-span-3 text-center py-10">Loading insights...</div>
+                                ) : blogs.length > 0 ? (
+                                    blogs.map((blog, i) => (
+                                        <EnhancedBlogCard key={blog._id} index={i} blog={blog} />
+                                    ))
+                                ) : (
+                                    <div className="col-span-3 text-center py-10">No insights found.</div>
+                                )}
+                            </div>
+                        </motion.section>
+
+                        { }
+                        <motion.section
+                            variants={itemVariants}
+                            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24"
+                        >
+                            <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl overflow-hidden">
+                                <div className="p-10 lg:p-12">
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500">
+                                            <Cpu className="text-white" size={32} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-3xl font-bold text-white">Automation Guides</h3>
+                                            <p className="text-slate-300 text-xl mt-1">Build Once. Scale Forever.</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-slate-300 text-lg mb-8 max-w-3xl">
+                                        Discover how to automate repetitive tasks, streamline workflows, and create systems that work 24/7 for your business growth.
+                                    </p>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                                            <h4 className="text-white font-bold text-lg mb-3">Popular Topics:</h4>
+                                            <ul className="space-y-2">
+                                                {[
+                                                    "AI-Powered Workflow Automation",
+                                                    "Marketing Automation Funnels",
+                                                    "CRM Integration Strategies",
+                                                    "Chatbot Implementation Guides"
+                                                ].map((topic, idx) => (
+                                                    <li key={idx} className="flex items-center gap-2 text-slate-300">
+                                                        <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                                                        {topic}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                                            <h4 className="text-white font-bold text-lg mb-3">Key Benefits:</h4>
+                                            <ul className="space-y-2">
+                                                {[
+                                                    "Reduce manual work by 70%+",
+                                                    "Scale operations without adding headcount",
+                                                    "Improve consistency & accuracy",
+                                                    "24/7 system operation"
+                                                ].map((benefit, idx) => (
+                                                    <li key={idx} className="flex items-center gap-2 text-slate-300">
+                                                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                                        {benefit}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.section>
+
+                        { }
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+                            <div className="grid lg:grid-cols-3 gap-8">
+                                { }
+                                <motion.div
+                                    initial={{ opacity: 0, y: 40 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6 }}
+                                    viewport={{ once: true }}
+                                    className="lg:col-span-2 relative rounded-3xl overflow-hidden"
+                                    style={{
+                                        background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)"
+                                    }}
+                                >
+                                    <div className="absolute inset-0 bg-grid-slate-100/50 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]"></div>
+                                    <div className="relative backdrop-blur-sm bg-white/70 p-10 lg:p-12">
+                                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 mb-6">
+                                            <Mail size={28} className="text-white" />
+                                        </div>
+                                        <h3 className="text-3xl font-bold text-slate-900 mb-4">
+                                            Stay Ahead of the Curve
+                                        </h3>
+                                        <p className="text-slate-600 mb-6">
+                                            Want Actionable Growth Insights — Not Noise? Stay updated with:
+                                        </p>
+                                        <div className="grid grid-cols-2 gap-4 mb-8">
+                                            {[
+                                                "AI marketing trends",
+                                                "Growth strategies that work",
+                                                "Automation frameworks",
+                                                "Performance & scaling insights"
+                                            ].map((item, idx) => (
+                                                <div key={idx} className="flex items-center gap-2">
+                                                    <CheckCircle size={16} className="text-emerald-500" />
+                                                    <span className="text-slate-700">{item}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="flex flex-col sm:flex-row gap-3 max-w-md">
+                                            <input
+                                                type="email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="Your work email"
+                                                className="flex-grow px-5 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                                            />
+                                            <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300" onClick={handleSubscribe}>
+                                                Subscribe for Insights
+                                            </button>
+                                        </div>
+                                    </div>
+                                </motion.div>
+
+                                { }
+                                <motion.div
+                                    initial={{ opacity: 0, x: 40 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.6 }}
+                                    viewport={{ once: true }}
+                                    className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm"
+                                >
+                                    <h4 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                        <Briefcase size={20} />
+                                        Website Navigation
+                                    </h4>
+                                    <div className="space-y-1">
+                                        {navItems.map((item, idx) => {
+                                            const pathMap = {
+                                                "Home": "/",
+                                                "About us": "/about",
+                                                "About the Founder": "/about",
+                                                "Industries We Serve": "/services",
+                                                "Case Studies": "/blog",
+                                                "Contact Us": "/contact",
+                                                "Our Services": "/services",
+                                                "AI SOLUTIONS": "/services",
+                                                "Blog": "/blog",
+                                                "Careers": "/careers",
+                                                "Terms & Conditions": "#",
+                                                "Privacy Policy": "#",
+                                                "Cookie Policy": "#",
+                                                "Copyright Policy": "#",
+                                                "Awards & Recognitions": "#"
+                                            };
+                                            const path = pathMap[item] || "#";
+                                            return (
+                                                <Link
+                                                    key={idx}
+                                                    to={path}
+                                                    state={item === "Contact Us" ? { background: location } : undefined}
+                                                    className="flex items-center gap-2 px-3 py-2.5 text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                                >
+                                                    <ChevronRight size={14} className="text-slate-400" />
+                                                    {item}
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="mt-8 pt-6 border-t border-slate-200">
+                                        <div className="flex items-center justify-between text-sm text-slate-500">
+                                            <div className="flex items-center gap-2">
+                                                <Settings size={16} />
+                                                <span>Activate Windows</span>
+                                            </div>
+                                            <div className="text-xs bg-slate-100 px-2 py-1 rounded">
+                                                Go to Settings
+                                            </div>
+                                        </div>
+                                        <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-amber-400 to-orange-500"></div>
+                                                <span>15°C Mostly sunny</span>
+                                            </div>
+                                            <div className="text-xs text-slate-400">
+                                                Search
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            { }
+            <style>{`
+        @keyframes blob {
+          0% {
+            transform: translate(0px, 0px) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+          100% {
+            transform: translate(0px, 0px) scale(1);
+          }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+        .bg-grid-slate-100 {
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(241 245 249 / 0.5)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+        }
+      `}</style>
+        </div>
+    );
+}
+
+
+function EnhancedBlogCard({ index, blog }) {
+    const cardRef = useRef(null);
+    const isInView = useInView(cardRef, { once: true, margin: "-100px" });
+    const controls = useAnimation();
+
+    useEffect(() => {
+        if (isInView) {
+            controls.start("visible");
+        }
+    }, [controls, isInView]);
+
+    const data = {
+        title: blog?.title || "Untitled",
+        desc: blog?.content ? blog.content.substring(0, 100) + '...' : 'No description available.',
+        category: "Insights",
+        readTime: "5 min read",
+        author: blog?.author || "Admin",
+        date: blog?.createdAt ? new Date(blog.createdAt).toLocaleDateString() : "Recently",
+        likes: Math.floor(Math.random() * 100),
+        views: "1.2k",
+        tag: "New",
+        image: blog?.image
+            ? (blog.image.startsWith('http') ? blog.image : `http://localhost:5000${blog.image}`)
+            : "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80"
+    };
+
+    return (
+        <motion.div
+            ref={cardRef}
+            initial="rest"
+            whileHover="hover"
+            animate={controls}
+            variants={{
+                hidden: { opacity: 0, y: 60, rotateX: 10 },
+                visible: {
+                    opacity: 1,
+                    y: 0,
+                    rotateX: 0,
+                    transition: {
+                        duration: 0.8,
+                        delay: index * 0.1,
+                        type: "spring",
+                        stiffness: 100
+                    }
+                }
+            }}
+            custom={index}
+            className="relative h-full"
+        >
+            {/* 3D Gradient Border Effect */}
+            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-cyan-400 opacity-70 blur-sm"></div>
+            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-cyan-400"></div>
+
+            {/* Main Card */}
+            <motion.div
+                variants={cardHoverVariants}
+                className="relative h-full rounded-2xl bg-white overflow-hidden"
+                style={{
+                    transformStyle: "preserve-3d",
+                    perspective: "1000px"
+                }}
+            >
+                {/* Card Header with Image */}
+                <div className="relative h-48 overflow-hidden">
+                    <img
+                        src={data.image}
+                        alt={data.title}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                        loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-xs font-semibold text-blue-700 rounded-full">
+                            {data.category}
+                        </span>
+                    </div>
+
+                    {/* Tag Badge */}
+                    <div className="absolute top-4 right-4">
+                        <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-semibold rounded-full">
+                            {data.tag}
+                        </span>
+                    </div>
+
+                    {/* Floating stats */}
+                    <div className="absolute bottom-4 right-4 flex items-center gap-2">
+                        <div className="flex items-center gap-1 px-2 py-1 bg-black/40 backdrop-blur-sm rounded-full text-white text-xs">
+                            <Eye size={12} /> {data.views}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Card Body */}
+                <div className="p-6">
+                    <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
+                        <div className="flex items-center gap-1">
+                            <User size={14} />
+                            <span className="font-medium">{data.author}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <CalendarDays size={14} />
+                            <span>{data.date}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <Clock size={14} />
+                            <span>{data.readTime}</span>
+                        </div>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-slate-900 mb-3 leading-tight">
+                        {data.title}
+                    </h3>
+
+                    <p className="text-slate-600 mb-6">
+                        {data.desc}
+                    </p>
+
+                    {/* Interactive Footer */}
+                    <div className="flex justify-between items-center pt-4 border-t border-slate-100">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="flex items-center gap-2 text-blue-600 font-semibold group"
+                        >
+                            Read Full Article
+                            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                        </motion.button>
+
+                        <div className="flex items-center gap-3">
+                            <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className="flex items-center gap-1 text-slate-500 hover:text-red-500 transition-colors"
+                            >
+                                <Heart size={18} />
+                                <span className="text-sm">{data.likes}</span>
+                            </motion.button>
+
+                            <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className="text-slate-500 hover:text-blue-500 transition-colors"
+                            >
+                                <Bookmark size={18} />
+                            </motion.button>
+
+                            <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className="text-slate-500 hover:text-emerald-500 transition-colors"
+                            >
+                                <Share2 size={18} />
+                            </motion.button>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+}

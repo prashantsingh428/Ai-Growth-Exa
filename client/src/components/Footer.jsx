@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import api from '../api/api.js';
@@ -6,6 +7,7 @@ import api from '../api/api.js';
 gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
+    const location = useLocation();
     const footerRef = useRef(null);
 
     const [formData, setFormData] = useState({
@@ -87,7 +89,7 @@ const Footer = () => {
     ];
 
     return (
-        <footer ref={footerRef} className="bg-gray-900 text-gray-300 py-16 px-6 sm:px-12 lg:px-24 border-t border-gray-800 relative overflow-hidden">
+        <footer ref={footerRef} className="bg-gray-900 text-gray-300 py-8 px-8 sm:px-12 lg:px-27 border-t border-gray-800 relative overflow-hidden">
             { }
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50"></div>
 
@@ -111,14 +113,15 @@ const Footer = () => {
                             { name: "Contact Us", path: "/contact" }
                         ].map((item) => (
                             <li key={item.name}>
-                                <a
-                                    href={item.path}
+                                <Link
+                                    to={item.path}
+                                    state={item.path === '/contact' ? { background: location } : undefined}
                                     className="block transition-colors duration-300 text-gray-400"
                                     onMouseEnter={handleLinkHover}
                                     onMouseLeave={handleLinkLeave}
                                 >
                                     {item.name}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>
@@ -155,16 +158,21 @@ const Footer = () => {
                         <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-blue-500"></span>
                     </h3>
                     <ul className="space-y-2">
-                        {["Terms & Conditions", "Privacy Policy", "Cookie Policy", "Copyright Policy"].map((item) => (
-                            <li key={item}>
-                                <a
-                                    href="#"
+                        {[
+                            { name: "Terms & Conditions", path: "/terms-and-conditions" },
+                            { name: "Privacy Policy", path: "/privacy-policy" },
+                            { name: "Cookie Policy", path: "/cookie-policy" },
+                            { name: "Copyright Policy", path: "/copyright-policy" }
+                        ].map((item) => (
+                            <li key={item.name}>
+                                <Link
+                                    to={item.path}
                                     className="block transition-colors duration-300 text-gray-400"
                                     onMouseEnter={handleLinkHover}
                                     onMouseLeave={handleLinkLeave}
                                 >
-                                    {item}
-                                </a>
+                                    {item.name}
+                                </Link>
                             </li>
                         ))}
                     </ul>
