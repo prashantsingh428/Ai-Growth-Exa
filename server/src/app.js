@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const authRoutes = require('./routes/authRoutes');
 const leadRoutes = require('./routes/leadRoutes');
@@ -18,7 +19,11 @@ const app = express();
 app.use("/uploads", express.static("uploads"));
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,8 +40,20 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/contact", contactRoutes);
 
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.json({ message: 'Welcome to Ai Growth Exa API', status: 'Running' });
 });
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+    const distPath = path.resolve(__dirname, '../../client/dist');
+    app.use(express.static(distPath));
+
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.resolve(distPath, 'index.html'));
+        }
+    });
+}
 
 module.exports = app;

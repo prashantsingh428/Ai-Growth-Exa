@@ -2,6 +2,8 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
+const { OAuth2Client } = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 
 const generateOTP = () =>
     Math.floor(100000 + Math.random() * 900000).toString();
@@ -123,5 +125,59 @@ exports.resetPassword = async (req, res) => {
         res.json({ message: "Password reset successful" });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+exports.googleLogin = async (req, res) => {
+    try {
+        const { token } = req.body;
+        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID
+        });
+
+        const { name, email, sub: googleId, picture } = ticket.getPayload();
+
+        let user = await User.findOne({ email });
+
+        if (user) {
+            if (!user.googleId) {
+                user.googleId = googleId;
+                await user.save();
+            }
+        } else {
+            user = new User({
+                name,
+                email,
+                googleId,
+                role: 'user',
+                isVerified: true
+            });
+            await user.save();
+        }
+
+        const jwtToken = jwt.sign(
+            { id: user._id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        );
+
+        res.status(200).json({
+            success: true,
+            token: jwtToken,
+            role: user.role,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
+
+    } catch (error) {
+        console.error("Google Login Error:", error);
+        res.status(500).json({ message: "Google Login failed", error: error.message });
     }
 };

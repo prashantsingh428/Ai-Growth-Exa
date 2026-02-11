@@ -1,9 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
+
+import cert1 from '../assets/images/certifications/cert-1.jpeg';
+import cert2 from '../assets/images/certifications/cert-2.jpeg';
+import cert3 from '../assets/images/certifications/cert-3.jpeg';
+import cert4 from '../assets/images/certifications/cert-4.jpeg';
+
+import award1 from '../assets/images/awards/award-1.jpeg';
+import award2 from '../assets/images/awards/award-2.jpeg';
 
 const Awards = () => {
     const [activeTab, setActiveTab] = useState('awards');
     const [tabAnimation, setTabAnimation] = useState('slide-up');
+    const [selectedImage, setSelectedImage] = useState(null);
     const tabContentRef = useRef(null);
     const location = useLocation();
 
@@ -15,7 +25,7 @@ const Awards = () => {
             description: "Comprehensive certification covering digital marketing foundations, customer acquisition, and e-commerce growth systems.",
             issuer: "Google",
             date: "December 2023",
-            imageUrl: "https://via.placeholder.com/300x200/3a86ff/ffffff?text=Google+Certification",
+            imageUrl: cert1,
             altText: "Google Digital Marketing Certification"
         },
         {
@@ -24,7 +34,7 @@ const Awards = () => {
             description: "Advanced expertise in search campaign structure, keyword targeting, and conversion optimization.",
             issuer: "Google",
             date: "December 2023",
-            imageUrl: "https://via.placeholder.com/300x200/4285f4/ffffff?text=Google+Ads+Certification",
+            imageUrl: cert2,
             altText: "Google Ads Search Certification"
         },
         {
@@ -33,7 +43,7 @@ const Awards = () => {
             description: "Expertise in event-based tracking, funnel analysis, and data-driven decision making.",
             issuer: "LinkedIn Learning",
             date: "December 2021",
-            imageUrl: "https://via.placeholder.com/300x200/0a66c2/ffffff?text=GA4+Certification",
+            imageUrl: cert3,
             altText: "Google Analytics 4 Certification"
         },
         {
@@ -42,7 +52,7 @@ const Awards = () => {
             description: "Expertise in user behavior, conversion-focused design, and experience-led growth systems.",
             issuer: "Simplilearn",
             date: "2022",
-            imageUrl: "https://via.placeholder.com/300x200/ff6b35/ffffff?text=UX/UI+Certification",
+            imageUrl: cert4,
             altText: "UX/UI Fundamentals Certification"
         }
     ];
@@ -55,7 +65,7 @@ const Awards = () => {
             description: "Awarded for outstanding contribution and expertise in Google Business Profile optimization and local SEO growth strategies.",
             issuer: "Annual Community Recognition Event 2024",
             date: "2024",
-            imageUrl: "https://via.placeholder.com/300x200/4cc9f0/ffffff?text=GMB+Achievement+Award",
+            imageUrl: award1,
             altText: "Google Business Profile Achievement Award",
             achievements: [
                 "Local SEO growth systems",
@@ -69,7 +79,7 @@ const Awards = () => {
             description: "Officially recognized by Meta for excellence in digital advertising and campaign management.",
             issuer: "Meta (Facebook & Instagram)",
             date: "2024",
-            imageUrl: "https://via.placeholder.com/300x200/1877f2/ffffff?text=Meta+Certified",
+            imageUrl: award2,
             altText: "Meta Certified Company",
             achievements: [
                 "Policy-aligned advertising practices",
@@ -171,14 +181,17 @@ const Awards = () => {
                         key={award.id}
                         className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 animate-card opacity-0 translate-y-8 scale-95 group"
                     >
-                        <div className="relative h-64 overflow-hidden">
+                        <div
+                            className="relative h-64 overflow-hidden cursor-pointer"
+                            onClick={() => setSelectedImage(award.imageUrl)}
+                        >
                             <img
                                 src={award.imageUrl}
                                 alt={award.altText}
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white pointer-events-none">
                                 <div className="text-xs bg-blue-600 inline-block px-3 py-1 rounded-full">
                                     AWARD
                                 </div>
@@ -244,14 +257,17 @@ const Awards = () => {
                         key={cert.id}
                         className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 animate-card opacity-0 translate-y-8 scale-95 group"
                     >
-                        <div className="relative h-56 overflow-hidden">
+                        <div
+                            className="relative h-56 overflow-hidden cursor-pointer"
+                            onClick={() => setSelectedImage(cert.imageUrl)}
+                        >
                             <img
                                 src={cert.imageUrl}
                                 alt={cert.altText}
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-transparent"></div>
-                            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-transparent pointer-events-none"></div>
+                            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
                                 <div className="text-xs bg-white text-gray-800 inline-block px-3 py-1 rounded-full font-semibold">
                                     CERTIFIED
                                 </div>
@@ -543,6 +559,32 @@ const Awards = () => {
                     </div>
                 </section>
             </main>
+
+            {/* Image Lightbox Modal */}
+            {selectedImage && createPortal(
+                <div
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 transition-opacity duration-300"
+                    onClick={() => setSelectedImage(null)}
+                >
+                    <div className="relative max-w-5xl max-h-[90vh] w-full flex justify-center">
+                        <button
+                            className="absolute -top-12 right-0 text-white hover:text-gray-300 focus:outline-none"
+                            onClick={() => setSelectedImage(null)}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        <img
+                            src={selectedImage}
+                            alt="Full View"
+                            className="w-full h-full object-contain max-h-[90vh] rounded-lg shadow-2xl"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </div>
+                </div>,
+                document.body
+            )}
         </div>
     );
 };

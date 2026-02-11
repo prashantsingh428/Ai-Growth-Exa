@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 
 import WhatsAppModal from '../components/Modals/WhatsAppModal';
+import founderProfile from '../assets/images/founder/founder-profile.png';
 
 const FounderIntroduction = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -103,7 +104,7 @@ const FounderIntroduction = () => {
                             <div className="relative">
                                 <div className="w-64 h-64 md:w-80 md:h-80 bg-gray-200 rounded-full mx-auto overflow-hidden border-8 border-white shadow-2xl">
                                     <img
-                                        src="/assets/founder.jpg"
+                                        src={founderProfile}
                                         alt="Priyanshu Srivastava"
                                         className="w-full h-full object-cover"
                                     />

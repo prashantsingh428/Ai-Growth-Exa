@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import ScrollToTop from '../components/ScrollToTop';
 import ContactModal from '../components/Modals/ContactModal';
+import AuthModal from '../components/Modals/AuthModal';
 
 import CookieInfo from '../pages/CookieInfo';
 import CopyrightInfo from '../pages/CopyrightInfo';
@@ -57,6 +58,9 @@ const AppRoutes = () => {
                     OR if it's the current location and we have a background. */}
                 <Routes>
                     <Route path="/contact" element={<ContactModal isOpen={true} />} />
+                    <Route path="/login" element={<AuthModal isOpen={true} initialView="login" />} />
+                    <Route path="/signup" element={<AuthModal isOpen={true} initialView="register" />} />
+                    <Route path="/register" element={<AuthModal isOpen={true} initialView="register" />} />
                 </Routes>
             </Suspense>
         </MainLayout>
