@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 import WhatsAppModal from '../components/Modals/WhatsAppModal';
-import founderProfile from '../assets/images/founder-profile.png';
+import founderProfile from '../assets/images/founder/founder-profile.png';
 
 const FounderIntroduction = () => {
     const [isVisible, setIsVisible] = useState(false);

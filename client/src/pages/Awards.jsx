@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 
-import cert1 from '../assets/images/cert-1.jpeg';
-import cert2 from '../assets/images/cert-2.jpeg';
-import cert3 from '../assets/images/cert-3.jpeg';
-import cert4 from '../assets/images/cert-4.jpeg';
+import cert1 from '../assets/images/certifications/cert-1.jpeg';
+import cert2 from '../assets/images/certifications/cert-2.jpeg';
+import cert3 from '../assets/images/certifications/cert-3.jpeg';
+import cert4 from '../assets/images/certifications/cert-4.jpeg';
 
-import award1 from '../assets/images/award-1.jpeg';
-import award2 from '../assets/images/award-2.jpeg';
+import award1 from '../assets/images/awards/award-1.jpeg';
+import award2 from '../assets/images/awards/award-2.jpeg';
 
 const Awards = () => {
     const [activeTab, setActiveTab] = useState('awards');

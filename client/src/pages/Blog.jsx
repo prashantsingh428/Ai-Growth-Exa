@@ -36,7 +36,7 @@ import {
     FileText,
     Settings
 } from "lucide-react";
-import blogStats from "../assets/images/blog-growth-chart.png";
+import blogStats from "../assets/images/site/blog-growth-chart.png";
 
 const containerVariants = {
     hidden: { opacity: 0 },

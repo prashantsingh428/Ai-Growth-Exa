@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
-import logo from '../assets/images/AI_Growth_Exa_logo_designs22-removebg-preview.png';
+import logo from '../assets/images/site/AI_Growth_Exa_logo_designs22-removebg-preview.png';
 import { FaTimes, FaBars } from 'react-icons/fa';
 import AuthModal from './Modals/AuthModal';
 
