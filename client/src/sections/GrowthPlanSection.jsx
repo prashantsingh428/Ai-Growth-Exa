@@ -94,7 +94,7 @@ const GrowthPlanSection = () => {
 
             const response = await api.post('/leads/leadcreate', formData);
 
-            console.log('Form submitted successfully:', response.data);
+
 
             // Success message
             setSubmitStatus('success');

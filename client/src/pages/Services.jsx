@@ -1207,8 +1207,8 @@ const ServiceModal = memo(({ service, open, onClose, theme, onStartService }) =>
                         </Box>
                     </Box>
                 );
-            // 注意：为了保持代码简洁，我只保留了前3个服务的详细内容
-            // 其他服务（4-20）的结构类似，但没有重复的表单代码
+            // Note: For brevity, only the details of the first 3 services are included.
+            // The structure for services 4-20 is similar.
             default:
                 return (
                     <Box>
@@ -1803,7 +1803,7 @@ const ServicesContent = () => {
         setExpandedService(expandedService === serviceId ? null : serviceId);
     };
 
-    // Services array with all 20 services (简化的数据)
+    // Services array with all 20 services (Simplified Data)
     const services = [
         {
             id: 1,
