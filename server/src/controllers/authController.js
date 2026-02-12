@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
 const { OAuth2Client } = require('google-auth-library');
-const { OAuth2Client } = require('google-auth-library');
 
 const generateOTP = () =>
     Math.floor(100000 + Math.random() * 900000).toString();
