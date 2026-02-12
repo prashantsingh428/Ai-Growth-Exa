@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === 'production') {
     const distPath = path.resolve(__dirname, '../../client/dist');
     app.use(express.static(distPath));
 
-    app.get('*', (req, res) => {
+    app.get('(.*)', (req, res) => {
         if (!req.path.startsWith('/api')) {
             res.sendFile(path.resolve(distPath, 'index.html'));
         }
