@@ -6,21 +6,33 @@ if (process.env.NODE_ENV !== "production") {
     dotenv.config();
 }
 
-const PORT = 5011;
+const PORT = process.env.PORT || 5011;
 const MONGO_URI = process.env.MONGO_URI;
 
+const startServer = (port) => {
+    const server = app.listen(port, "0.0.0.0", () => {
+        console.log(`🚀 Server running on port ${port}`);
+        console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+    });
+
+    server.on("error", (err) => {
+        if (err.code === "EADDRINUSE") {
+            console.log(`⚠️  Port ${port} is busy, trying ${port + 1}...`);
+            startServer(port + 1);
+        } else {
+            console.error("❌ Server error:", err);
+        }
+    });
+};
 
 mongoose
     .connect(MONGO_URI)
     .then(() => {
         console.log("✅ MongoDB Connected");
-
-        app.listen(PORT, "127.0.0.1", () => {
-            console.log(`🚀 Server running on port ${PORT}`);
-            console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
-        });
+        startServer(Number(PORT));
     })
     .catch((err) => {
         console.error("❌ MongoDB connection failed:", err);
         process.exit(1);
     });
+
