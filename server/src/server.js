@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== "production") {
     dotenv.config();
 }
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5011;
 const MONGO_URI = process.env.MONGO_URI;
 
 
@@ -15,7 +15,7 @@ mongoose
     .then(() => {
         console.log("✅ MongoDB Connected");
 
-        app.listen(PORT, () => {
+        app.listen(PORT, "127.0.0.1", () => {
             console.log(`🚀 Server running on port ${PORT}`);
             console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
         });
