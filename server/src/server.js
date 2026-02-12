@@ -9,7 +9,7 @@ dotenv.config({
 const connectDB = require('./config/db');
 const app = require('./app');
 
-dotenv.config();
+// Environment variables are loaded above
 
 const PORT = process.env.PORT || 5000;
 

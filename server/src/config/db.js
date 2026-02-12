@@ -4,12 +4,13 @@ const dotenv = require("dotenv");
 
 // load .env from server root
 dotenv.config({
-    path: path.resolve(__dirname, "../.env")
+    path: path.resolve(__dirname, "../../.env")
 });
 
 
 const connectDB = async () => {
     try {
+        console.log('Connecting to MongoDB...');
         await mongoose.connect(process.env.MONGO_URI);
         console.log('MongoDB Connected');
     } catch (err) {
