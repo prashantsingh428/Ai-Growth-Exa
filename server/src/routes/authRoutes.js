@@ -7,7 +7,6 @@ const {
     verifyEmail,
     login,
     forgotPassword,
-    forgotPassword,
     resetPassword,
     googleLogin
 } = require("../controllers/authController");
