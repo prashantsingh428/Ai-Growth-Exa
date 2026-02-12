@@ -1,12 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
-const authRoutes = require('./routes/authRoutes');
-const leadRoutes = require('./routes/leadRoutes');
-const blogRoutes = require('./routes/blogRoutes');
-const testimonialRoutes = require('./routes/testimonialRoutes');
-const careerRoutes = require('./routes/careerRoutes');
+const authRoutes = require("./routes/authRoutes");
+const leadRoutes = require("./routes/leadRoutes");
+const blogRoutes = require("./routes/blogRoutes");
+const testimonialRoutes = require("./routes/testimonialRoutes");
+const careerRoutes = require("./routes/careerRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const connectRoutes = require("./routes/connectRoutes");
 const subscriberRoutes = require("./routes/subscriberRoutes");
@@ -15,45 +15,51 @@ const contactRoutes = require("./routes/contactRoutes");
 
 const app = express();
 
-
 app.use("/uploads", express.static("uploads"));
 
-// Middleware
 const corsOptions = {
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
 };
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/leads', leadRoutes);
-app.use('/api/blogs', blogRoutes);
-app.use('/api/testimonials', testimonialRoutes);
-app.use('/api/careers', careerRoutes);
+
+app.use("/api/auth", authRoutes);
+app.use("/api/leads", leadRoutes);
+app.use("/api/blogs", blogRoutes);
+app.use("/api/testimonials", testimonialRoutes);
+app.use("/api/careers", careerRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api", connectRoutes);
 app.use("/api", subscriberRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/contact", contactRoutes);
 
-
-app.get('/api', (req, res) => {
-    res.json({ message: 'Welcome to Ai Growth Exa API', status: 'Running' });
+app.get("/api", (req, res) => {
+    res.json({ message: "Welcome to Ai Growth Exa API", status: "Running" });
 });
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-    const distPath = path.resolve(__dirname, '../../client/dist');
+
+if (process.env.NODE_ENV === "production") {
+    const distPath = path.resolve(__dirname, "../../client/dist");
+
     app.use(express.static(distPath));
 
-    app.get('(.*)', (req, res) => {
-        if (!req.path.startsWith('/api')) {
-            res.sendFile(path.resolve(distPath, 'index.html'));
+    app.use((req, res, next) => {
+        if (!req.path.startsWith("/api")) {
+            res.sendFile(path.join(distPath, "index.html"));
+        } else {
+            next();
         }
     });
 }
+
+
+app.use((req, res) => {
+    res.status(404).json({ message: "Route not found" });
+});
 
 module.exports = app;

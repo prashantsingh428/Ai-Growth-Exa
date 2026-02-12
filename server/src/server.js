@@ -1,22 +1,26 @@
-const path = require("path");
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const app = require("./app");
 
-// load .env from server root
-dotenv.config({
-    path: path.resolve(__dirname, "../.env")
-});
-
-const connectDB = require('./config/db');
-const app = require('./app');
-
-// Environment variables are loaded above
+if (process.env.NODE_ENV !== "production") {
+    dotenv.config();
+}
 
 const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
 
-// Connect to Database
-connectDB();
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV}`);
-});
+mongoose
+    .connect(MONGO_URI)
+    .then(() => {
+        console.log("✅ MongoDB Connected");
+
+        app.listen(PORT, () => {
+            console.log(`🚀 Server running on port ${PORT}`);
+            console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+        });
+    })
+    .catch((err) => {
+        console.error("❌ MongoDB connection failed:", err);
+        process.exit(1);
+    });
