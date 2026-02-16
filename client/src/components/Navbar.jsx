@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
+import api from '../api/api';
 import logo from '../assets/images/site/AI_Growth_Exa_logo_designs22-removebg-preview.png';
 import { FaTimes, FaBars } from 'react-icons/fa';
 import AuthModal from './Modals/AuthModal';
@@ -11,6 +12,13 @@ const Navbar = () => {
     const linksRef = useRef([]);
     const mobileMenuRef = useRef(null);
     const mobileLinksRef = useRef([]);
+    const navigate = useNavigate();
+    const dropdownRef = useRef(null);
+
+    const [navbarSearch, setNavbarSearch] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -21,6 +29,48 @@ const Navbar = () => {
         setAuthModalView(view);
         setIsAuthModalOpen(true);
         setIsMenuOpen(false);
+    };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowDropdown(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Live search logic
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            if (navbarSearch.trim().length > 1) {
+                try {
+                    setIsSearching(true);
+                    const response = await api.get(`/services/search?q=${navbarSearch}`);
+                    if (response.data.success) {
+                        setSearchResults(response.data.data);
+                        setShowDropdown(true);
+                    }
+                } catch (error) {
+                    console.error("Navbar search error:", error);
+                } finally {
+                    setIsSearching(false);
+                }
+            } else {
+                setSearchResults([]);
+                setShowDropdown(false);
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [navbarSearch]);
+
+    const handleResultClick = (service) => {
+        navigate(`/services?q=${encodeURIComponent(service.title)}`);
+        setNavbarSearch('');
+        setShowDropdown(false);
     };
 
     // Close menu when route changes
@@ -170,9 +220,47 @@ const Navbar = () => {
                         </div>
                         <input
                             type="text"
+                            value={navbarSearch}
+                            onChange={(e) => setNavbarSearch(e.target.value)}
+                            onFocus={() => navbarSearch.trim().length > 1 && setShowDropdown(true)}
                             className="block w-full p-2 pl-10 text-sm text-white bg-gray-800 border border-gray-700 rounded-full focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 focus:outline-none focus:ring-1 transition-all w-32 focus:w-48"
-                            placeholder="Search..."
+                            placeholder="Search services..."
                         />
+
+                        {/* Search Results Dropdown */}
+                        {showDropdown && (
+                            <div
+                                ref={dropdownRef}
+                                className="absolute top-full right-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-xl shadow-2xl overflow-hidden z-[60]"
+                            >
+                                {isSearching ? (
+                                    <div className="p-4 text-center text-gray-400 text-sm">
+                                        Searching...
+                                    </div>
+                                ) : searchResults.length > 0 ? (
+                                    <div className="max-h-80 overflow-y-auto">
+                                        {searchResults.map((service, index) => (
+                                            <button
+                                                key={service._id || index}
+                                                onClick={() => handleResultClick(service)}
+                                                className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors border-b border-gray-800 last:border-0"
+                                            >
+                                                <div className="text-sm font-semibold text-white truncate">
+                                                    {service.title}
+                                                </div>
+                                                <div className="text-xs text-blue-400 font-medium">
+                                                    {service.category}
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="p-4 text-center text-gray-400 text-sm">
+                                        No results found
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex items-center gap-4">

@@ -3,12 +3,23 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 
 import AnimatedBeams from "../components/AnimatedBeams"
+import GradientText from "../components/GradientText"
 
 const HeroSection = () => {
   const titleRef = useRef(null)
   const textRef = useRef(null)
   const buttonsRef = useRef(null)
   const location = useLocation()
+
+  const [textIndex, setTextIndex] = useState(0)
+  const shufflingTexts = [
+    "AI-Driven Growth, IT & Marketing Agency",
+    "LLM-Powered Marketing Automation",
+    "Performance-First Ad Management",
+    "Data-Driven Brand Identities",
+    "Predictive Analytics & Insights",
+    "Intelligent Growth Infrastructure"
+  ]
 
   useEffect(() => {
     if (!titleRef.current || !textRef.current || !buttonsRef.current) return;
@@ -32,6 +43,25 @@ const HeroSection = () => {
         { y: 0, opacity: 1, duration: 0.8 },
         "-=0.6"
       )
+
+    // Text shuffling interval
+    const interval = setInterval(() => {
+      gsap.to(textRef.current, {
+        opacity: 0,
+        y: -10,
+        duration: 0.5,
+        ease: "power2.in",
+        onComplete: () => {
+          setTextIndex((prev) => (prev + 1) % shufflingTexts.length)
+          gsap.fromTo(textRef.current,
+            { opacity: 0, y: 10 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+          )
+        }
+      })
+    }, 2500) // 2s pause + 0.5s animation = 2.5s total cycle
+
+    return () => clearInterval(interval)
   }, [])
 
   return (
@@ -70,20 +100,24 @@ const HeroSection = () => {
           className="text-3xl sm:text-4xl md:text-7xl font-extrabold tracking-tight text-white"
         >
           AI GrowthExa
-          <span className="block mt-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <GradientText
+            colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
+            animationSpeed={8}
+            showBorder={false}
+            className="mt-4"
+          >
             Empower • Scale • Succeed
-          </span>
+          </GradientText>
         </h1>
 
-        <p
-          ref={textRef}
-          className="mt-6 md:mt-10 text-base md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed px-4 md:px-0"
-        >
-          AI-Driven Growth, IT & Marketing Agency
-          <span className="block mt-3 text-gray-300 font-medium">
+        <div className="mt-6 md:mt-10 text-base md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed px-4 md:px-0">
+          <div ref={textRef} className="min-h-[1.5em] mb-3">
+            {shufflingTexts[textIndex]}
+          </div>
+          <span className="block text-gray-300 font-medium">
             Where Data Thinks. AI Acts. Brands Grow.
           </span>
-        </p>
+        </div>
 
         <div
           ref={buttonsRef}
