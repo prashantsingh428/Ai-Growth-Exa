@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router-dom"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useMemo } from "react"
 import gsap from "gsap"
 
-import AnimatedBeams from "../components/AnimatedBeams"
 import GradientText from "../components/GradientText"
+import Threads from "../components/Threads"
+import SplitText from "../components/SplitText"
 
 const HeroSection = () => {
   const titleRef = useRef(null)
@@ -12,6 +13,10 @@ const HeroSection = () => {
   const location = useLocation()
 
   const [textIndex, setTextIndex] = useState(0)
+  const [loaderDone, setLoaderDone] = useState(false)
+
+  const threadColor = useMemo(() => [0.7, 0.85, 1], [])
+
   const shufflingTexts = [
     "AI-Driven Growth, IT & Marketing Agency",
     "LLM-Powered Marketing Automation",
@@ -20,6 +25,21 @@ const HeroSection = () => {
     "Predictive Analytics & Insights",
     "Intelligent Growth Infrastructure"
   ]
+
+  // Wait for loader to finish before showing SplitText
+  useEffect(() => {
+    if (sessionStorage.getItem('hasLoaded')) {
+      setLoaderDone(true)
+      return
+    }
+    const interval = setInterval(() => {
+      if (sessionStorage.getItem('hasLoaded')) {
+        setLoaderDone(true)
+        clearInterval(interval)
+      }
+    }, 100)
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     if (!titleRef.current || !textRef.current || !buttonsRef.current) return;
@@ -70,20 +90,20 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#050b1a] via-[#040914] to-black" />
         <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(99,102,241,0.06),transparent_40%,rgba(168,85,247,0.05))]" />
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent top-[20%] animate-pulse" />
-          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent top-[40%] animate-pulse" style={{ animationDelay: '0.5s' }} />
-          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent top-[60%] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent top-[80%] animate-pulse" style={{ animationDelay: '1.5s' }} />
-        </div>
       </div>
 
-      <div className="absolute inset-0 z-[1] pointer-events-none">
-        <div className="absolute top-[-20%] left-[10%] w-[32rem] h-[32rem] bg-indigo-600/20 blur-[160px] rounded-full" />
-        <div className="absolute bottom-[-15%] right-[10%] w-[30rem] h-[30rem] bg-fuchsia-600/20 blur-[160px] rounded-full" />
+      {/* Threads Animation Background */}
+      <div className="absolute inset-0 z-0 opacity-50">
+        <Threads
+          color={threadColor}
+          amplitude={2.3}
+          distance={0.5}
+          enableMouseInteraction
+        />
       </div>
 
-      <AnimatedBeams />
+
+
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
 
@@ -99,7 +119,24 @@ const HeroSection = () => {
           ref={titleRef}
           className="text-3xl sm:text-4xl md:text-7xl font-extrabold tracking-tight text-white"
         >
-          AI GrowthExa
+          {loaderDone ? (
+            <SplitText
+              text="AI GrowthExa"
+              className="text-3xl sm:text-4xl md:text-7xl font-extrabold tracking-tight text-white"
+              delay={50}
+              duration={1.25}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0}
+              rootMargin="0px"
+              textAlign="center"
+              tag="span"
+            />
+          ) : (
+            <span style={{ opacity: 0 }}>AI GrowthExa</span>
+          )}
           <GradientText
             colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
             animationSpeed={8}

@@ -15,7 +15,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "concurrently": "^8.2.2",
-    "dotenv": "^17.2.4"
+    "dotenv": "^17.2.4",
+    "framer-motion": "^12.34.0",
+    "gsap": "^3.14.2",
+    "ogl": "^1.0.11"
   }
 }
