@@ -152,7 +152,7 @@ const GrowthPlanSection = () => {
                             <span className="text-blue-600 text-sm font-semibold uppercase">PERSONALIZED GROWTH PLAN</span>
                         </div>
 
-                        <h2 className="text-4xl md:text-6xl font-black text-gray-900 leading-tight">
+                        <h2 className="text-4xl md:text-7xl font-black text-gray-800 leading-tight">
                             Every brand is different.
                         </h2>
 

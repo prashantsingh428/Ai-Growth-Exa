@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import FloatingParticles from '../components/FloatingParticles';
 import StarBorder from '../components/StarBorder';
+import GradientText from '../components/GradientText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,12 +52,19 @@ const BrandStorySection = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-12 md:gap-16 lg:gap-24 items-center">
 
                     {/* Left Column: Narrative */}
-                    <div ref={contentRef} className="space-y-6 sm:space-y-8">
+                    <div className="space-y-6 sm:space-y-8">
                         <div>
                             <StarBorder as="span" color="magenta" speed="5s" thickness={1} className="rounded-full mb-6 inline-block" innerClassName="!bg-white !from-white !to-white !border-gray-200 !py-2 !px-4 !rounded-full">
                                 <span className="flex items-center gap-2">
                                     <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-                                    <span className="text-xs font-bold uppercase tracking-widest text-gray-900">Brand Story</span>
+                                    <GradientText
+                                        colors={['#2563EB', '#9333EA', '#2563EB']}
+                                        animationSpeed={3}
+                                        showBorder={false}
+                                        className="text-sm font-bold uppercase tracking-widest"
+                                    >
+                                        Brand Story
+                                    </GradientText>
                                 </span>
                             </StarBorder>
                             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[1.1] mb-4 sm:mb-6">
@@ -67,25 +75,27 @@ const BrandStorySection = () => {
                             </h2>
                         </div>
 
-                        <div className="space-y-4 sm:space-y-6 text-base sm:text-lg text-gray-600 leading-relaxed font-medium">
-                            <p>
-                                At <span className="font-bold text-gray-900">AI Growth Exa</span>, we believe that a brand is more than just a logo or a color palette. It is the voice that speaks when you're not in the room, the feeling you leave behind, and the promise you keep to your customers.
-                            </p>
-                            <p>
-                                In a digital landscape drowned in noise, we help you find your frequency. We blend <span className="text-blue-700 font-bold">data-driven strategy</span> with <span className="text-purple-700 font-bold">creative brilliance</span> to build identities that don't just fit in—they stand out and lead.
-                            </p>
-                        </div>
+                        <div ref={contentRef} className="space-y-6 sm:space-y-8">
+                            <div className="space-y-4 sm:space-y-6 text-base sm:text-lg text-gray-600 leading-relaxed font-medium">
+                                <p>
+                                    At <span className="font-bold text-gray-900">AI Growth Exa</span>, we believe that a brand is more than just a logo or a color palette. It is the voice that speaks when you're not in the room, the feeling you leave behind, and the promise you keep to your customers.
+                                </p>
+                                <p>
+                                    In a digital landscape drowned in noise, we help you find your frequency. We blend <span className="text-blue-700 font-bold">data-driven strategy</span> with <span className="text-purple-700 font-bold">creative brilliance</span> to build identities that don't just fit in—they stand out and lead.
+                                </p>
+                            </div>
 
-                        <div className="pt-4 sm:pt-6">
-                            <div className="flex items-center gap-4 group cursor-pointer">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-all duration-300 overflow-hidden">
-                                    <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
+                            <div className="pt-4 sm:pt-6">
+                                <div className="flex items-center gap-4 group cursor-pointer">
+                                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-all duration-300 overflow-hidden">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    </div>
+                                    <Link to="/careers" className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                        Start Your Transformation
+                                    </Link>
                                 </div>
-                                <Link to="/careers" className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                    Start Your Transformation
-                                </Link>
                             </div>
                         </div>
                     </div>
