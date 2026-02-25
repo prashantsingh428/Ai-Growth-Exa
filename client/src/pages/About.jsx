@@ -289,24 +289,24 @@ const About = () => {
           <div className="flex w-max animate-marquee hover:pause-animation">
             {[
               ...[
-                { value: '5000+', label: 'Clients Served' },
+                { value: '1600+', label: 'Clients Served' },
                 { value: '95%+', label: 'Happy Clients' },
                 { value: '98%', label: 'Project Success Ratio' },
-                { value: '1,100+', label: 'SEO Projects Delivered' },
+                { value: '350+', label: 'SEO Projects Delivered' },
                 { value: '571+', label: 'Websites Developed' },
                 { value: '11+', label: 'Mobile Apps (Android & iOS)' },
-                { value: '1,557+', label: 'Google & Meta Ad Campaigns' },
+                { value: '400+', label: 'Google & Meta Ad Campaigns' },
                 { value: '750+', label: 'Social Media Campaigns' },
                 { value: '151+', label: 'LLM & AI Growth Implementations' },
               ],
               ...[
-                { value: '5000+', label: 'Clients Served' },
+                { value: '1600+', label: 'Clients Served' },
                 { value: '95%+', label: 'Happy Clients' },
                 { value: '98%', label: 'Project Success Ratio' },
-                { value: '1,100+', label: 'SEO Projects Delivered' },
+                { value: '350+', label: 'SEO Projects Delivered' },
                 { value: '571+', label: 'Websites Developed' },
                 { value: '11+', label: 'Mobile Apps (Android & iOS)' },
-                { value: '1,557+', label: 'Google & Meta Ad Campaigns' },
+                { value: '400+', label: 'Google & Meta Ad Campaigns' },
                 { value: '750+', label: 'Social Media Campaigns' },
                 { value: '151+', label: 'LLM & AI Growth Implementations' },
               ]

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import FloatingParticles from '../components/FloatingParticles';
 import StarBorder from '../components/StarBorder';
 import GradientText from '../components/GradientText';
@@ -114,10 +115,17 @@ const BrandStorySection = () => {
                             <div className="space-y-4 sm:space-y-6 relative z-10">
                                 {/* We Create Meaning */}
                                 <div className="flex gap-3 sm:gap-4 group/item cursor-pointer relative rounded-xl p-3 sm:p-4 -mx-3 sm:-mx-4 transition-all duration-300 hover:bg-white/5 border border-transparent hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.08)]">
-                                    <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center transition-all duration-300 group-hover/item:bg-blue-600/20 group-hover/item:border-blue-500/50 group-hover/item:scale-110">
-                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 transition-transform duration-300 group-hover/item:rotate-12 group-hover/item:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                        </svg>
+                                    <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center transition-all duration-300 group-hover/item:bg-blue-600/20 group-hover/item:border-blue-500/50 group-hover/item:scale-110 perspective-500">
+                                        <motion.div
+                                            animate={{ rotate: [0, 10, -10, 0] }}
+                                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                            whileHover={{ rotateX: 20, rotateY: 20, translateZ: 10 }}
+                                            style={{ transformStyle: 'preserve-3d' }}
+                                        >
+                                            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 transition-transform duration-300 group-hover/item:rotate-12 group-hover/item:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                        </motion.div>
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-base sm:text-lg mb-1 transition-colors duration-300 group-hover/item:text-blue-400">We Create Meaning</h4>
@@ -129,10 +137,17 @@ const BrandStorySection = () => {
 
                                 {/* We Build Consistency */}
                                 <div className="flex gap-3 sm:gap-4 group/item cursor-pointer relative rounded-xl p-3 sm:p-4 -mx-3 sm:-mx-4 transition-all duration-300 hover:bg-white/5 border border-transparent hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.08)]">
-                                    <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center transition-all duration-300 group-hover/item:bg-purple-600/20 group-hover/item:border-purple-500/50 group-hover/item:scale-110">
-                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400 transition-transform duration-300 group-hover/item:scale-125" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
+                                    <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center transition-all duration-300 group-hover/item:bg-purple-600/20 group-hover/item:border-purple-500/50 group-hover/item:scale-110 perspective-500">
+                                        <motion.div
+                                            animate={{ scale: [1, 1.15, 1] }}
+                                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                            whileHover={{ rotateX: 20, rotateY: 20, translateZ: 10 }}
+                                            style={{ transformStyle: 'preserve-3d' }}
+                                        >
+                                            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400 transition-transform duration-300 group-hover/item:scale-125" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </motion.div>
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-base sm:text-lg mb-1 transition-colors duration-300 group-hover/item:text-purple-400">We Build Consistency</h4>
@@ -144,10 +159,17 @@ const BrandStorySection = () => {
 
                                 {/* We Establish Trust */}
                                 <div className="flex gap-3 sm:gap-4 group/item cursor-pointer relative rounded-xl p-3 sm:p-4 -mx-3 sm:-mx-4 transition-all duration-300 hover:bg-white/5 border border-transparent hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.08)]">
-                                    <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center transition-all duration-300 group-hover/item:bg-indigo-600/20 group-hover/item:border-indigo-500/50 group-hover/item:scale-110">
-                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400 transition-transform duration-300 group-hover/item:-rotate-12 group-hover/item:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
+                                    <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center transition-all duration-300 group-hover/item:bg-indigo-600/20 group-hover/item:border-indigo-500/50 group-hover/item:scale-110 perspective-500">
+                                        <motion.div
+                                            animate={{ y: [0, -3, 0] }}
+                                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                            whileHover={{ rotateX: 20, rotateY: 20, translateZ: 10 }}
+                                            style={{ transformStyle: 'preserve-3d' }}
+                                        >
+                                            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400 transition-transform duration-300 group-hover/item:-rotate-12 group-hover/item:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                            </svg>
+                                        </motion.div>
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-base sm:text-lg mb-1 transition-colors duration-300 group-hover/item:text-indigo-400">We Establish Trust</h4>

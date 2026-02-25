@@ -2,6 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import {
+    Globe, Users, Mail, Phone, Shield, ArrowRight, Instagram,
+    Facebook, Linkedin, Youtube, Twitter,
+    Briefcase, User, MessageCircle, Info, BookOpen, Scale,
+    Cookie, Copyright, Send, Building2
+} from 'lucide-react';
+import logo from '../assets/images/site/AI_Growth_Exa_logo_designs22-removebg-preview.png';
 import api from '../api/api.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -81,45 +88,69 @@ const Footer = () => {
     };
 
     const socialLinks = [
-        { name: "LinkedIn", url: "https://www.linkedin.com/company/ai-growthexa/about/?viewAsMember=true" },
-        { name: "Instagram", url: "https://www.instagram.com/aigrowthexa/" },
-        { name: "Facebook", url: "https://www.facebook.com/profile.php?id=61586954705320" },
-        { name: "YouTube", url: "https://www.youtube.com/@AIGrowthExa" },
-        { name: "X (Twitter)", url: "https://x.com/aigrowthexa" },
+        { name: "LinkedIn", url: "https://www.linkedin.com/company/ai-growthexa/about/?viewAsMember=true", icon: <Linkedin size={16} /> },
+        { name: "Instagram", url: "https://www.instagram.com/aigrowthexa/", icon: <Instagram size={16} /> },
+        { name: "Facebook", url: "https://www.facebook.com/profile.php?id=61586954705320", icon: <Facebook size={16} /> },
+        { name: "YouTube", url: "https://www.youtube.com/@AIGrowthExa", icon: <Youtube size={16} /> },
+        { name: "X (Twitter)", url: "https://x.com/aigrowthexa", icon: <Twitter size={16} /> },
     ];
 
     return (
-        <footer ref={footerRef} className="bg-gray-900 text-gray-300 py-8 px-8 sm:px-12 lg:px-27 border-t border-gray-800 relative overflow-hidden">
-            { }
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50"></div>
+        <footer ref={footerRef} className="bg-gray-900 text-gray-300 py-12 px-6 sm:px-12 lg:px-16 border-t border-gray-800 relative overflow-hidden">
+            {/* Background Decorative Elements */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-900/10 blur-[150px] rounded-full pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-900/10 blur-[150px] rounded-full pointer-events-none"></div>
 
-            <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+
+            <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 max-w-7xl relative z-10">
+                {/* Branding Column */}
+                <div className="footer-column flex flex-col space-y-4 lg:pr-4">
+                    <Link to="/" className="inline-block transform transition-transform hover:scale-105">
+                        <img src={logo} alt="Ai Growth Exa" className="h-10 md:h-12 w-auto object-contain" />
+                    </Link>
+                    <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+                        Elevating businesses through precision AI-powered strategies and performance-first growth systems.
+                    </p>
+                    <div className="flex items-center gap-4 text-gray-500">
+                        <span className="flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold">
+                            <Shield size={12} className="text-blue-500" />
+                            Secure
+                        </span>
+                        <span className="flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold">
+                            <Globe size={12} className="text-blue-500" />
+                            Global
+                        </span>
+                    </div>
+                </div>
 
                 { }
                 <div className="footer-column flex flex-col space-y-4">
-                    <h3 className="text-xl font-bold text-white mb-2 relative inline-block">
+                    <h3 className="text-xl font-bold text-white mb-2 relative flex items-center gap-2">
+                        <Globe size={20} className="text-blue-500" />
                         Explore
-                        <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-blue-500"></span>
+                        <span className="absolute -bottom-1 left-0 w-1/2 h-0.5 bg-blue-500"></span>
                     </h3>
                     <ul className="space-y-2">
                         {[
-                            { name: "About Us", path: "/about" },
-                            { name: "Our Services", path: "/services" },
-                            { name: "Blog", path: "/blog" },
-                            { name: "Careers", path: "/careers" },
-                            { name: "About the Founder", path: "/about" }, // Linking to about for now
-                            { name: "Industries We Serve", path: "/services" },
-                            { name: "Case Studies", path: "/blog" },
-                            { name: "Contact Us", path: "/contact" }
+                            { name: "About Us", path: "/about", icon: <Info size={14} /> },
+                            { name: "Our Services", path: "/services", icon: <Briefcase size={14} /> },
+                            { name: "Blog", path: "/blog", icon: <BookOpen size={14} /> },
+                            { name: "Careers", path: "/careers", icon: <Users size={14} /> },
+                            { name: "About the Founder", path: "/about", icon: <User size={14} /> },
+                            { name: "Industries We Serve", path: "/services", icon: <Building2 size={14} /> },
+                            { name: "Case Studies", path: "/blog", icon: <BookOpen size={14} /> },
+                            { name: "Contact Us", path: "/contact", icon: <MessageCircle size={14} /> }
                         ].map((item) => (
                             <li key={item.name}>
                                 <Link
                                     to={item.path}
                                     state={item.path === '/contact' ? { background: location } : undefined}
-                                    className="block transition-colors duration-300 text-gray-400"
+                                    className="flex items-center gap-2 transition-colors duration-300 text-gray-400 hover:text-blue-400"
                                     onMouseEnter={handleLinkHover}
                                     onMouseLeave={handleLinkLeave}
                                 >
+                                    <span className="text-blue-500/50">{item.icon}</span>
                                     {item.name}
                                 </Link>
                             </li>
@@ -129,9 +160,10 @@ const Footer = () => {
 
                 { }
                 <div className="footer-column flex flex-col space-y-4">
-                    <h3 className="text-xl font-bold text-white mb-2 relative inline-block">
+                    <h3 className="text-xl font-bold text-white mb-2 relative flex items-center gap-2">
+                        <Users size={20} className="text-blue-500" />
                         Social Media
-                        <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-blue-500"></span>
+                        <span className="absolute -bottom-1 left-0 w-1/2 h-0.5 bg-blue-500"></span>
                     </h3>
                     <ul className="space-y-2">
                         {socialLinks.map((link) => (
@@ -140,10 +172,11 @@ const Footer = () => {
                                     href={link.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="block transition-colors duration-300 text-gray-400 hover:text-blue-400"
+                                    className="flex items-center gap-2 transition-colors duration-300 text-gray-400 hover:text-blue-400"
                                     onMouseEnter={handleLinkHover}
                                     onMouseLeave={handleLinkLeave}
                                 >
+                                    <span className="text-blue-500/50">{link.icon}</span>
                                     {link.name}
                                 </a>
                             </li>
@@ -153,24 +186,26 @@ const Footer = () => {
 
                 { }
                 <div className="footer-column flex flex-col space-y-4">
-                    <h3 className="text-xl font-bold text-white mb-2 relative inline-block">
+                    <h3 className="text-xl font-bold text-white mb-2 relative flex items-center gap-2">
+                        <Shield size={20} className="text-blue-500" />
                         Legal
-                        <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-blue-500"></span>
+                        <span className="absolute -bottom-1 left-0 w-1/2 h-0.5 bg-blue-500"></span>
                     </h3>
                     <ul className="space-y-2">
                         {[
-                            { name: "Terms & Conditions", path: "/terms-and-conditions" },
-                            { name: "Privacy Policy", path: "/privacy-policy" },
-                            { name: "Cookie Policy", path: "/cookie-policy" },
-                            { name: "Copyright Policy", path: "/copyright-policy" }
+                            { name: "Terms & Conditions", path: "/terms-and-conditions", icon: <Scale size={14} /> },
+                            { name: "Privacy Policy", path: "/privacy-policy", icon: <Shield size={14} /> },
+                            { name: "Cookie Policy", path: "/cookie-policy", icon: <Cookie size={14} /> },
+                            { name: "Copyright Policy", path: "/copyright-policy", icon: <Copyright size={14} /> }
                         ].map((item) => (
                             <li key={item.name}>
                                 <Link
                                     to={item.path}
-                                    className="block transition-colors duration-300 text-gray-400"
+                                    className="flex items-center gap-2 transition-colors duration-300 text-gray-400 hover:text-blue-400"
                                     onMouseEnter={handleLinkHover}
                                     onMouseLeave={handleLinkLeave}
                                 >
+                                    <span className="text-blue-500/50">{item.icon}</span>
                                     {item.name}
                                 </Link>
                             </li>
@@ -180,9 +215,10 @@ const Footer = () => {
 
                 { }
                 <div className="footer-column flex flex-col space-y-4">
-                    <h3 className="text-xl font-bold text-white mb-2 relative inline-block">
+                    <h3 className="text-xl font-bold text-white mb-2 relative flex items-center gap-2">
+                        <Mail size={20} className="text-blue-500" />
                         Connect With Us
-                        <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-blue-500"></span>
+                        <span className="absolute -bottom-1 left-0 w-1/2 h-0.5 bg-blue-500"></span>
                     </h3>
                     <form className="space-y-3" onSubmit={handleSubmit}>
                         <input
