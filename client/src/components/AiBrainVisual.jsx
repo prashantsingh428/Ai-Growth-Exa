@@ -1,143 +1,213 @@
 import React, { useEffect, useRef } from 'react';
+import { Renderer, Camera, Transform, Geometry, Program, Mesh, Color } from 'ogl';
+
+const vertexShader = `
+    attribute vec3 position;
+    attribute vec3 normal;
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
+    uniform mat3 normalMatrix;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+
+    void main() {
+        vNormal = normalize(normalMatrix * normal);
+        vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+`;
+
+const fragmentShader = `
+    precision highp float;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    uniform float iTime;
+    
+    void main() {
+        vec3 normal = normalize(vNormal);
+        vec3 eye = normalize(-vPosition);
+        
+        // Fresnel / Rim Light Effect
+        float fresnel = pow(1.0 - max(0.0, dot(normal, eye)), 3.0);
+        
+        // Pulsing base color
+        float pulse = 0.6 + 0.4 * sin(iTime * 2.0);
+        vec3 baseColor = vec3(0.05, 0.3, 0.8) * pulse;
+        vec3 rimColor = vec3(0.4, 0.8, 1.0);
+        
+        vec3 finalColor = mix(baseColor, rimColor, fresnel);
+        
+        gl_FragColor = vec4(finalColor, 0.3 + fresnel * 0.7);
+    }
+`;
+
+const wireframeVertexShader = `
+    attribute vec3 position;
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
+    void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+`;
+
+const wireframeFragmentShader = `
+    precision highp float;
+    uniform float iTime;
+    void main() {
+        float pulse = 0.8 + 0.2 * sin(iTime * 4.0);
+        gl_FragColor = vec4(0.5, 0.9, 1.0, 1.0 * pulse);
+    }
+`;
 
 const AiBrainVisual = () => {
-    const canvasRef = useRef(null);
+    const containerRef = useRef(null);
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
+        if (!containerRef.current) return;
+        const container = containerRef.current;
 
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-        const particleCount = 60;
-        const connectionDistance = 120;
-        let requestAnimationFrameId;
+        const renderer = new Renderer({ alpha: true, antialias: true });
+        const gl = renderer.gl;
+        container.appendChild(gl.canvas);
 
-        const resize = () => {
-            if (canvas && canvas.parentElement) {
-                width = canvas.width = canvas.parentElement.offsetWidth;
-                height = canvas.height = canvas.parentElement.offsetHeight;
-                initParticles();
+        const camera = new Camera(gl, { fov: 35 });
+        camera.position.z = 6;
+
+        const scene = new Transform();
+
+        // Dodecahedron Geometry Data
+        const t = (1 + Math.sqrt(5)) / 2;
+        const r = 1 / t;
+
+        const vertices = [
+            [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
+            [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1],
+            [0, -r, -t], [0, r, -t], [0, -r, t], [0, r, t],
+            [-r, -t, 0], [r, -t, 0], [r, t, 0], [-r, t, 0],
+            [-t, 0, -r], [t, 0, -r], [t, 0, r], [-t, 0, r]
+        ];
+
+        const faces = [
+            [3, 15, 14, 2, 9], [2, 14, 6, 18, 17], [6, 11, 10, 5, 18], [10, 4, 12, 13, 5],
+            [12, 0, 16, 19, 4], [16, 3, 9, 8, 0], [8, 1, 17, 2, 9], [17, 1, 13, 5, 18],
+            [13, 1, 8, 0, 12], [14, 15, 7, 11, 6], [15, 3, 16, 19, 7], [19, 4, 10, 11, 7]
+        ];
+
+        const positions = [];
+        const normals = [];
+        const wireframePositions = [];
+
+        faces.forEach(face => {
+            const center = [0, 0, 0];
+            face.forEach(idx => {
+                center[0] += vertices[idx][0] / 5;
+                center[1] += vertices[idx][1] / 5;
+                center[2] += vertices[idx][2] / 5;
+            });
+            const normal = normalize(center);
+            for (let i = 0; i < face.length; i++) {
+                const p1 = vertices[face[i]];
+                const p2 = vertices[face[(i + 1) % face.length]];
+                positions.push(...center, ...p1, ...p2);
+                normals.push(...normal, ...normal, ...normal);
+                wireframePositions.push(...p1, ...p2);
             }
-        };
+        });
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 1.0;
-                this.vy = (Math.random() - 0.5) * 1.0;
-                this.size = Math.random() * 2 + 1;
-                this.color = Math.random() > 0.5 ? '#3b82f6' : '#a855f7';
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
+        function normalize(v) {
+            const l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+            return [v[0] / l, v[1] / l, v[2] / l];
         }
 
-        const initParticles = () => {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        };
+        const geometry = new Geometry(gl, {
+            position: { size: 3, data: new Float32Array(positions) },
+            normal: { size: 3, data: new Float32Array(normals) },
+        });
 
-        const animate = () => {
-            if (!width || !height) return;
+        const program = new Program(gl, {
+            vertex: vertexShader,
+            fragment: fragmentShader,
+            uniforms: { iTime: { value: 0 } },
+            transparent: true,
+            cullFace: gl.BACK,
+        });
 
-            ctx.clearRect(0, 0, width, height);
+        const mesh = new Mesh(gl, { geometry, program });
+        mesh.setParent(scene);
 
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const dx = p.x - p2.x;
-                    const dy = p.y - p2.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+        const wireframeGeometry = new Geometry(gl, {
+            position: { size: 3, data: new Float32Array(wireframePositions) },
+        });
+        const wireframeProgram = new Program(gl, {
+            vertex: wireframeVertexShader,
+            fragment: wireframeFragmentShader,
+            uniforms: { iTime: { value: 0 } },
+            transparent: true,
+        });
+        const wireframeMesh = new Mesh(gl, { mode: gl.LINES, geometry: wireframeGeometry, program: wireframeProgram });
+        wireframeMesh.setParent(scene);
 
-                    if (dist < connectionDistance) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(148, 163, 184, ${1 - dist / connectionDistance})`;
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            const time = Date.now() * 0.002;
-            const coreX = width / 2;
-            const coreY = height / 2;
-            const pulseSize = 25 + Math.sin(time) * 5;
-
-            const gradient = ctx.createRadialGradient(coreX, coreY, 0, coreX, coreY, pulseSize * 4);
-            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
-            gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(coreX, coreY, pulseSize * 4, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(coreX, coreY, pulseSize, 0, Math.PI * 2);
-            ctx.fillStyle = '#ffffff';
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = '#3b82f6';
-            ctx.fill();
-            ctx.shadowBlur = 0;
-
-            requestAnimationFrameId = requestAnimationFrame(animate);
-        };
-
-        resize();
+        function resize() {
+            const { clientWidth, clientHeight } = container;
+            renderer.setSize(clientWidth, clientHeight);
+            camera.perspective({ aspect: gl.canvas.width / gl.canvas.height });
+        }
         window.addEventListener('resize', resize);
-        animate();
+        resize();
+
+        let raf;
+        function update(t) {
+            raf = requestAnimationFrame(update);
+            const time = t * 0.001;
+            program.uniforms.iTime.value = time;
+            wireframeProgram.uniforms.iTime.value = time;
+            scene.rotation.y = time * 0.3;
+            scene.rotation.x = time * 0.2;
+            scene.rotation.z = Math.sin(time * 0.1) * 0.1;
+            renderer.render({ scene, camera });
+        }
+        raf = requestAnimationFrame(update);
 
         return () => {
             window.removeEventListener('resize', resize);
-            if (requestAnimationFrameId) cancelAnimationFrame(requestAnimationFrameId);
-        };
+            cancelAnimationFrame(raf);
+            if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
+            gl.getExtension('WEBGL_lose_context')?.loseContext();
+        }
     }, []);
 
     return (
-        <div className="relative w-full h-full bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 shadow-[0_0_50px_rgba(59,130,246,0.2)]">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 to-purple-900/10 pointer-events-none"></div>
-            <canvas ref={canvasRef} className="block w-full h-full" />
+        <div ref={containerRef} className="relative w-full h-full flex items-center justify-center">
+            {/* Bold Content Inside the 3D Structure */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20">
+                <div className="text-center bg-gray-950/20 backdrop-blur-md p-6 rounded-[2rem] border border-blue-500/10 shadow-[0_0_50px_rgba(59,130,246,0.1)]">
+                    <div className="space-y-4">
+                        <div className="flex flex-col items-center">
+                            <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-blue-400 drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                                +142%
+                            </span>
+                            <span className="text-[10px] text-blue-300/60 uppercase tracking-[0.3em] font-bold">Growth Velocity</span>
+                        </div>
 
-            <div className="absolute bottom-6 left-6 right-6 bg-gray-950/80 backdrop-blur-md p-4 rounded-xl border border-gray-700/50 flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                    <div className="relative flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                    </div>
-                    <div>
-                        <h3 className="text-white text-sm font-bold tracking-wide">AI CORE</h3>
-                        <p className="text-blue-400 text-xs font-mono">Growth Engine</p>
+                        <div className="h-px w-24 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent mx-auto"></div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="text-2xl font-bold text-white tracking-tighter">2.4M+</span>
+                            <span className="text-[10px] text-blue-300/60 uppercase tracking-[0.3em] font-bold">Data Points</span>
+                        </div>
                     </div>
                 </div>
-                <div className="text-right">
-                    <span className="text-xs text-gray-400 font-mono">STATUS: OPTIMAL</span>
+
+                <div className="absolute bottom-1/4 flex items-center gap-3 px-4 py-1.5 bg-blue-600/5 border border-blue-400/20 rounded-full backdrop-blur-sm">
+                    <span className="flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-blue-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    </span>
+                    <span className="text-[10px] text-blue-200 font-bold uppercase tracking-[0.2em]">AI System Operational</span>
                 </div>
             </div>
+
+            <div className="absolute inset-0 bg-blue-600/5 blur-[120px] rounded-full pointer-events-none"></div>
         </div>
     );
 };

@@ -107,6 +107,7 @@ import {
     Build as BuildIcon,
     Palette as PaletteIcon
 } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { keyframes } from '@emotion/react';
 import InView from '../components/InView';
 
@@ -596,9 +597,30 @@ const ServiceModal = memo(({ service, open, onClose, theme, onStartService }) =>
                                                 mx: 'auto',
                                                 mb: 2
                                             }}>
-                                                {index === 0 && <TrendingUpIcon sx={{ color: theme.palette.primary.main }} />}
-                                                {index === 1 && <BoltIcon sx={{ color: theme.palette.primary.main }} />}
-                                                {index === 2 && <AutoAwesomeIcon sx={{ color: theme.palette.primary.main }} />}
+                                                <Box sx={{ perspective: 1000 }}>
+                                                    <motion.div
+                                                        className="transform-style-3d shadow-[0_4px_0_rgba(0,0,0,0.1)] rounded-full"
+                                                        whileHover={{
+                                                            rotateX: 15,
+                                                            rotateY: 15,
+                                                            translateZ: 20,
+                                                            scale: 1.15
+                                                        }}
+                                                        style={{ transformStyle: 'preserve-3d' }}
+                                                    >
+                                                        <motion.div
+                                                            animate={{ scale: [1, 1.1, 1] }}
+                                                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                                            style={{ transformStyle: 'preserve-3d' }}
+                                                        >
+                                                            <div style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }}>
+                                                                {index === 0 && <TrendingUpIcon sx={{ color: theme.palette.primary.main }} />}
+                                                                {index === 1 && <BoltIcon sx={{ color: theme.palette.primary.main }} />}
+                                                                {index === 2 && <AutoAwesomeIcon sx={{ color: theme.palette.primary.main }} />}
+                                                            </div>
+                                                        </motion.div>
+                                                    </motion.div>
+                                                </Box>
                                             </Box>
                                             <Typography variant="h6" sx={{ fontWeight: 600 }}>
                                                 {benefit.title}
@@ -2491,7 +2513,28 @@ const ServicesContent = () => {
                                                         justifyContent: 'center',
                                                         mx: 'auto'
                                                     }}>
-                                                        {item.icon}
+                                                        <Box sx={{ perspective: 800 }}>
+                                                            <motion.div
+                                                                className="transform-style-3d shadow-[0_3px_0_rgba(0,0,0,0.1)] rounded-full"
+                                                                whileHover={{
+                                                                    rotateX: 10,
+                                                                    rotateY: 10,
+                                                                    translateZ: 15,
+                                                                    scale: 1.1
+                                                                }}
+                                                                style={{ transformStyle: 'preserve-3d' }}
+                                                            >
+                                                                <motion.div
+                                                                    animate={{ rotate: [0, 5, -5, 0] }}
+                                                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                                                    style={{ transformStyle: 'preserve-3d' }}
+                                                                >
+                                                                    <div style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }}>
+                                                                        {item.icon}
+                                                                    </div>
+                                                                </motion.div>
+                                                            </motion.div>
+                                                        </Box>
                                                     </Box>
                                                     <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1, lineHeight: 1.2 }}>
                                                         {item.title}
