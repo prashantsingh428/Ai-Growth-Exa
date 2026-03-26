@@ -13,38 +13,55 @@ import TermsAndConditions from '../pages/TermsAndConditions';
 const Home = lazy(() => import('../pages/Home'));
 const Blog = lazy(() => import('../pages/Blog'));
 const Career = lazy(() => import('../pages/Career'));
+const AiSolution = lazy(() => import('../pages/Aisolution'));
 const Services = lazy(() => import('../pages/Services'));
 const About = lazy(() => import('../pages/About'));
 const Awards = lazy(() => import('../pages/Awards'));
 const Founder = lazy(() => import('../pages/Founder'));
+const Casestudies = lazy(() => import('../pages/Casestudies'));
+const Industries = lazy(() => import('../pages/Industries'));
+const AdminPanel = lazy(() => import('../pages/admin/AdminPanel'));
 
 const NotFound = () => <div className="p-20 text-center">404 - Page Not Found</div>;
 
 const PageLoader = () => (
     <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
     </div>
 );
 
 const AppRoutes = () => {
     const location = useLocation();
     const state = location.state;
-
-    // Check if we have a background location (for modal)
     const background = state && state.background;
 
+    // ── Admin route — completely outside MainLayout (no header/footer)
+    if (location.pathname.startsWith('/admin')) {
+        return (
+            <Suspense fallback={<PageLoader />}>
+                <Routes>
+                    <Route path="/admin/*" element={<AdminPanel />} />
+                </Routes>
+            </Suspense>
+        );
+    }
+
+    // ── All public routes — wrapped in MainLayout (header + footer)
     return (
         <MainLayout>
             <ScrollToTop />
             <Suspense fallback={<PageLoader />}>
-                {/* Always render the main routes. 
-                    If we have a background, we use it as the location for the main routes. */}
+
+                {/* Main pages */}
                 <Routes location={background || location}>
                     <Route path="/" element={<Home />} />
                     <Route path="/services" element={<Services />} />
+                    <Route path="/aisolution" element={<AiSolution />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/founder" element={<Founder />} />
                     <Route path="/awards" element={<Awards />} />
+                    <Route path="/case-studies" element={<Casestudies />} />
+                    <Route path="/industries" element={<Industries />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/careers" element={<Career />} />
                     <Route path="/cookie-policy" element={<CookieInfo />} />
@@ -54,14 +71,14 @@ const AppRoutes = () => {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
 
-                {/* Render the Contact Modal as a separate route if requested directly, 
-                    OR if it's the current location and we have a background. */}
+                {/* Modal routes */}
                 <Routes>
                     <Route path="/contact" element={<ContactModal isOpen={true} />} />
                     <Route path="/login" element={<AuthModal isOpen={true} initialView="login" />} />
                     <Route path="/signup" element={<AuthModal isOpen={true} initialView="register" />} />
                     <Route path="/register" element={<AuthModal isOpen={true} initialView="register" />} />
                 </Routes>
+
             </Suspense>
         </MainLayout>
     );
